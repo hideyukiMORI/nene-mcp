@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security advisory
+    url: https://github.com/hideyukiMORI/nene-mcp/security/advisories/new
+    about: Report a security issue privately
+  - name: NeNe framework
+    url: https://github.com/hideyukiMORI/NeNe
+    about: Questions about NeNe itself (not nene-mcp)

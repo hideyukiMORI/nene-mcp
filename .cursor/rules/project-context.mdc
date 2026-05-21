@@ -1,0 +1,39 @@
+---
+description: nene-mcp purpose, NeNe relationship, and integration policy
+alwaysApply: true
+---
+
+# nene-mcp Project Context
+
+## Purpose
+
+Composer library that runs a **stdio MCP server** (`vendor/bin/nene-mcp`) bridging documented HTTP APIs to MCP tools. Primary audience: **NeNe apps** that add the package via `composer require` without forking NeNe. Also supports vanilla PHP, other PHP frameworks, and non-PHP APIs (via HTTP + `tools.json`).
+
+## NeNe lineage
+
+Inherits NeNe-style governance: Issue-first, branch `type/issue-number-summary`, Conventional Commits, small focused PRs. NeNe philosophy (small, readable, OpenAPI contracts, AI-reviewable) applies here as: **OpenAPI/tools.json = contract**, MCP stays in this package—not in NeNe core.
+
+Read: `docs/project.md`, NeNe `docs/project.md` (sibling repo).
+
+## Architecture
+
+- Stdio newline JSON-RPC: `initialize`, `tools/list`, `tools/call`
+- Built-in read-only `nene_mcp_about`; optional NENE2-compatible `docs/mcp/tools.json`
+- Env: `NENE_MCP_API_BASE_URL`, `NENE_MCP_TOOLS_JSON`, `NENE_MCP_BEARER_TOKEN` (aliases `NENE2_*`)
+- HTTP client calls catalog endpoints; no NeNe runtime dependency
+
+## Do not
+
+- Add MCP code to NeNe `class/xion/` or require NeNe source in this repo
+- Commit secrets, tokens, or `.env` values
+- Mix unrelated framework migration with MCP changes in one PR
+- Write Issues, PRs, or commits in non-English (project language is English)
+
+## Docs map
+
+| Topic | Path |
+| --- | --- |
+| Overview | `docs/project.md` |
+| NeNe integration | `docs/integration/nene.md` |
+| Other platforms | `docs/integration/other-platforms.md` |
+| Agent rules | `AGENTS.md` |

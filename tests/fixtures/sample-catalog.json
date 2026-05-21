@@ -1,0 +1,22 @@
+{
+    "tools": [
+        {
+            "name": "getHealthDemo",
+            "title": "Health demo",
+            "description": "Example OpenAPI-aligned GET.",
+            "safety": "read",
+            "source": {
+                "type": "openapi",
+                "operationId": "healthDemo",
+                "method": "GET",
+                "path": "/demo/health"
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "responseSchemaRef": null
+        }
+    ]
+}

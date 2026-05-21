@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$roots = [
+    dirname(__DIR__) . '/vendor/autoload.php',
+    dirname(__DIR__, 4) . '/vendor/autoload.php',
+];
+
+foreach ($roots as $autoload) {
+    if (!is_file($autoload)) {
+        continue;
+    }
+
+    require $autoload;
+
+    HideyukiMori\NeneMcp\Bootstrap\McpStdioLoop::run();
+    exit(0);
+}
+
+fwrite(STDERR, "Composer autoload.php not found. Run composer install in this package root, or ensure your app has run composer install.\n");
+exit(1);
