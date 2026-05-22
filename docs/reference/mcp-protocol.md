@@ -41,6 +41,12 @@ HTTP-backed tools return structured content:
 
 HTTP errors set `isError: true` while still returning structured content.
 
+## Transport and connection failures
+
+When the TCP/HTTP layer cannot complete a request (connection refused, DNS failure, timeout), `tools/call` returns a JSON-RPC **error** (typically `-32603`) with a short message — not a `result` object with `statusCode`. This differs from HTTP 4xx/5xx responses from a reachable host, which still return structured content with `isError: true`.
+
+Verify `NENE_MCP_API_BASE_URL` with [catalog smoke test](/howto/catalog-smoke-test) before enabling write tools.
+
 ## Protocol version
 
 `initialize` reports `protocolVersion: 2024-11-05`.
