@@ -165,5 +165,6 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT1 | 2026-05-22 | NeNe health catalog + stdio MCP | [2026-05-field-trial-1.md](2026-05-field-trial-1.md) |
 | FT2 | 2026-05-22 | NeNe Docker + host MCP + Cursor config | [2026-05-field-trial-2.md](2026-05-field-trial-2.md) |
 | FT3 | 2026-05-22 | Security review (read-only) | [2026-05-field-trial-3.md](2026-05-field-trial-3.md) |
+| FT4 | 2026-05-22 | Catalog-free minimal install | [2026-05-field-trial-4.md](2026-05-field-trial-4.md) |
 
 Update this table when the first trial completes.

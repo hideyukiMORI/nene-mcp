@@ -99,6 +99,8 @@ Project or user MCP config (e.g. `.cursor/mcp.json`):
 
 Use **absolute paths**. Add `NENE_MCP_BEARER_TOKEN` only when tools need Bearer (never commit it).
 
+**Catalog optional for wiring checks:** omit `NENE_MCP_TOOLS_JSON` from MCP env until `docs/mcp/tools.json` exists. A path to a missing file causes `tools/list` to fail (including `nene_mcp_about`). See [README catalog-free example](https://github.com/hideyukiMORI/nene-mcp#catalog-free-smoke-test--day-0).
+
 ### 5. Verify
 
 1. MCP server `nene-mcp` shows healthy in Cursor

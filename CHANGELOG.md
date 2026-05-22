@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+
+- README and integration docs: catalog-free Cursor example; omit `NENE_MCP_TOOLS_JSON` until catalog exists (FT4)
+
 ## 0.1.2 — 2026-05-22
 
 Security patch from Field Trial 3.
