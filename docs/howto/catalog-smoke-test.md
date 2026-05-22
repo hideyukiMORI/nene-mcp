@@ -50,4 +50,5 @@ tools/ft-runner.sh write-failclosed /tmp/ft-write
 | HTTP connection refused | App not running or wrong base URL |
 | Duplicate name error | Two tools share the same `name` (v0.1.3+) |
 | Read tool HTTP 401 | Bearer-protected GET — set `NENE_MCP_BEARER_TOKEN` ([Bearer-native example](/howto/bearer-native-bridge-example)) |
+| Mutating tool HTTP 401, no JSON-RPC bearer error | `safety: read` on POST/PUT — use `write` or set env Bearer ([safety vs method](/howto/write-tools-bearer#safety-label-vs-http-method)) |
 | Agent “missing tool” | Partial catalog deployed — run tool count checklist (§2b) |

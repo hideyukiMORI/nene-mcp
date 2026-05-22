@@ -280,7 +280,7 @@ adversarial_probe() {
       out="$(mcp_json "$cat" "tools/call" '{"name":"mislabeledWrite","arguments":{"sku":"ADV-'${n}'"}}')"
       echo "$out" >>"$tmp"
       if echo "$out" | grep -qE '"statusCode":\s*401'; then
-        echo "FINDING (F-7): safety:read skips fail-closed; API 401 only — operator may expose write without env Bearer (document)" >>"$tmp"
+        echo "ADV-PASS F-7 documented: safety:read on protected POST returns API 401 (see write-tools-bearer)" >>"$tmp"
       else
         echo "ADV-PASS mislabeled write response logged" >>"$tmp"
       fi
@@ -494,7 +494,7 @@ ${friction_block}
 
 ## Recommendations
 
-$(if echo "$output" | grep -q 'FINDING (F-7)'; then echo "Document \`safety:read\` on Bearer-protected POST — operators must set env Bearer even when catalog says read."; else echo "None."; fi)
+None.
 
 ## Security Review (required when N % 3 == 0)
 

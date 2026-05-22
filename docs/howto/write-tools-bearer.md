@@ -40,6 +40,19 @@ Login or write tools that take passwords in `tools/call` arguments expose those 
 
 **Bearer-protected GET:** If the API returns **401** on a read tool, set `NENE_MCP_BEARER_TOKEN` anyway — nene-mcp will not fail-closed before HTTP, but the host API still enforces auth. See [Bearer-native bridge example](/howto/bearer-native-bridge-example).
 
+## Safety label vs HTTP method
+
+nene-mcp fail-closes only when catalog `safety` is **not** `read`. It does **not** infer auth from OpenAPI — the label is operator-defined.
+
+| Mistake | MCP behavior | Symptom |
+| --- | --- | --- |
+| `POST` / `PUT` / `PATCH` / `DELETE` marked `"safety": "read"` but API requires Bearer | HTTP sent **without** env Bearer | HTTP **401**, `isError: true` — no JSON-RPC fail-closed |
+| Same route marked `"safety": "write"` | Blocked before HTTP without env Bearer | JSON-RPC error: requires bearer |
+
+**Rule:** Match `safety` to how the API enforces auth, not to “read-only” business semantics. Mutating routes that require Bearer should use `"safety": "write"` (or set `NENE_MCP_BEARER_TOKEN` even when labeled read — same as protected GET).
+
+Observed in FT262+ adversarial probes (F-7).
+
 Hosts that require **session cookies** on GET are not covered by Bearer alone — see [NeNe catalog patterns](/howto/neene-catalog-patterns).
 
 ## Related

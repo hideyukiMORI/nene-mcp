@@ -16,6 +16,10 @@ Sem Bearer: erro JSON-RPC, sem HTTP.
 
 Read com `safety: read` pode retornar **401** se a API exige Bearer — defina env. [Exemplo Bearer-native](/pt-br/howto/bearer-native-bridge-example).
 
+## Rótulo safety vs método HTTP
+
+Fail-closed só quando `safety` ≠ `read`. **POST** com Bearer catalogado como `"safety": "read"` → HTTP sem env Bearer, **401**. Rotas mutantes Bearer: use **`write`**. F-7 / FT262+.
+
 ## Relacionado
 
 - [Modelo de segurança](/pt-br/explanation/security-model)

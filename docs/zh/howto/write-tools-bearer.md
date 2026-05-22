@@ -34,7 +34,15 @@ Write tool "myTool" requires bearer authentication. Set NENE_MCP_BEARER_TOKEN in
 
 ## 读取工具
 
-`safety: read` 在 nene-mcp 中不要求 Bearer（若设置了 env，GET 也会带 Bearer）。需要 session cookie 的 GET 无法仅靠 Bearer — [NeNe 目录模式](/zh/howto/neene-catalog-patterns)。
+`safety: read` 在 nene-mcp 中不要求 Bearer（若设置了 env，GET 也会带 Bearer）。
+
+**Bearer 保护的 GET：** 401 时仍须设置 `NENE_MCP_BEARER_TOKEN` — 见 [Bearer-native 示例](/zh/howto/bearer-native-bridge-example)。
+
+## safety 标签与 HTTP 方法
+
+仅当 `safety` 非 `read` 时 fail-closed。Bearer 保护的 **POST** 若标为 `"safety": "read"` → 无 env Bearer 仍发 HTTP → API **401**。变更类 Bearer 路由应使用 **`write`**。F-7 / FT262+。
+
+需要 session cookie 的 GET 无法仅靠 Bearer — [NeNe 目录模式](/zh/howto/neene-catalog-patterns)。
 
 ## 相关
 

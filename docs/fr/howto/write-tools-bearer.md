@@ -34,7 +34,13 @@ Mots de passe dans `tools/call` → **logs MCP et transcripts agent**. Comptes d
 
 ## Outils read
 
-`safety: read` n’exige pas Bearer dans nene-mcp. Les GET nécessitant des cookies session ne sont pas couverts par Bearer seul — [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns).
+`safety: read` n’exige pas Bearer dans nene-mcp. GET Bearer-protégé → **401** sans env : définir `NENE_MCP_BEARER_TOKEN`. Voir [exemple Bearer-native](/fr/howto/bearer-native-bridge-example).
+
+## Libellé safety vs méthode HTTP
+
+Fail-closed seulement si `safety` ≠ `read`. **POST** Bearer-protégé en `"safety": "read"` → HTTP sans Bearer env, **401** API. Routes mutantes Bearer : utiliser **`write`**. F-7 / FT262+.
+
+Cookies session sur GET : [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns).
 
 ## Voir aussi
 

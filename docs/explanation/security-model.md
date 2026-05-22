@@ -23,6 +23,7 @@ nene-mcp assumes a **local-dev MCP bridge** to a trusted base URL. Threat model 
 - Keep Bearer tokens out of git and catalog JSON
 - Pin Packagist versions for production-like trials
 - Review `safety: write` entries before sharing MCP config
+- Align `safety` with HTTP method + OpenAPI auth — do not label Bearer-protected POST as `read` ([write-tools-bearer](/howto/write-tools-bearer#safety-label-vs-http-method))
 
 ## Reporting
 
