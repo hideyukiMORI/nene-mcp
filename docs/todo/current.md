@@ -2,8 +2,8 @@
 
 ## Release
 
-- **v0.1.5** — tagging (FT295): whitespace Bearer fail-closed fix (#64)
-- **v0.1.4** — shipped; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.4)
+- **v0.1.5** — shipped (FT295/296): whitespace Bearer fail-closed (#64); [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.5)
+- **v0.1.4** — superseded on Packagist
 
 ## Field trials
 
@@ -11,7 +11,7 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
-| FT201–295 | ✅ Persona + L6 adversarial + v0.1.5 release ([255–294 index](field-trials/index-ft255-294.md)) |
+| FT201–336 | ✅ Through v0.1.5 + L6 band ([255–294](field-trials/index-ft255-294.md), [296–336](field-trials/index-ft296-336.md)) |
 
 ## Open Issues
 
@@ -25,4 +25,4 @@
 
 ## Next
 
-FT295+ — F-7 doc callout for mislabeled `safety:read`; NeNe #380; v0.1.5 when warranted.
+FT337+ — F-7 doc callout; NeNe #380.

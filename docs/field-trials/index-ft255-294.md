@@ -53,4 +53,4 @@ L6 **adversarial / cracking-perspective** band on v0.1.4+. Generated 2026-05-22.
 | F-7 | `safety:read` on Bearer-protected POST — no fail-closed, API 401 only | document (defer) |
 | NeNe CSRF | Write chain blocked at host | fix-in-host [#380](https://github.com/hideyukiMORI/NeNe/issues/380) |
 
-Batch summary: [`milestone-ft255-294.md`](milestone-ft255-294.md). Prior band: [`index-ft225-254.md`](index-ft225-254.md).
+Batch summary: [`milestone-ft255-294.md`](milestone-ft255-294.md). Post-v0.1.5: [`index-ft296-336.md`](index-ft296-336.md).
