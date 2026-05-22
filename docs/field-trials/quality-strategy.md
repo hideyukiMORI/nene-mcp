@@ -46,7 +46,7 @@ Docs-only persona trials start simple and **increase scope until the persona sta
 | **L1** | FT201 | Health + one fake read (404) | Install pin, bootstrap links, catalog examples |
 | **L2** | FT202–203 | Write fail-closed, locale/host setup | Security JSON-RPC edges, i18n doc lag |
 | **L3** | FT204 | Multi-tool TODO module: login, list, create, path params, URI_ROOT | Session cookie vs Bearer, path conventions, base URL |
-| **L4+** | FT205+ | Cross-locale parity, Bearer-native hosts, CSRF write chains, partial catalogs | Host-specific auth, operator mistakes |
+| **L4+** | FT205–207 | Cross-locale parity, Bearer-native hosts, partial catalogs | Host-specific auth, operator mistakes, protected GET Bearer |
 
 **Rules:**
 
