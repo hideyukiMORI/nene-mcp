@@ -1,4 +1,4 @@
-# Persona field trials FT201–222 (2026-05)
+# Persona field trials FT201–224 (2026-05)
 
 Individual reports for the **docs-only persona band** (quality-first, difficulty ramp). Automation band FT10–200 is separate — see [`index-ft10-200.md`](index-ft10-200.md).
 
@@ -26,7 +26,9 @@ Individual reports for the **docs-only persona band** (quality-first, difficulty
 | 220 | [2026-05-field-trial-220.md](2026-05-field-trial-220.md) | L2 | integration README + i18n CSRF |
 | 221 | [2026-05-field-trial-221.md](2026-05-field-trial-221.md) | L2 | i18n catalog-format query |
 | 222 | [2026-05-field-trial-222.md](2026-05-field-trial-222.md) | — | Harness + CHANGELOG cadence |
+| 223 | [2026-05-field-trial-223.md](2026-05-field-trial-223.md) | — | Release v0.1.4 (docs + PHPUnit) |
+| 224 | [2026-05-field-trial-224.md](2026-05-field-trial-224.md) | — | Post-release Packagist + Pages smoke |
 
 Strategy: [`quality-strategy.md`](quality-strategy.md) — difficulty ramp table.
 
-Merged PRs: #37–#56; #57 pending.
+Merged PRs: #37–#59 (v0.1.4 release).

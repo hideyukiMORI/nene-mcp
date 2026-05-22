@@ -25,9 +25,9 @@ Ship patch release documenting persona-band docs and FT219 PHPUnit regression te
 
 ## Post-tag
 
-- [ ] GitHub Release `v0.1.4` published
-- [ ] `tools/packagist-verify.sh 0.1.4` pass
-- [ ] Release verify workflow green
+- [x] GitHub Release `v0.1.4` published — https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.4
+- [x] `tools/packagist-verify.sh 0.1.4` pass
+- [x] Release verify workflow green (PR #59 merge)
 
 ## Friction
 
