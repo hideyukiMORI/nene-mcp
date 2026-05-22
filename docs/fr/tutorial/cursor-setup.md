@@ -23,6 +23,10 @@ Configurez le hôte MCP pour lancer `vendor/bin/nene-mcp` en stdio. **Chemins ab
 
 Omettez `NENE_MCP_TOOLS_JSON` tant que le fichier n’existe pas.
 
+::: tip Chemins relatifs — piège cwd
+Un chemin relatif peut marcher **si** le cwd du host MCP = racine du projet. Autre cwd (sous-dossier, CI) → catalogue introuvable. Préférez les **chemins absolus** dans `.cursor/mcp.json` commité.
+:::
+
 ## Outils d’écriture
 
 Bearer uniquement dans le bloc `env` du hôte MCP — jamais dans git. Voir [Outils d’écriture & Bearer](/fr/howto/write-tools-bearer).
