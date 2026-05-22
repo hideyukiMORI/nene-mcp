@@ -108,7 +108,7 @@ No friction on MCP wire behavior for this read-only health path.
 
 | ID | Location | Severity | Kind | Decision |
 | --- | --- | --- | --- | --- |
-| F-1 | NeNe host bootstrap | high | docs-gap | document |
+| F-1 | NeNe host bootstrap | high | docs-gap | fix-in-host → [NeNe #309](https://github.com/hideyukiMORI/NeNe/issues/309) / [PR #310](https://github.com/hideyukiMORI/NeNe/pull/310) |
 | F-2 | NeNe local API startup | medium | docs-gap | document |
 | F-3 | Composer install (pre-Packagist) | medium | docs-gap | document |
 
@@ -117,7 +117,7 @@ No friction on MCP wire behavior for this read-only health path.
 ### Immediate (documentation)
 
 1. **F-3 — Pre-Packagist install**: Add VCS repository snippet to `docs/integration/nene.md` and README until Packagist is live.
-2. **F-1 — PHP intl**: Note `ext-intl` (or full NeNe Docker path) in integration prerequisites.
+2. **F-1 — PHP intl**: Routed to NeNe — [PR #310](https://github.com/hideyukiMORI/NeNe/pull/310) documents `ext-intl` and adds `intl` to the Docker dev image. nene-mcp integration docs link prerequisites.
 3. **F-2 — Non-Docker path**: Document SQLite + `php -S` as a valid FT/local-dev alternative when Docker is unavailable.
 
 ### Suggested (package change)
@@ -134,11 +134,12 @@ N/A — security review scheduled for FT3.
 
 ## Follow-up Issues
 
-| Priority | Issue | Decision |
-| --- | --- | --- |
-| high | #10 | document |
-| medium | #11 | document |
-| medium | #12 | document |
+| Priority | Issue / PR | Repo | Decision |
+| --- | --- | --- | --- |
+| high | #10 | nene-mcp | document |
+| medium | #11 | nene-mcp | document |
+| medium | #12 | nene-mcp | document |
+| high | [#309](https://github.com/hideyukiMORI/NeNe/issues/309) / [PR #310](https://github.com/hideyukiMORI/NeNe/pull/310) | NeNe | fix-in-host |
 
 ## Overall Impression
 
