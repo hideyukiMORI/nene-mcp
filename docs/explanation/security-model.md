@@ -13,6 +13,7 @@ For **commercial adoption boundaries** (developer tool vs production gateway), s
 | Duplicate tool names | Rejected at catalog load (v0.1.3+) |
 | Invalid `safety` value | Rejected at catalog load — must be `read` or `write` (v0.1.7+) |
 | Secrets | Bearer only in env; never in catalog or `nene_mcp_about` |
+| Stderr HTTP log | Opt-in (`NENE_MCP_LOG=stderr`); method/path/status/duration only — no Bearer or bodies |
 | JSON-RPC errors | Safe messages; no stack traces on stdout |
 
 ## SSRF considerations

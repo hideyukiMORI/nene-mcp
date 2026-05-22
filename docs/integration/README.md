@@ -50,6 +50,7 @@ nene-mcp is a **developer MCP sidecar**, not a customer-facing API gateway. See 
 
 ## Related
 
+- [SMB adoption checklist](https://hideyukimori.github.io/nene-mcp/explanation/smb-adoption-checklist) — internal/staging rollout
 - [Commercial use & production scope](https://hideyukimori.github.io/nene-mcp/explanation/commercial-use-and-scope)
 - [NeNe catalog patterns](https://hideyukimori.github.io/nene-mcp/howto/neene-catalog-patterns) + [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380)
 
