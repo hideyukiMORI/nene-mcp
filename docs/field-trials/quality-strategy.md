@@ -51,6 +51,8 @@ An FT is complete when:
 
 The 2026-05 FT19–FT100 batch log was an **automation regression run**, retroactively labeled; **individual reports resume at FT9**.
 
+FT10–FT200 individual reports: [`index-ft10-200.md`](index-ft10-200.md), schedule [`schedule-ft100-200.md`](schedule-ft100-200.md).
+
 ## Related
 
 - [`README.md`](README.md) — methodology

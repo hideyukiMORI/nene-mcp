@@ -172,9 +172,9 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT6 | 2026-05-22 | Security review (catalog) | [2026-05-field-trial-6.md](2026-05-field-trial-6.md) |
 | FT7 | 2026-05-22 | Vanilla PHP bridge | [2026-05-field-trial-7.md](2026-05-field-trial-7.md) |
 | FT8 | 2026-05-22 | Packagist regression | [2026-05-field-trial-8.md](2026-05-field-trial-8.md) |
-| FT9+ | — | Individual reports resume (see [quality-strategy.md](quality-strategy.md)) | — |
 | FT9 | 2026-05-22 | Security write + Bearer fail-closed | [2026-05-field-trial-9.md](2026-05-field-trial-9.md) |
+| FT10–FT200 | 2026-05-22 | Quality-first individual reports | [index-ft10-200.md](index-ft10-200.md) |
 
-**Note:** `milestones/2026-05-ft9-ft18-batch.md` and `milestones/2026-05-ft19-ft100-batch.md` record automation regression logs only—they are **not** substitutes for per-FT reports.
+**Note:** Milestone files under `milestones/` aggregate pass/fail only. Each FT has its own `2026-05-field-trial-{N}.md`.
 
-Automation: [`automation.md`](automation.md)
+Automation: [`automation.md`](automation.md) · Schedule FT100–200: [`schedule-ft100-200.md`](schedule-ft100-200.md)

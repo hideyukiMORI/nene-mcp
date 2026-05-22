@@ -2,29 +2,29 @@
 
 ## Release
 
-- **v0.1.2** — Packagist (redirect SSRF fix)
-- **v0.1.3** — pending: duplicate catalog names (#22), FT9 quality work
+- **v0.1.3** — pending merge (PR #24): duplicate names, FT9 quality
+- **v0.3.0** — evaluate after FT200 gate ([milestone](field-trials/milestones/2026-05-ft200-gate.md))
 
 ## Field trials
 
 | Range | Status |
 | --- | --- |
-| FT1–FT8 | ✅ Individual reports |
-| FT9 | ✅ [Individual report](field-trials/2026-05-field-trial-9.md) |
-| FT10+ | Individual reports required ([quality-strategy](field-trials/quality-strategy.md)) |
+| FT1–FT9 | ✅ Individual reports |
+| FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
 
-Batch logs under `field-trials/milestones/` are regression-only—not FT completion.
+Methodology: [`quality-strategy.md`](field-trials/quality-strategy.md)
 
-## Quality instruments
+## Automation
 
-- [`quality-strategy.md`](field-trials/quality-strategy.md)
-- `tools/ft-runner.sh` — regression suites (CI wired)
-- PHPUnit — catalog validation, write fail-closed
+- `tools/ft-individual.sh` — one FT → one report
+- `tools/ft-range.sh` — batch with reports
+- `tools/ft-runner.sh` — suites (CI wired)
 
-## Open
+## Open manual follow-ups
 
-- FT10 — Bearer write end-to-end (NeNe session)
+- Bearer write **live** e2e with NeNe session (automated fail-closed only in FT10 band)
+- Cross-platform host FTs on demand (FT13–17 themes partially automated)
 
 ## Next
 
-FT10 after #22 merge and v0.1.3 tag.
+Merge PR #24 + #25; tag v0.1.3; optional v0.3.0 planning.

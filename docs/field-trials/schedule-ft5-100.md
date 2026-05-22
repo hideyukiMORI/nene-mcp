@@ -28,10 +28,11 @@ Extension of [`schedule.md`](schedule.md). FT1–FT8 complete. **Quality-first:*
 | FT7 | Vanilla PHP bridge (Pattern B) | ✅ [report](2026-05-field-trial-7.md) |
 | FT8 | Packagist-only install regression | ✅ [report](2026-05-field-trial-8.md) |
 | FT9 | Security — write fail-closed | ✅ [report](2026-05-field-trial-9.md) |
-| FT10 | Bearer write end-to-end | pending |
-| FT11 | Misconfiguration adversarial | pending |
-| FT12 | Security milestone write | pending |
-| FT13–FT18 | Cross-platform + agent + milestone | pending |
+| FT10 | Bearer write end-to-end | ✅ [report](2026-05-field-trial-10.md) (automated; live session deferred) |
+| FT11 | Misconfiguration adversarial | ✅ [report](2026-05-field-trial-11.md) |
+| FT12 | Security milestone write | ✅ [report](2026-05-field-trial-12.md) |
+| FT13–FT18 | Cross-platform + agent + milestone | ✅ [reports](index-ft10-200.md) |
+| FT19–FT200 | Rotation regression band | ✅ [index](index-ft10-200.md) |
 
 ## Gates
 

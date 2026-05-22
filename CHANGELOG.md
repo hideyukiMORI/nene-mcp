@@ -17,6 +17,9 @@ Quality release from Field Trial 9 and FT6 follow-up #22.
 - CI: `ft-runner.sh write-failclosed` and `security-catalog` after unit tests.
 - Field Trial 9 individual report; [`quality-strategy.md`](docs/field-trials/quality-strategy.md).
 - Integration docs: write tools + Bearer fail-closed.
+- FT10–FT200 individual reports ([`index-ft10-200.md`](docs/field-trials/index-ft10-200.md)).
+- `tools/ft-individual.sh`, `tools/ft-range.sh`, `tools/ft-milestone.sh`.
+- Schedule FT100–FT200; G3/G5 milestone gates.
 
 ### Changed
 
