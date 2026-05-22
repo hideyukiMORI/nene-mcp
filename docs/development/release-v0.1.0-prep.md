@@ -29,11 +29,13 @@ Explicitly **not** in `v0.1.0 support promise:
 
 ## Before tagging v0.1.0
 
-1. Merge release policy docs (this preparation track).
+1. ~~Merge release policy docs (this preparation track).~~ Done (PR #7).
 2. Confirm `Package::VERSION === '0.1.0'` and `CHANGELOG.md` has `0.1.0` section.
 3. Run [`release-checklist.md`](release-checklist.md).
-4. Maintainer approval on the release Issue.
+4. Maintainer approval on the release Issue (#8).
 5. Create `v0.1.0` tag + GitHub Release from `main`.
+
+**Status:** Steps 2–5 tracked in Issue #8.
 
 ## Composer consumption for FT1
 
