@@ -1,38 +1,41 @@
-# Integrate with NeNe
+# Integrar com NeNe
 
-nene-mcp has **no NeNe-specific code**. NeNe is one host that ships OpenAPI + `docs/mcp/tools.json`.
+nene-mcp **não tem código NeNe**. NeNe é um host com OpenAPI + `docs/mcp/tools.json`.
 
-## Prerequisites
+## Inicie o NeNe primeiro
 
-- NeNe app running locally (Docker or host PHP)
-- PHP **ext-intl** on the NeNe host when using NeNe Docker images
-- `composer require hideyukimori/nene-mcp` in your NeNe project (or a bridge repo)
+1. Clone NeNe: [github.com/hideyukiMORI/NeNe](https://github.com/hideyukiMORI/NeNe)
+2. `composer install` na raiz
+3. Inicie o app — Docker ou PHP host; veja NeNe `docs/development/docker.md`
+4. Confirme HTTP (`GET /health/index`)
 
-## Steps
+Depois:
 
-1. **Expose REST endpoints** with OpenAPI documentation (NeNe convention).
-2. **Commit** `docs/mcp/tools.json` — NENE2-compatible format ([catalog reference](/reference/catalog-format)).
-3. **Configure MCP host** with absolute paths ([Cursor setup](/tutorial/cursor-setup)).
-4. **Smoke** read tools before enabling write tools.
+```bash
+composer require hideyukimori/nene-mcp:^0.1
+```
 
-## Environment aliases
+## Passos
 
-For quick alignment with NENE2 docs:
+1. REST com OpenAPI (convenção NeNe)
+2. Commit `docs/mcp/tools.json` — formato NENE2 ([referência](/pt-br/reference/catalog-format))
+3. Caminhos **absolutos** no host MCP ([Cursor](/pt-br/tutorial/cursor-setup))
+4. Smoke read antes de write — [teste smoke](/pt-br/howto/catalog-smoke-test)
+5. TODO NeNe / sessão: [Padrões de catálogo NeNe](/pt-br/howto/neene-catalog-patterns)
 
-| nene-mcp | NENE2 alias |
-| --- | --- |
-| `NENE_MCP_API_BASE_URL` | `NENE2_LOCAL_API_BASE_URL` |
-| `NENE_MCP_TOOLS_JSON` | `NENE2_LOCAL_TOOLS_JSON` |
+::: warning Caminho absoluto do catálogo
+`NENE_MCP_TOOLS_JSON` deve ser **absoluto**.
+:::
 
-## Health catalog example
+::: info Limite session cookie NeNe
+O exemplo NeNe protege `/todo/*` com **cookies de sessão**. nene-mcp é **proxy Bearer stateless** — fluxo login → lista → criar **não** completa sem auth no host. [Padrões NeNe](/pt-br/howto/neene-catalog-patterns).
+:::
 
-See the repository file `docs/example-ne-health-catalog.md` for a minimal NeNe health `tools.json` sample.
+## URL base
 
-## Bootstrap gaps
+`NENE_MCP_API_BASE_URL` deve incluir prefixo `URI_ROOT` se aplicável.
 
-If NeNe Docker or extension prerequisites block integration, file Issues in the **NeNe** repository — nene-mcp documents the bridge only.
+## Relacionado
 
-## Related
-
-- [Other platforms](/howto/other-platforms)
-- [Ecosystem map](/integrations/ecosystem)
+- [Exemplo bridge Bearer-native](/pt-br/howto/bearer-native-bridge-example)
+- [Ecossistema](/pt-br/integrations/ecosystem)

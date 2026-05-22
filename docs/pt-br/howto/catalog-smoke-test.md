@@ -1,40 +1,14 @@
-# Catalog smoke test
+# Smoke test do catálogo
 
-Verify MCP wiring before exposing write tools.
+## 2b. Contagem de tools
 
-## 1. About-only
+Após `tools/list`, confirme **todas** as tools de negócio esperadas — não só health. [Exemplo Bearer-native](/pt-br/howto/bearer-native-bridge-example).
 
-```bash
-unset NENE_MCP_TOOLS_JSON
-export NENE_MCP_API_BASE_URL=http://localhost:8080
-printf '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n' | php vendor/bin/nene-mcp
-```
+## Falhas comuns
 
-Expect exactly one tool: `nene_mcp_about`.
-
-## 2. With catalog
-
-```bash
-export NENE_MCP_TOOLS_JSON=/ABS/PATH/docs/mcp/tools.json
-printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
-  | php vendor/bin/nene-mcp
-```
-
-Expect `statusCode` and JSON `body` in structured content.
-
-## 3. Automation harness
-
-From the nene-mcp repo:
-
-```bash
-tools/ft-runner.sh smoke /path/to/tools.json
-tools/ft-runner.sh write-failclosed /tmp/ft-write
-```
-
-## Common failures
-
-| Symptom | Likely cause |
+| Sintoma | Causa |
 | --- | --- |
-| `tools/list` error on startup | Invalid or missing catalog path |
-| HTTP connection refused | App not running or wrong base URL |
-| Duplicate name error | Two tools share the same `name` (v0.1.3+) |
+| Read HTTP 401 | GET com Bearer — defina `NENE_MCP_BEARER_TOKEN` |
+| Tool ausente | Catálogo parcial — checklist §2b |
+
+Veja também a versão em inglês: [Catalog smoke test](/howto/catalog-smoke-test).

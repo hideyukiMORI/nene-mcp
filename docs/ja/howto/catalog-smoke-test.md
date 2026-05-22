@@ -1,33 +1,24 @@
 # カタログ smoke テスト
 
-MCP 配線を書き込みツールの前に確認します。
+書き込みツール公開前に MCP 配線を検証します。
 
 ## 1. about のみ
 
-```bash
-unset NENE_MCP_TOOLS_JSON
-export NENE_MCP_API_BASE_URL=http://localhost:8080
-printf '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n' | php vendor/bin/nene-mcp
-```
-
-`nene_mcp_about` のみであること。
+`NENE_MCP_TOOLS_JSON` 未設定 → `nene_mcp_about` のみ。
 
 ## 2. カタログあり
 
-```bash
-export NENE_MCP_TOOLS_JSON=/ABS/PATH/docs/mcp/tools.json
-printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
-  | php vendor/bin/nene-mcp
-```
+read ツールの `tools/call` で `statusCode` と JSON `body` を確認。
 
-structured content に `statusCode` があること。
+## 2b. ツール数チェック（部分カタログ防止）
 
-## 3. よくある失敗
+`tools/list` 後、health だけでなく **期待する業務ツール名がすべて並ぶか** 確認。欠けていれば agents は呼べません。[Bearer ネイティブ bridge 例](/ja/howto/bearer-native-bridge-example)。
+
+## よくある失敗
 
 | 症状 | 原因 |
 | --- | --- |
-| `tools/list` エラー | カタログパス不正・ファイル不存在 |
-| connection refused | アプリ未起動または base URL 誤り |
-| duplicate name | 同一 `name` が重複（v0.1.3+） |
+| read が HTTP 401 | Bearer 必須 GET — `NENE_MCP_BEARER_TOKEN` を設定 |
+| エージェントがツール不在 | 部分デプロイ — §2b を実行 |
 
-[English](/howto/catalog-smoke-test)
+詳細コマンド: [English catalog smoke test](/howto/catalog-smoke-test)
