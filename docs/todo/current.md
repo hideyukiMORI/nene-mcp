@@ -11,7 +11,7 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
-| FT201–337 | ✅ Through v0.1.5 + L6 + F-7 docs ([296–336 index](field-trials/index-ft296-336.md)) |
+| FT201–378 | ✅ v0.1.5 + L6 + F-7 ([337–338](field-trials/2026-05-field-trial-337.md), [339–378](field-trials/index-ft339-378.md)) |
 
 ## Open Issues
 
@@ -25,4 +25,4 @@
 
 ## Next
 
-FT338+ — NeNe #380; L6 band when new friction appears.
+FT379+ — v0.1.6 doc patch (F-7); NeNe #380.
