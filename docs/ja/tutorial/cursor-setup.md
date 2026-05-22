@@ -41,6 +41,10 @@ MCP ホスト（Cursor 等）から stdio で `vendor/bin/nene-mcp` を起動し
 
 プレースホルダパスを `NENE_MCP_TOOLS_JSON` に設定しないでください — ファイルが無いと `tools/list` 全体が失敗します。
 
+::: tip 相対パスが動くことがある — それでも避ける
+MCP ホストの cwd がプロジェクトルートのとき、`docs/mcp/tools.json` が **一時的に** 解決することがあります。サブフォルダ起動・monorepo・CI では **catalog not found** になります。コミットする `.cursor/mcp.json` には **絶対パス** を使うか、開発者ごとの置換手順を書いてください。
+:::
+
 ## 書き込みツール
 
 カタログに `"safety": "write"` がある場合、MCP ホストの env にのみ Bearer を設定（git 不可）:

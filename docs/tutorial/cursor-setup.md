@@ -41,6 +41,10 @@ Omit `NENE_MCP_TOOLS_JSON` until the catalog file exists:
 
 Do **not** point `NENE_MCP_TOOLS_JSON` at a placeholder path — a missing file fails `tools/list` entirely.
 
+::: tip Relative paths sometimes work — still avoid them
+If the MCP host starts with cwd = your project root, `docs/mcp/tools.json` may resolve **once** on your machine. Teammates opening a subfolder, monorepo packages, or CI agents with a different cwd will get **catalog not found** with no HTTP error. Use **absolute paths** in committed `.cursor/mcp.json` templates, or document per-developer substitution (see below).
+:::
+
 ## Write tools
 
 When the catalog includes `"safety": "write"` entries, add Bearer only in the MCP host env block — never in git:
