@@ -1,39 +1,21 @@
-# Write tools & Bearer
+# Ferramentas de escrita & Bearer
 
-Catalog entries with `"safety": "write"` (or any non-`read` safety) require **`NENE_MCP_BEARER_TOKEN`** in the MCP server environment.
+Entradas `"safety": "write"` exigem **`NENE_MCP_BEARER_TOKEN`** no ambiente MCP.
 
-## Fail-closed default
+## Fail-closed
 
-Without Bearer, `tools/call` returns a JSON-RPC error and **does not send HTTP**:
+Sem Bearer: erro JSON-RPC, sem HTTP.
 
-```text
-Write tool "myTool" requires bearer authentication. Set NENE_MCP_BEARER_TOKEN in the MCP server environment.
-```
+## Token
 
-This prevents silent anonymous writes when an operator forgets to configure auth.
+- **API Bearer/JWT**: fluxo normal
+- **TODO NeNe**: OpenAPI usa **`sessionCookie`** — [Padrões NeNe](/pt-br/howto/neene-catalog-patterns)
+- **Login público como `write`**: Bearer placeholder para fail-closed
 
-## Where to put the token
+## GET protegido (read)
 
-| OK | Not OK |
-| --- | --- |
-| MCP host `env` block (Cursor, Claude Desktop) | `tools.json` |
-| OS environment for the MCP process | Git commits |
-| Secret manager → env at runtime | `nene_mcp_about` output |
+Read com `safety: read` pode retornar **401** se a API exige Bearer — defina env. [Exemplo Bearer-native](/pt-br/howto/bearer-native-bridge-example).
 
-## Obtaining a token
+## Relacionado
 
-Use your app's normal session flow:
-
-- **NeNe / NENE2**: login endpoint → session Bearer (see host docs)
-- **Custom API**: whatever your OpenAPI security scheme defines
-
-nene-mcp forwards the token as `Authorization: Bearer …` on write HTTP calls.
-
-## Read tools
-
-`safety: read` tools do not require Bearer unless your API enforces auth on GET.
-
-## Related
-
-- [Security model](/explanation/security-model)
-- [Environment variables](/reference/environment-variables)
+- [Modelo de segurança](/pt-br/explanation/security-model)

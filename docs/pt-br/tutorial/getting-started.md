@@ -1,13 +1,14 @@
 # Primeiros passos
 
-nene-mcp adiciona **stdio MCP** a qualquer API HTTP com catálogo compatível NENE2.
+nene-mcp adiciona **stdio MCP** via catálogo NENE2.
 
 ```bash
-composer require hideyukimori/nene-mcp
+composer require hideyukimori/nene-mcp:^0.1
 ```
 
-Requisitos: PHP 8.2+, Composer, host MCP (Cursor, Claude Desktop).
+Verifique a tag em [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp).
 
-Sem `NENE_MCP_TOOLS_JSON`, apenas `nene_mcp_about` é listado.
+## Próximo
 
-Próximo: [Configuração Cursor](/pt-br/tutorial/cursor-setup)
+- [Configuração Cursor](/pt-br/tutorial/cursor-setup)
+- [Integrar NeNe](/pt-br/howto/integrate-nene)
