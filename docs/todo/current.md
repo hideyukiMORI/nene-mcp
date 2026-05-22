@@ -18,11 +18,14 @@
 | FT450–479 | ✅ FT450 defer + L8 band ([index](field-trials/index-ft450-479.md)) |
 | FT480–509 | ✅ L9 band ([index](field-trials/index-ft480-509.md)) |
 | FT510–539 | ✅ L10 band ([index](field-trials/index-ft510-539.md)) |
+| FT540–569 | ✅ L11 band ([index](field-trials/index-ft540-569.md)) |
+| FT570–599 | ✅ L12 band ([index](field-trials/index-ft570-599.md)) |
+| FT600–629 | ✅ L13 band ([index](field-trials/index-ft600-629.md)) |
 
 ## Open Issues
 
-- **nene-mcp:** 0
-- **NeNe (assigned on NeNe repo):** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) — Bearer TODO for MCP; **assigned to host team** — nene-mcp re-runs **FT450** when merged
+- **nene-mcp:** 0 (FT band PRs #96–102 pending merge)
+- **NeNe:** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) **CLOSED** — FT450 confirmed PASS (2026-05-23)
 
 ## Automation
 
@@ -32,4 +35,4 @@
 
 ## Next
 
-Re-run **FT450** when NeNe #395 merges. FT540+ — next adversarial band.
+Merge FT510–629 PR chain (#96 → #102). FT630+ — next adversarial band.

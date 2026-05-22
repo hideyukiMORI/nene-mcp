@@ -16,7 +16,7 @@
 
 ## FT450 gate
 
-NeNe Bearer E2E **deferred** while [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380) / [#395](https://github.com/hideyukiMORI/NeNe/issues/395) open. Harness auto-detects; re-run FT450 after NeNe merge for full confirmation.
+NeNe Bearer E2E **confirmed** — FT450 PASS after [NeNe #395](https://github.com/hideyukiMORI/NeNe/issues/395) merge ([report](2026-05-field-trial-450.md)).
 
 ## L8 probes (FT451+)
 
