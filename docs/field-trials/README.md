@@ -148,6 +148,7 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 - Self-review before publishing report: `docs/review/field-trial-report.md`
 - Workflow: `docs/workflow.md`
 - ADR: `docs/adr/0001-adopt-field-trial-methodology.md`
+- **Schedule (FT2–FT18):** [`schedule.md`](schedule.md)
 
 ## Sibling references
 
