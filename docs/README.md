@@ -24,7 +24,15 @@ Documentation index for the NeNe ecosystem MCP bridge and generic HTTP app integ
 | --- | --- |
 | [`workflow.md`](workflow.md) | Issue-driven workflow |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contribution guide |
+| [`development/coding-standards.md`](development/coding-standards.md) | PHP / MCP architecture rules |
+| [`development/language-policy.md`](development/language-policy.md) | English-only public policy |
+| [`development/quality-tools.md`](development/quality-tools.md) | PHPUnit, PHPStan, CS-Fixer |
+| [`development/security-policy.md`](development/security-policy.md) | Security rules for implementers |
+| [`development/self-review.md`](development/self-review.md) | Checklist policy |
 | [`development/commit-conventions.md`](development/commit-conventions.md) | Conventional Commits |
+| [`development/adr.md`](development/adr.md) | ADR policy |
+| [`review/README.md`](review/README.md) | Self-review checklists |
+| [`adr/README.md`](adr/README.md) | ADR index |
 | [`todo/current.md`](todo/current.md) | Short-lived TODO summary |
 
 ## AI / Cursor

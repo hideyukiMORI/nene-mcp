@@ -83,3 +83,16 @@ Your app exposes HTTP. nene-mcp owns the stdio MCP loop.
 - Other platforms: `docs/integration/other-platforms.md`
 - Sample catalog: `docs/example-ne-health-catalog.md`
 - Development workflow: `docs/workflow.md`
+
+## Governance (strict)
+
+Inherited from NENE2 and nene2-python, tightened for an English-first international package:
+
+| Policy | Document |
+| --- | --- |
+| Coding standards | `docs/development/coding-standards.md` |
+| Language (English only) | `docs/development/language-policy.md` |
+| Quality tools | `docs/development/quality-tools.md` |
+| Security | `docs/development/security-policy.md` |
+| Self-review | `docs/development/self-review.md` + `docs/review/` |
+| ADRs | `docs/development/adr.md` |
