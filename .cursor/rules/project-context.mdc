@@ -34,6 +34,9 @@ Read: `docs/project.md`, NeNe `docs/project.md` (sibling repo).
 | Topic | Path |
 | --- | --- |
 | Overview | `docs/project.md` |
+| Coding standards | `docs/development/coding-standards.md` |
+| Security | `docs/development/security-policy.md` |
+| Self-review | `docs/review/mcp-server.md` |
 | NeNe integration | `docs/integration/nene.md` |
 | Other platforms | `docs/integration/other-platforms.md` |
 | Agent rules | `AGENTS.md` |

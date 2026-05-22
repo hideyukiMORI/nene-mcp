@@ -2,7 +2,9 @@
 
 This project uses **Conventional Commits**, aligned with NeNe and NENE2.
 
-**All commit messages, Issues, and PRs should be written in English** so contributors and users worldwide can follow the project.
+**All commit messages, Issues, and PRs must be written in English** (`docs/development/language-policy.md`).
+
+Before committing, complete the relevant self-review checklist (`docs/development/self-review.md`).
 
 ## Format
 

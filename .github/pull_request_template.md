@@ -17,6 +17,7 @@ Closes #
 <!-- How did you verify? e.g. composer test, manual MCP client check -->
 
 - [ ] `composer test`
+- [ ] Self-review checklist: <!-- e.g. mcp-server, docs-policy -->
 - [ ] Manual check (describe):
 
 ## Follow-up risks

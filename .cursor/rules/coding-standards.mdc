@@ -1,0 +1,31 @@
+---
+description: PHP and MCP coding standards for nene-mcp
+globs: "{src,bin,tests}/**/*.php"
+alwaysApply: false
+---
+
+# PHP / MCP Standards
+
+Read `docs/development/coding-standards.md` and `docs/development/security-policy.md`.
+
+## Must
+
+- `declare(strict_types=1);` on every PHP file
+- PSR-12, native types, `final`/`readonly` where appropriate
+- Env access only in `McpEnvironment`
+- No secrets in code, catalogs, logs, or MCP responses
+- Unit tests for behavior changes; `composer test` before PR
+- Self-review: `docs/review/mcp-server.md`
+
+## Must not
+
+- Import NeNe/NENE2/host app code
+- Add shell/filesystem MCP tools without Issue + security review
+- Put bearer tokens in `tools.json` or `runtimeContext`
+- Skip Issue-driven branch workflow
+
+## Verify
+
+```bash
+composer test
+```
