@@ -22,7 +22,7 @@ Developers familiar with legacy PHP can run it with **Composer and environment v
 composer require hideyukimori/nene-mcp
 ```
 
-Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Pin a version for field trials: `composer require hideyukimori/nene-mcp:0.1.1`.
+Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Pin a version for field trials: `composer require hideyukimori/nene-mcp:0.1.2`.
 
 Or clone for development:
 
@@ -35,7 +35,9 @@ composer test
 
 ## Cursor / MCP client example (local NeNe app)
 
-Set the **absolute catalog path** and **base URL** for your environment.
+Set the **absolute path** to `vendor/bin/nene-mcp` and env vars for your environment.
+
+### With tool catalog (typical)
 
 ```json
 {
@@ -45,14 +47,34 @@ Set the **absolute catalog path** and **base URL** for your environment.
       "args": ["/ABS/PATH/vendor/bin/nene-mcp"],
       "env": {
         "NENE_MCP_API_BASE_URL": "http://localhost:8080",
-        "NENE_MCP_TOOLS_JSON": "/ABS/PATH/ne-app/docs/mcp/ne-tools.json"
+        "NENE_MCP_TOOLS_JSON": "/ABS/PATH/ne-app/docs/mcp/tools.json"
       }
     }
   }
 }
 ```
 
-Without a catalog, MCP still starts and `tools/list` exposes only `nene_mcp_about`. See **[docs/example-ne-health-catalog.md](docs/example-ne-health-catalog.md)** for a minimal NeNe sample.
+### Catalog-free (smoke test / Day 0)
+
+Omit `NENE_MCP_TOOLS_JSON` until `tools.json` exists. MCP starts with only `nene_mcp_about`:
+
+```json
+{
+  "mcpServers": {
+    "nene-mcp": {
+      "command": "php",
+      "args": ["/ABS/PATH/vendor/bin/nene-mcp"],
+      "env": {
+        "NENE_MCP_API_BASE_URL": "http://localhost:8080"
+      }
+    }
+  }
+}
+```
+
+Do **not** set `NENE_MCP_TOOLS_JSON` to a placeholder path—a missing file fails `tools/list` entirely.
+
+Without a catalog, MCP still starts and `tools/list` exposes only `nene_mcp_about`. See **[docs/example-ne-health-catalog.md](docs/example-ne-health-catalog.md)** for a minimal NeNe sample when you add HTTP tools.
 
 ## Environment variables
 

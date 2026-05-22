@@ -50,8 +50,7 @@ Validate the documented happy path with standard tooling. Minimal intentional br
 | --- | --- | --- | --- | --- |
 | **FT2** | ✅ Done | NeNe + Docker + Cursor config | [2026-05-field-trial-2.md](2026-05-field-trial-2.md) |
 | **FT3** | ✅ Done | Security review read-only | [2026-05-field-trial-3.md](2026-05-field-trial-3.md) |
-| **FT3** | **Security review** — read-only baseline | Same as FT2 or FT1 replay | SSRF/catalog URL control; `nene_mcp_about` leak check; malformed JSON-RPC; oversize stdin | **Medium** — checklist + deliberate misconfig |
-| **FT4** | Catalog-free minimal install | NeNe or empty bridge | Only `nene_mcp_about`; confirm MCP useful without `tools.json` | **Low** — smallest integrator story |
+| **FT4** | ✅ Done | Catalog-free minimal install | [2026-05-field-trial-4.md](2026-05-field-trial-4.md) |
 
 **Phase outcome:** A new user with Docker + Cursor can integrate without reading source.
 
