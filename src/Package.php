@@ -11,5 +11,5 @@ final class Package
 {
     public const NAME = 'nene-mcp';
 
-    public const VERSION = '0.1.2';
+    public const VERSION = '0.1.3';
 }

@@ -1,0 +1,17 @@
+{
+  "name": "nene-mcp-docs",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22 <25",
+    "npm": ">=10 <12"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev --port 5176",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview --port 5176"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

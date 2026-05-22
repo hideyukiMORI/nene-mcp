@@ -2,26 +2,29 @@
 
 ## Release
 
-- **v0.1.2** — Packagist; FT1–FT100 automated band complete (see milestones)
+- **v0.1.3** — pending merge (PR #24): duplicate names, FT9 quality
+- **v0.3.0** — evaluate after FT200 gate ([milestone](field-trials/milestones/2026-05-ft200-gate.md))
 
 ## Field trials
 
 | Range | Status |
 | --- | --- |
-| FT1–FT4 | ✅ Individual reports |
-| FT5–FT8 | ✅ Individual reports |
-| FT9–FT18 | ✅ [Batch milestone](field-trials/milestones/2026-05-ft9-ft18-batch.md) |
-| FT19–FT100 | ✅ [Autonomous batch](field-trials/milestones/2026-05-ft19-ft100-batch.md) |
+| FT1–FT9 | ✅ Individual reports |
+| FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
+
+Methodology: [`quality-strategy.md`](field-trials/quality-strategy.md)
 
 ## Automation
 
-- `tools/ft-runner.sh` — suite runner
-- `tools/ft-cycle.sh` — batch FT6–FT100
+- `tools/ft-individual.sh` — one FT → one report
+- `tools/ft-range.sh` — batch with reports
+- `tools/ft-runner.sh` — suites (CI wired)
 
-## Open deferred
+## Open manual follow-ups
 
-- #22 — duplicate catalog tool names
+- Bearer write **live** e2e with NeNe session (automated fail-closed only in FT10 band)
+- Cross-platform host FTs on demand (FT13–17 themes partially automated)
 
 ## Next
 
-Manual host FTs when needed: FT10 Bearer write, FT13–14 cross-platform, FT16 URI_ROOT, FT17 agent-only.
+Merge PR #24 + #25; tag v0.1.3; optional v0.3.0 planning.

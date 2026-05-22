@@ -2,7 +2,7 @@
 
 A **Field Trial (FT)** is a small, time-boxed exercise where nene-mcp is integrated from a fresh setup—typically a NeNe app, another PHP stack, or a minimal MCP bridge repo—and used with a real MCP host (Cursor, Claude Desktop, etc.). Every point of confusion or friction is recorded with a stable identifier (`F-1`, `F-2`, …) and converted into GitHub Issues that drive package and documentation changes.
 
-The goal is **not** to ship the trial application. The goal is to **raise product quality**—DX, runtime feel, and the integrator's confidence that the bridge works as advertised. Trials deliberately use **critical and adversarial lenses**: assume the docs are wrong, the env is hostile, the MCP client is misconfigured, and a new user has no tribal knowledge. Record every stall, surprise, and papercut as `F-N` and route fixes to the right repository.
+The goal is **not** to ship the trial application. The goal is to **raise product quality**—DX, runtime feel, and the integrator's confidence that the bridge works as advertised. **FT is one instrument among many;** see [`quality-strategy.md`](quality-strategy.md). Trials deliberately use **critical and adversarial lenses**: assume the docs are wrong, the env is hostile, the MCP client is misconfigured, and a new user has no tribal knowledge. Record every stall, surprise, and papercut as `F-N` and route fixes to the right repository.
 
 This methodology is inherited from [NeNe ADR 0002](https://github.com/hideyukiMORI/NeNe/blob/main/docs/adr/0002-adopt-field-trial-methodology.md), [NENE2 field trials](https://github.com/hideyukiMORI/NENE2/tree/main/docs/field-trials), and [nene2-python field trials](https://github.com/hideyukiMORI/nene2-python/tree/main/docs/field-trials)—adapted for a **Composer MCP bridge**, not a full application framework.
 
@@ -149,6 +149,8 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 - Workflow: `docs/workflow.md`
 - ADR: `docs/adr/0001-adopt-field-trial-methodology.md`
 - **Schedule (FT2–FT18):** [`schedule.md`](schedule.md)
+- **Quality strategy:** [`quality-strategy.md`](quality-strategy.md)
+- **Schedule FT5–100 topics:** [`schedule-ft5-100.md`](schedule-ft5-100.md)
 
 ## Sibling references
 
@@ -170,7 +172,9 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT6 | 2026-05-22 | Security review (catalog) | [2026-05-field-trial-6.md](2026-05-field-trial-6.md) |
 | FT7 | 2026-05-22 | Vanilla PHP bridge | [2026-05-field-trial-7.md](2026-05-field-trial-7.md) |
 | FT8 | 2026-05-22 | Packagist regression | [2026-05-field-trial-8.md](2026-05-field-trial-8.md) |
-| FT9–FT18 | 2026-05-22 | Phase B–C batch | [milestones/2026-05-ft9-ft18-batch.md](milestones/2026-05-ft9-ft18-batch.md) |
-| FT19–FT100 | 2026-05-22 | Autonomous regression | [milestones/2026-05-ft19-ft100-batch.md](milestones/2026-05-ft19-ft100-batch.md) |
+| FT9 | 2026-05-22 | Security write + Bearer fail-closed | [2026-05-field-trial-9.md](2026-05-field-trial-9.md) |
+| FT10–FT200 | 2026-05-22 | Quality-first individual reports | [index-ft10-200.md](index-ft10-200.md) |
 
-Automation: [`automation.md`](automation.md) · Schedule FT5–100: [`schedule-ft5-100.md`](schedule-ft5-100.md)
+**Note:** Milestone files under `milestones/` aggregate pass/fail only. Each FT has its own `2026-05-field-trial-{N}.md`.
+
+Automation: [`automation.md`](automation.md) · Schedule FT100–200: [`schedule-ft100-200.md`](schedule-ft100-200.md)

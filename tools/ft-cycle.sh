@@ -9,8 +9,8 @@ LOG="${FT_CYCLE_LOG:-/tmp/ft-cycle.log}"
 START="${1:-5}"
 END="${2:-100}"
 
-export NENE_MCP_BIN="${NENE_MCP_BIN:-/home/xi/docker/nene-mcp-FT/ft4-about-only/vendor/bin/nene-mcp}"
 export NENE_MCP_API_BASE_URL="${NENE_MCP_API_BASE_URL:-http://localhost:8080}"
+unset NENE_MCP_BIN
 
 FT5_CATALOG="${FT5_CATALOG:-/home/xi/docker/nene-mcp-FT/ft5-nene-multi-read/docs/mcp/tools.json}"
 

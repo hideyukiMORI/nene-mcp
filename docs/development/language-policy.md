@@ -1,45 +1,63 @@
 # Language Policy
 
-nene-mcp targets an **international audience**. Public project language is **English only**, stricter than NENE2's bilingual local-note allowance.
+nene-mcp targets an **international audience**. Public surfaces use **English as the primary source language**, with **translated user documentation** on the VitePress site (same six locales as NENE2 and nene2-js).
 
-## Position
+## Documentation site (VitePress)
 
-- Easy to publish, index, and contribute to from outside Japan.
-- Aligns with MCP hosts, OpenAPI, and English-first sibling docs (NeNe public docs, NENE2 API contracts).
-- Prevents accidental Japanese drift in README, Issues, or PR templates.
+Published at [hideyukimori.github.io/nene-mcp](https://hideyukimori.github.io/nene-mcp/).
 
-## English required
+| Locale | Path | Role |
+| --- | --- | --- |
+| English | `/` | Source-of-truth integrator docs |
+| 日本語 | `/ja/` | Full integrator translation |
+| Français | `/fr/` | Integrator translation |
+| 中文 | `/zh/` | Integrator translation |
+| Português (Brasil) | `/pt-br/` | Integrator translation |
+| Deutsch | `/de/` | Integrator translation |
+
+Build locally:
+
+```bash
+npm ci
+npm run docs:dev    # http://localhost:5176
+npm run docs:build
+```
+
+Contributor-only paths (`docs/development/`, raw field-trial reports, ADRs) stay **English only** and are excluded from the public site build.
+
+## English required (repository governance)
 
 Use English for:
 
-- `README.md`, `CHANGELOG.md`, `SECURITY.md`, `AGENTS.md`
-- All of `docs/` (including `docs/todo/current.md` summaries meant for handoff)
+- Root `README.md`, `CHANGELOG.md`, `SECURITY.md`, `AGENTS.md`
 - GitHub Issue titles and bodies
 - Pull request titles and descriptions
 - Commit messages (see `docs/development/commit-conventions.md`)
-- Code identifiers, docblocks meant for API consumers, and MCP error strings
+- Code identifiers, consumer-facing docblocks, MCP error strings
 - GitHub Issue/PR templates under `.github/`
 - Cursor rule **descriptions** and durable rule bodies in `.cursor/rules/`
+- Contributor docs: `docs/development/`, `docs/field-trials/` reports, ADRs
+
+## Translations
+
+- Integrator-facing VitePress pages (`docs/tutorial/`, `docs/howto/`, etc.) may be translated per locale directories (`docs/ja/`, …).
+- When English integrator docs change, update translations in the same PR when practical, or file a follow-up Issue.
+- Do not translate MCP wire error strings or code identifiers for localization alone.
 
 ## Japanese and mixed language
 
-Japanese is **not** used for durable policy in this repository.
-
-- Do not add Japanese-only policy to `.cursor/rules/` without an English source-of-truth doc in `docs/`.
-- Chat, video calls, and maintainer-private notes outside the repo may use any language.
-- Historical discussion does not need retroactive translation.
-
-If a contributor opens a Japanese Issue, respond in English and ask for an English title/body when converting to actionable work.
+Japanese is welcome in **translated docs** and maintainer chat. Do not add Japanese-only **policy** to `.cursor/rules/` without an English source-of-truth in `docs/`.
 
 ## Source of truth
 
-Policy lives in English under `docs/`.  
-`.cursor/rules/` may summarize but must not be the only copy of a rule.
+- **Integrator UX:** English pages under `docs/` (VitePress root locale)
+- **Governance / FT / ADR:** English files excluded from or linked from the site
+- `.cursor/rules/` summarizes but must not be the only copy of a rule
 
 When `.cursor/rules/` and `docs/` conflict, **update `docs/` first**, then sync Cursor rules.
 
 ## Non-goals
 
-- Translating sibling repos (NeNe, NENE2, nene2-python) into this policy.
-- Blocking Japanese in maintainer chat.
-- Localized user-facing UI (this package has no end-user UI).
+- Translating every historical field-trial report
+- Localized MCP runtime error strings
+- Blocking Japanese in maintainer chat

@@ -103,6 +103,97 @@ final class StdioMcpServerTest extends TestCase
         self::assertNull($response);
     }
 
+    public function testWriteToolFailsClosedWithoutBearer(): void
+    {
+        $writeCatalog = sys_get_temp_dir() . '/nene-mcp-write-' . uniqid('', true) . '.json';
+        file_put_contents($writeCatalog, json_encode([
+            'tools' => [[
+                'name' => 'writeProbe',
+                'title' => 'Write probe',
+                'description' => 'Write probe',
+                'safety' => 'write',
+                'source' => [
+                    'type' => 'openapi',
+                    'operationId' => 'login',
+                    'method' => 'POST',
+                    'path' => '/session/login',
+                ],
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => new \stdClass(),
+                    'additionalProperties' => false,
+                ],
+                'responseSchemaRef' => null,
+            ]],
+        ], JSON_THROW_ON_ERROR));
+
+        $catalog = new MergedCatalog(new JsonToolCatalog($writeCatalog));
+        $server = new StdioMcpServer(
+            $catalog,
+            new RecordingHttpClient(new McpHttpResponse(200, [], '{}')),
+            'http://stub',
+            [],
+        );
+
+        $response = $server->handle([
+            'jsonrpc' => '2.0',
+            'id' => 5,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'writeProbe',
+                'arguments' => [],
+            ],
+        ]);
+
+        self::assertSame(-32603, $response['error']['code']);
+        self::assertStringContainsString('requires bearer authentication', $response['error']['message']);
+    }
+
+    public function testDuplicateCatalogNamesSurfaceAsJsonRpcError(): void
+    {
+        $dupCatalog = sys_get_temp_dir() . '/nene-mcp-dup-' . uniqid('', true) . '.json';
+        file_put_contents($dupCatalog, json_encode([
+            'tools' => [
+                [
+                    'name' => 'dup',
+                    'title' => 'a',
+                    'description' => 'a',
+                    'safety' => 'read',
+                    'source' => ['type' => 'openapi', 'operationId' => 'a', 'method' => 'GET', 'path' => '/a'],
+                    'inputSchema' => ['type' => 'object', 'properties' => new \stdClass(), 'additionalProperties' => false],
+                    'responseSchemaRef' => null,
+                ],
+                [
+                    'name' => 'dup',
+                    'title' => 'b',
+                    'description' => 'b',
+                    'safety' => 'read',
+                    'source' => ['type' => 'openapi', 'operationId' => 'b', 'method' => 'GET', 'path' => '/b'],
+                    'inputSchema' => ['type' => 'object', 'properties' => new \stdClass(), 'additionalProperties' => false],
+                    'responseSchemaRef' => null,
+                ],
+            ],
+        ], JSON_THROW_ON_ERROR));
+
+        $catalog = new MergedCatalog(new JsonToolCatalog($dupCatalog));
+        $server = new StdioMcpServer(
+            $catalog,
+            new RecordingHttpClient(new McpHttpResponse(200, [], '{}')),
+            'http://stub',
+            [],
+        );
+
+        $response = $server->handle([
+            'jsonrpc' => '2.0',
+            'id' => 6,
+            'method' => 'tools/list',
+            'params' => [],
+        ]);
+
+        self::assertSame(-32603, $response['error']['code']);
+        self::assertStringContainsString('duplicated', $response['error']['message']);
+    }
+
     /** @internal */
     private function createServer(?string $fixturePath): StdioMcpServer
     {
