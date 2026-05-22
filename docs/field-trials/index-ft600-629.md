@@ -10,4 +10,6 @@ Full row list: see [`milestone-ft600-629.md`](milestone-ft600-629.md) summary (3
 
 NeNe Bearer confirmation: **FT450** on hold — [#395](https://github.com/hideyukiMORI/NeNe/issues/395) assigned ([gate](nene-380-confirmation-gate.md)).
 
+Next: [630–659](index-ft630-659.md).
+
 Prior: [570–599](index-ft570-599.md).
