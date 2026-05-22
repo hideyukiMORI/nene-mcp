@@ -1120,7 +1120,11 @@ write_report() {
       echo "${line} | medium | security-gap / docs-gap | see probe log |"
     done)"
   elif (( n == 450 )); then
-    friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
+    if echo "$output" | grep -q 'FT450-PASS listTodos'; then
+      friction_block="FT450 gate **confirmed** — NeNe #395 Bearer E2E: listTodos/createTodo without session; write fail-closed without Bearer."
+    else
+      friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
+    fi
   elif (( n >= 600 )); then
     friction_block="L13 + L12 + L11 + L10 + L9 + L8 + L7 + L6 adversarial exercised — HTTP diagnostics. FT450 on hold for NeNe #395."
   elif (( n >= 570 )); then
