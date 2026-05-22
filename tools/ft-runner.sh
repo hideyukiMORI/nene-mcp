@@ -7,12 +7,16 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NENE_MCP_BIN="${NENE_MCP_BIN:-}"
 
 resolve_bin() {
-  if [[ -n "$NENE_MCP_BIN" && -x "$NENE_MCP_BIN" ]]; then
-    echo "$NENE_MCP_BIN"
+  if [[ -x "$ROOT/bin/nene-mcp" ]]; then
+    echo "$ROOT/bin/nene-mcp"
     return
   fi
   if [[ -x "$ROOT/vendor/bin/nene-mcp" ]]; then
     echo "$ROOT/vendor/bin/nene-mcp"
+    return
+  fi
+  if [[ -n "$NENE_MCP_BIN" && -x "$NENE_MCP_BIN" ]]; then
+    echo "$NENE_MCP_BIN"
     return
   fi
   echo "nene-mcp binary not found. Set NENE_MCP_BIN or run composer install." >&2
@@ -69,7 +73,7 @@ suite_security_catalog() {
   echo '{"tools":[{"name":"dup","title":"a","description":"a","safety":"read","source":{"type":"openapi","operationId":"a","method":"GET","path":"/health/index"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null},{"name":"dup","title":"b","description":"b","safety":"read","source":{"type":"openapi","operationId":"b","method":"GET","path":"/health/index"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}' > "$dir/dup.json"
   local out
   out="$(mcp_call "$dir/dup.json" "tools/list" "{}" 2>&1)" || true
-  echo "$out" | head -1
+  echo "$out" | grep -q 'duplicated' && echo "PASS duplicate names rejected" || { echo "FAIL duplicate names"; echo "$out"; return 1; }
 
   echo '{bad json' > "$dir/invalid.json"
   out="$(mcp_call "$dir/invalid.json" "tools/list" "{}" 2>&1)" || true

@@ -6,15 +6,26 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.3 — 2026-05-22
+
+Quality release from Field Trial 9 and FT6 follow-up #22.
+
 ### Added
 
-- Field trial automation: `tools/ft-runner.sh`, `tools/ft-cycle.sh`
-- FT5–FT8 reports; FT9–FT100 milestone batch summaries
-- Schedule extension through FT100 (`docs/field-trials/schedule-ft5-100.md`)
+- Reject duplicate tool `name` values when loading MCP catalog JSON (FT6 F-1 / #22).
+- PHPUnit: catalog validation, write fail-closed, duplicate names via JSON-RPC.
+- CI: `ft-runner.sh write-failclosed` and `security-catalog` after unit tests.
+- Field Trial 9 individual report; [`quality-strategy.md`](docs/field-trials/quality-strategy.md).
+- Integration docs: write tools + Bearer fail-closed.
 
 ### Changed
 
-- README and integration docs: catalog-free Cursor example (FT4)
+- `ft-runner.sh` prefers in-repo `bin/nene-mcp` over stale `NENE_MCP_BIN` from FT clones.
+- Milestone batch docs labeled regression-only; FT9+ individual reports required.
+
+### Removed
+
+- Misleading “FT9–100 complete via batch” framing in todo/index docs.
 
 ## 0.1.2 — 2026-05-22
 

@@ -32,6 +32,16 @@ nene-mcp contains no NeNe-specific code. NeNe is one host that ships OpenAPI + `
 
 Without a catalog, MCP still starts and exposes only `nene_mcp_about`.
 
+## Write tools and Bearer
+
+Catalog entries with `"safety": "write"` (or any non-`read` safety) require `NENE_MCP_BEARER_TOKEN` in the MCP server environment. Without it, `tools/call` returns a JSON-RPC error and **does not** send HTTP—fail-closed by design (FT9).
+
+- Set the token only in the MCP host config (Cursor `env`, Claude Desktop env block)—never in `tools.json` or git.
+- Obtain the token from your app's normal login/session flow (NeNe: session Bearer after login; see host docs).
+- Read-only tools (`safety: read`) do not require Bearer unless your API enforces auth on GET.
+
+Duplicate tool `name` values in the catalog are rejected at load time (v0.1.3+).
+
 ## Next steps
 
 - NeNe: [`nene.md`](nene.md)

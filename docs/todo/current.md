@@ -2,26 +2,29 @@
 
 ## Release
 
-- **v0.1.2** — Packagist; FT1–FT100 automated band complete (see milestones)
+- **v0.1.2** — Packagist (redirect SSRF fix)
+- **v0.1.3** — pending: duplicate catalog names (#22), FT9 quality work
 
 ## Field trials
 
 | Range | Status |
 | --- | --- |
-| FT1–FT4 | ✅ Individual reports |
-| FT5–FT8 | ✅ Individual reports |
-| FT9–FT18 | ✅ [Batch milestone](field-trials/milestones/2026-05-ft9-ft18-batch.md) |
-| FT19–FT100 | ✅ [Autonomous batch](field-trials/milestones/2026-05-ft19-ft100-batch.md) |
+| FT1–FT8 | ✅ Individual reports |
+| FT9 | ✅ [Individual report](field-trials/2026-05-field-trial-9.md) |
+| FT10+ | Individual reports required ([quality-strategy](field-trials/quality-strategy.md)) |
 
-## Automation
+Batch logs under `field-trials/milestones/` are regression-only—not FT completion.
 
-- `tools/ft-runner.sh` — suite runner
-- `tools/ft-cycle.sh` — batch FT6–FT100
+## Quality instruments
 
-## Open deferred
+- [`quality-strategy.md`](field-trials/quality-strategy.md)
+- `tools/ft-runner.sh` — regression suites (CI wired)
+- PHPUnit — catalog validation, write fail-closed
 
-- #22 — duplicate catalog tool names
+## Open
+
+- FT10 — Bearer write end-to-end (NeNe session)
 
 ## Next
 
-Manual host FTs when needed: FT10 Bearer write, FT13–14 cross-platform, FT16 URI_ROOT, FT17 agent-only.
+FT10 after #22 merge and v0.1.3 tag.

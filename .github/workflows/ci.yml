@@ -19,3 +19,8 @@ jobs:
           coverage: none
       - uses: ramsey/composer-install@v4
       - run: composer test
+      - name: FT regression smoke (fixture catalog)
+        run: |
+          chmod +x tools/ft-runner.sh
+          tools/ft-runner.sh write-failclosed /tmp/ci-ft9
+          tools/ft-runner.sh security-catalog /tmp/ci-ft6

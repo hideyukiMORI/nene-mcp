@@ -56,7 +56,32 @@ final class JsonToolCatalog
 
         $validTools = array_values(array_filter($tools, static fn (mixed $t) => is_array($t)));
 
-        return $this->cachedTools = array_map($this->normalizeTool(...), $validTools);
+        $normalized = array_map($this->normalizeTool(...), $validTools);
+
+        $this->assertUniqueToolNames($normalized);
+
+        return $this->cachedTools = $normalized;
+    }
+
+    /**
+     * @param list<McpTool> $tools
+     */
+    private function assertUniqueToolNames(array $tools): void
+    {
+        $seen = [];
+
+        foreach ($tools as $tool) {
+            $name = $tool['name'];
+
+            if (isset($seen[$name])) {
+                throw new McpRuntimeException(sprintf(
+                    'MCP catalog tool name "%s" is duplicated. Tool names must be unique.',
+                    $name,
+                ));
+            }
+
+            $seen[$name] = true;
+        }
     }
 
     /** @return list<McpTool> */
