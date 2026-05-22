@@ -35,4 +35,4 @@
 
 ## Next
 
-Re-run **FT450** when NeNe #395 merges. FT600+ — next adversarial band.
+Re-run **FT450** when NeNe #395 merges. FT630+ — next adversarial band.
