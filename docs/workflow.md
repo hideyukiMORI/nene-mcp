@@ -96,4 +96,5 @@ If the user asks for investigation-only or no-commit scope, honor that.
 | Self-review policy | `docs/development/self-review.md` |
 | ADRs | `docs/development/adr.md` |
 | **Field trials** | `docs/field-trials/README.md` |
+| **Release / package** | `docs/development/release-policy.md` |
 | Commits | `docs/development/commit-conventions.md` |

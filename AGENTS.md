@@ -21,6 +21,7 @@ Full context: `docs/project.md`
 | **Security policy** | `docs/development/security-policy.md` |
 | **Self-review policy** | `docs/development/self-review.md` |
 | **Field trials** | `docs/field-trials/README.md` |
+| **Release policy** | `docs/development/release-policy.md` |
 | FT report checklist | `docs/review/field-trial-report.md` |
 | MCP server checklist | `docs/review/mcp-server.md` |
 | NeNe integration | `docs/integration/nene.md` |

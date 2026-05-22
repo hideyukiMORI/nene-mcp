@@ -41,6 +41,7 @@ External integration trials under `../nene-mcp-FT/`. Record `F-N` friction, file
 | Overview | `docs/project.md` |
 | Coding standards | `docs/development/coding-standards.md` |
 | Security | `docs/development/security-policy.md` |
+| Release | `docs/development/release-policy.md` |
 | Self-review | `docs/review/mcp-server.md` |
 | NeNe integration | `docs/integration/nene.md` |
 | Other platforms | `docs/integration/other-platforms.md` |

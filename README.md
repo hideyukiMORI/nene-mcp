@@ -85,6 +85,7 @@ Governance follows NENE2-style strict policy—read before opening a PR:
 - `docs/development/security-policy.md` — security requirements
 - `docs/review/mcp-server.md` — pre-PR checklist for code changes
 - `docs/field-trials/README.md` — field trial methodology
+- `docs/development/release-policy.md` — versioning and Packagist timing
 - `docs/CONTRIBUTING.md` — full contribution guide
 
 ## License
