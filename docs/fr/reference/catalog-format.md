@@ -45,6 +45,10 @@ Use `{param}` in `path`; provide values in `tools/call` arguments.
 
 **NeNe :** chemins comme `/todo/item/id_{id}` — copier le chemin OpenAPI tel quel. Voir [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns).
 
+## Paramètres de requête (GET)
+
+Pour les outils **GET**, les arguments non utilisés dans `{path}` deviennent une **query string** (`?sku=…`). Voir [Tool catalog JSON (en)](/reference/catalog-format).
+
 ## Validation errors
 
 Invalid JSON, duplicate names, or missing required fields fail at `tools/list` with a safe JSON-RPC error.
