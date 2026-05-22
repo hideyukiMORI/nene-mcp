@@ -52,6 +52,13 @@ curl -X POST \
 ```bash
 curl -sS https://packagist.org/packages/hideyukimori/nene-mcp.json | head -c 200
 
+# Preferred: repo script (composer install + tools/list smoke)
+tools/packagist-verify.sh 0.1.3
+```
+
+Or manual smoke:
+
+```bash
 mkdir /tmp/packagist-smoke && cd /tmp/packagist-smoke
 composer init --name=smoke/test --no-interaction
 composer require hideyukimori/nene-mcp:^0.1
@@ -59,6 +66,16 @@ php vendor/bin/nene-mcp --help 2>&1 || true
 ```
 
 Expect package metadata JSON and successful `composer require` **without** a VCS repository stanza.
+
+## Troubleshooting
+
+| Symptom | Action |
+| --- | --- |
+| New tag on GitHub but old versions on Packagist | Wait 1–5 min; run `tools/packagist-verify.sh <version>`; ping GitHub hook or POST `api/update-package` (below) |
+| `packagist.org/...json` lags behind web UI | Trust `composer require hideyukimori/nene-mcp:<version>` — Packagist JSON API can cache longer than the website |
+| Webhook 202 but no new version | Manual update-package; confirm tag points at valid `composer.json` on GitHub |
+
+After each GitHub Release, CI workflow **Release verify** (`.github/workflows/release-verify.yml`) retries `tools/packagist-verify.sh` automatically.
 
 ## After publication
 

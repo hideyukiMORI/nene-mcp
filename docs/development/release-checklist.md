@@ -28,6 +28,7 @@ composer check
 ```
 
 - [ ] GitHub Actions green on the release commit (PHP 8.2 + 8.4).
+- [ ] **Packagist:** `tools/packagist-verify.sh <version>` passes (or Release verify workflow green).
 - [ ] No secrets or local paths in committed files.
 
 ## Version selection
