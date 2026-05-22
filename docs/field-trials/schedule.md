@@ -48,7 +48,8 @@ Validate the documented happy path with standard tooling. Minimal intentional br
 
 | FT | Topic | Host / client | Primary verification | Adversarial level |
 | --- | --- | --- | --- | --- |
-| **FT2** | ✅ Done | NeNe + Docker + Cursor config | Docker MySQL + host MCP + `.cursor/mcp.json` | Low |
+| **FT2** | ✅ Done | NeNe + Docker + Cursor config | [2026-05-field-trial-2.md](2026-05-field-trial-2.md) |
+| **FT3** | ✅ Done | Security review read-only | [2026-05-field-trial-3.md](2026-05-field-trial-3.md) |
 | **FT3** | **Security review** — read-only baseline | Same as FT2 or FT1 replay | SSRF/catalog URL control; `nene_mcp_about` leak check; malformed JSON-RPC; oversize stdin | **Medium** — checklist + deliberate misconfig |
 | **FT4** | Catalog-free minimal install | NeNe or empty bridge | Only `nene_mcp_about`; confirm MCP useful without `tools.json` | **Low** — smallest integrator story |
 
