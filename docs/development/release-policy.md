@@ -129,8 +129,7 @@ FT reports must record: `nene-mcp ref: vX.Y.Z` or full commit hash.
 
 Before any tag:
 
-- GitHub Actions `composer test` green on `main` for PHP 8.2 and 8.4
-- When `composer check` exists, run it locally or rely on CI equivalent
+- GitHub Actions `composer check` green on `main` for PHP 8.2 and 8.4 (PHPUnit + PHPStan L8)
 
 See [`quality-tools.md`](quality-tools.md) and [`../review/release-ci.md`](../review/release-ci.md).
 
