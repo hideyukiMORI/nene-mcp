@@ -6,9 +6,15 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Field trial automation: `tools/ft-runner.sh`, `tools/ft-cycle.sh`
+- FT5–FT8 reports; FT9–FT100 milestone batch summaries
+- Schedule extension through FT100 (`docs/field-trials/schedule-ft5-100.md`)
+
 ### Changed
 
-- README and integration docs: catalog-free Cursor example; omit `NENE_MCP_TOOLS_JSON` until catalog exists (FT4)
+- README and integration docs: catalog-free Cursor example (FT4)
 
 ## 0.1.2 — 2026-05-22
 
