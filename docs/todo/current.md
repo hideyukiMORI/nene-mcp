@@ -24,4 +24,4 @@
 
 ## Next
 
-FT215+ — L5 host matrix or NeNe #380 outcome; evaluate v0.3.0 after persona band stabilizes.
+FT223+ — NeNe #380; consider v0.1.4 docs release tag (CHANGELOG Unreleased).
