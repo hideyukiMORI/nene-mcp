@@ -1,8 +1,8 @@
-# Catalog smoke test
+# Katalog-Smoke-Test
 
-Verify MCP wiring before exposing write tools.
+MCP-Verkabelung prüfen, bevor Write-Tools freigegeben werden.
 
-## 1. About-only
+## 1. Nur about
 
 ```bash
 unset NENE_MCP_TOOLS_JSON
@@ -10,31 +10,20 @@ export NENE_MCP_API_BASE_URL=http://localhost:8080
 printf '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n' | php vendor/bin/nene-mcp
 ```
 
-Expect exactly one tool: `nene_mcp_about`.
+Erwartet: genau `nene_mcp_about`.
 
-## 2. With catalog
+## 2. Mit Katalog
 
-```bash
-export NENE_MCP_TOOLS_JSON=/ABS/PATH/docs/mcp/tools.json
-printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
-  | php vendor/bin/nene-mcp
-```
+Read-Tool `tools/call` → `statusCode` + JSON `body`.
 
-Expect `statusCode` and JSON `body` in structured content.
+## 2b. Tool-Anzahl (partieller Katalog)
 
-## 3. Automation harness
+Nach `tools/list` prüfen, ob **alle** erwarteten Business-Tools gelistet sind — nicht nur Health. Fehlende Tools können Agents nicht aufrufen. Siehe [Bearer-native Bridge](/de/howto/bearer-native-bridge-example).
 
-From the nene-mcp repo:
+## Häufige Fehler
 
-```bash
-tools/ft-runner.sh smoke /path/to/tools.json
-tools/ft-runner.sh write-failclosed /tmp/ft-write
-```
-
-## Common failures
-
-| Symptom | Likely cause |
+| Symptom | Ursache |
 | --- | --- |
-| `tools/list` error on startup | Invalid or missing catalog path |
-| HTTP connection refused | App not running or wrong base URL |
-| Duplicate name error | Two tools share the same `name` (v0.1.3+) |
+| Read-Tool HTTP 401 | Bearer-geschütztes GET — `NENE_MCP_BEARER_TOKEN` setzen |
+| Agent „Tool fehlt“ | Partieller Katalog — Tool-Liste prüfen (§2b) |
+| Doppelter Name | Zwei Tools mit gleichem `name` |

@@ -1,62 +1,35 @@
-# Cursor / MCP client setup
+# Cursor / MCP-Client einrichten
 
-Configure your MCP host to spawn `vendor/bin/nene-mcp` over stdio with environment variables.
+MCP-Host startet `vendor/bin/nene-mcp` per stdio. **Absolute Pfade** verwenden.
 
-## With tool catalog (typical)
-
-Use **absolute paths** for `php` args and `NENE_MCP_TOOLS_JSON`:
+## Mit Katalog
 
 ```json
 {
   "mcpServers": {
     "nene-mcp": {
       "command": "php",
-      "args": ["/ABS/PATH/vendor/bin/nene-mcp"],
+      "args": ["/ABS/PFAD/vendor/bin/nene-mcp"],
       "env": {
         "NENE_MCP_API_BASE_URL": "http://localhost:8080",
-        "NENE_MCP_TOOLS_JSON": "/ABS/PATH/your-app/docs/mcp/tools.json"
+        "NENE_MCP_TOOLS_JSON": "/ABS/PFAD/docs/mcp/tools.json"
       }
     }
   }
 }
 ```
 
-## Catalog-free smoke test
+## Schreib-Tools
 
-Omit `NENE_MCP_TOOLS_JSON` until the catalog file exists:
+Bearer nur im MCP-`env`-Block. Siehe [Schreib-Tools & Bearer](/de/howto/write-tools-bearer).
 
-```json
-{
-  "mcpServers": {
-    "nene-mcp": {
-      "command": "php",
-      "args": ["/ABS/PATH/vendor/bin/nene-mcp"],
-      "env": {
-        "NENE_MCP_API_BASE_URL": "http://localhost:8080"
-      }
-    }
-  }
-}
-```
+## Prüfen
 
-Do **not** point `NENE_MCP_TOOLS_JSON` at a placeholder path — a missing file fails `tools/list` entirely.
+1. Start ohne stderr-Stacktrace
+2. `tools/list` → `nene_mcp_about` (+ Katalog-Tools)
+3. Read-`tools/call` → HTTP-Status + JSON
 
-## Write tools
+## Weiter
 
-When the catalog includes `"safety": "write"` entries, add Bearer only in the MCP host env block — never in git:
-
-```json
-"env": {
-  "NENE_MCP_API_BASE_URL": "http://localhost:8080",
-  "NENE_MCP_TOOLS_JSON": "/ABS/PATH/docs/mcp/tools.json",
-  "NENE_MCP_BEARER_TOKEN": "your-session-token"
-}
-```
-
-See [Write tools & Bearer](/howto/write-tools-bearer).
-
-## Verify
-
-1. MCP server starts without stderr stack traces
-2. `tools/list` returns `nene_mcp_about` (+ catalog tools when configured)
-3. `tools/call` on a read tool returns HTTP status and JSON body
+- [NeNe integrieren](/de/howto/integrate-nene)
+- [Bearer-native Bridge](/de/howto/bearer-native-bridge-example)
