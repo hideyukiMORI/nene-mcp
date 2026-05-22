@@ -2,7 +2,7 @@
 
 A **Field Trial (FT)** is a small, time-boxed exercise where nene-mcp is integrated from a fresh setup—typically a NeNe app, another PHP stack, or a minimal MCP bridge repo—and used with a real MCP host (Cursor, Claude Desktop, etc.). Every point of confusion or friction is recorded with a stable identifier (`F-1`, `F-2`, …) and converted into GitHub Issues that drive package and documentation changes.
 
-The goal is **not** to ship the trial application. The goal is to learn what nene-mcp assumes but does not document, how NENE2-compatible catalogs feel in practice, and where MCP stdio + HTTP proxy behavior surprises integrators or AI agents.
+The goal is **not** to ship the trial application. The goal is to **raise product quality**—DX, runtime feel, and the integrator's confidence that the bridge works as advertised. Trials deliberately use **critical and adversarial lenses**: assume the docs are wrong, the env is hostile, the MCP client is misconfigured, and a new user has no tribal knowledge. Record every stall, surprise, and papercut as `F-N` and route fixes to the right repository.
 
 This methodology is inherited from [NeNe ADR 0002](https://github.com/hideyukiMORI/NeNe/blob/main/docs/adr/0002-adopt-field-trial-methodology.md), [NENE2 field trials](https://github.com/hideyukiMORI/NENE2/tree/main/docs/field-trials), and [nene2-python field trials](https://github.com/hideyukiMORI/nene2-python/tree/main/docs/field-trials)—adapted for a **Composer MCP bridge**, not a full application framework.
 
@@ -17,6 +17,19 @@ Run a new FT when one or more of the following is true:
 - Roadmap or milestone explicitly schedules a trial.
 
 One focused trial beats a long speculative improvement list.
+
+## Critical and adversarial stance
+
+FT is a **quality instrument**, not a demo checklist. Use every trial to stress what a skeptical integrator—or an AI agent with incomplete context—would hit:
+
+- **Fresh clone, no shortcuts** — avoid copying `vendor/` or reusing a warmed environment unless the workaround itself is recorded as friction.
+- **Minimal docs** — follow only what is published; note where you had to read source or ask the maintainer.
+- **Misconfiguration probes** — wrong base URL, missing catalog, relative paths, stale tags, production URLs pointed by mistake (use localhost only).
+- **Error-path exercises** — unknown tools, malformed JSON-RPC, write tools without Bearer, HTTP 4xx/5xx from the host API.
+- **Security mindset** — on FT{N} where `N % 3 == 0`, run the full security review; on other FTs, still note obvious leak paths when seen.
+- **Cross-repo honesty** — host bootstrap gaps (NeNe PHP extensions, Docker, sample DB) belong in the **host repo** via Issues/PRs; nene-mcp docs should link prerequisites but not absorb host fixes.
+
+A trial that finds nothing is suspicious—widen scope or sharpen the adversarial pass next time.
 
 ## Trial Layout
 
@@ -44,6 +57,17 @@ composer require hideyukimori/nene-mcp
 For non-NeNe trials, the FT directory may be a minimal Composer bridge repo or an existing API project—document the baseline in the report.
 
 **Rule:** trial `.env`, MCP host tokens, and local MCP client config stay in the FT directory. Only the **report** and framework/package fixes return to `hideyukiMORI/nene-mcp` (or the host repo) via normal Issues and PRs.
+
+### Cross-repo follow-ups
+
+When friction is **`fix-in-host`** (NeNe, Laravel app, sample catalog in another repo):
+
+1. File an Issue in the **host repository** referencing the nene-mcp FT report and `F-N`.
+2. Open a **PR in the host repo** with the doc or small fix; the host maintainer merges.
+3. Record the host Issue/PR URL in the FT report **Follow-up Issues** table.
+4. Keep nene-mcp integration docs aligned (prerequisites, links)—do not duplicate host implementation in nene-mcp code.
+
+Example: FT1 **F-1** (`ext-intl`) → [NeNe #309](https://github.com/hideyukiMORI/NeNe/issues/309) / [NeNe PR #310](https://github.com/hideyukiMORI/NeNe/pull/310).
 
 ## Naming and Numbering
 
@@ -94,7 +118,7 @@ Following nene2-python practice:
 - Themes: SSRF via catalog/base URL, token leakage in `nene_mcp_about` or logs, write-tool abuse, path traversal in catalog paths, production URL misuse, JSON-RPC error leakage.
 - File `security`-labeled Issues for exploitable findings; do not detail exploits in public Issues before fix.
 
-Optional **adversarial pass** (manual attack attempts, not just checklists) on milestone FTs—record in the report when performed.
+Optional **adversarial pass** (manual attack attempts, misconfiguration, hostile-env probes—not just checklists) on **every** FT when scope allows; mandatory depth on milestone FTs and all FTs where `N % 3 == 0`. Record what was attempted and what broke in the report.
 
 ## Cadence (strict)
 
@@ -137,6 +161,6 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 
 | Trial | Date | Topic | Report |
 | --- | --- | --- | --- |
-| — | — | *(none yet)* | — |
+| FT1 | 2026-05-22 | NeNe health catalog + stdio MCP | [2026-05-field-trial-1.md](2026-05-field-trial-1.md) |
 
 Update this table when the first trial completes.

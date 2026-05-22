@@ -18,7 +18,7 @@ Internal unit tests cannot observe:
 
 Sibling projects **NeNe**, **NENE2**, and **nene2-python** converged on field trials: build a small realistic integration externally, record friction as `F-N`, file Issues, close them before the next trial. NeNe recorded this in [ADR 0002](https://github.com/hideyukiMORI/NeNe/blob/main/docs/adr/0002-adopt-field-trial-methodology.md). nene2-python ran 190+ trials with security review cadence on multiples of 3.
 
-nene-mcp inherits the same **continuous quality practice** at package scale.
+nene-mcp inherits the same **continuous quality practice** at package scale, with an explicit **critical/adversarial** stance: trials exist to improve DX and integrator confidence, not to green-check a happy path.
 
 ## Decision
 
@@ -30,6 +30,8 @@ Specifically:
 - Reports live at `docs/field-trials/YYYY-MM-field-trial-{N}.md` using `docs/templates/field-trial-report.md`.
 - Friction uses stable `F-N` identifiers and a summary table (severity, kind, decision).
 - Actionable findings become focused GitHub Issues; **`fix-in-package`**, **`document`**, and **`fix-in-host`** are explicit.
+- **`fix-in-host`** findings get Issues and PRs in the host repository (NeNe, app repo); nene-mcp records links in the FT report.
+- Trials apply **critical and adversarial probes** (fresh clone, misconfiguration, error paths, security themes)—see `docs/field-trials/README.md`.
 - **FT{N+1} does not start until FT{N} Issues are closed.**
 - FT numbers where **`N % 3 == 0`** include MCP security review (see template).
 - Reports and durable policy are **English** (`docs/development/language-policy.md`).
