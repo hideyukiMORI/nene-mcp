@@ -163,5 +163,6 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | Trial | Date | Topic | Report |
 | --- | --- | --- | --- |
 | FT1 | 2026-05-22 | NeNe health catalog + stdio MCP | [2026-05-field-trial-1.md](2026-05-field-trial-1.md) |
+| FT2 | 2026-05-22 | NeNe Docker + host MCP + Cursor config | [2026-05-field-trial-2.md](2026-05-field-trial-2.md) |
 
 Update this table when the first trial completes.

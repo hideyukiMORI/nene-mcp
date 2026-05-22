@@ -2,17 +2,21 @@
 
 ## Release
 
-- **v0.1.0** tagged — FT1 baseline. See GitHub Release.
-- **G1 (next):** Packagist publication + optional `v0.1.1` doc patch release.
+- **v0.1.1** — doc + FT2 baseline (pending tag with PR #17)
+- **G1:** Packagist — Issue #16 ([packagist-setup.md](../development/packagist-setup.md))
 
-## Field Trial 1 — complete
+## Field Trial 2 — complete
 
-Report: [docs/field-trials/2026-05-field-trial-1.md](../field-trials/2026-05-field-trial-1.md)  
-Issues #10–#12 closed. NeNe [PR #310](https://github.com/hideyukiMORI/NeNe/pull/310) merged.
+Report: [docs/field-trials/2026-05-field-trial-2.md](../field-trials/2026-05-field-trial-2.md)
+
+Open follow-ups:
+
+- #16 — Packagist submission (maintainer one-time)
+- #17 — integration doc gaps from FT2 (if filed)
 
 ## Next
 
-- **G1** — Packagist (see [release-policy.md](../development/release-policy.md))
-- **FT2** — NeNe + Docker + Cursor UI ([schedule.md](../field-trials/schedule.md))
+- Complete **G1** (Packagist) — closes #16
+- **FT3** — security review read-only baseline ([schedule.md](../field-trials/schedule.md))
 
-Long-horizon plan: [docs/field-trials/schedule.md](../field-trials/schedule.md) (FT2–FT18).
+Long-horizon plan: [docs/field-trials/schedule.md](../field-trials/schedule.md)

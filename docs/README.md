@@ -34,6 +34,7 @@ Documentation index for the NeNe ecosystem MCP bridge and generic HTTP app integ
 | [`development/release-policy.md`](development/release-policy.md) | Versioning, tags, Packagist timing |
 | [`development/release-checklist.md`](development/release-checklist.md) | Pre-tag checklist |
 | [`development/release-v0.1.0-prep.md`](development/release-v0.1.0-prep.md) | First tag candidate |
+| [`development/packagist-setup.md`](development/packagist-setup.md) | Packagist publication (G1) |
 | [`review/README.md`](review/README.md) | Self-review checklists |
 | [`adr/README.md`](adr/README.md) | ADR index |
 | [`todo/current.md`](todo/current.md) | Short-lived TODO summary |

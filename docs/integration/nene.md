@@ -73,6 +73,12 @@ docker compose up
 
 Default base URL: `http://localhost:8080`
 
+**Port conflict:** NeNe Docker publishes `:8080`. Stop any other process on that port first (for example a leftover `php -S localhost:8080` from SQLite smoke tests). If `curl localhost:8080` fails with connection refused while containers are up, run `docker compose down && docker compose up -d`.
+
+#### Host MCP + Docker app
+
+Cursor and other MCP hosts spawn `vendor/bin/nene-mcp` on your **machine**, not inside the NeNe container. NeNe Compose may store `vendor/` in a Docker volume, so run **`composer require hideyukimori/nene-mcp` on the host** at the app root (or a dedicated bridge directory) even when the API runs in Docker. Point `NENE_MCP_API_BASE_URL` at the published host port (`http://localhost:8080`).
+
 #### Without Docker (read-only MCP smoke tests)
 
 When Docker is unavailable, SQLite + PHP's built-in server is enough for health-catalog verification:

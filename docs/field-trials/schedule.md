@@ -20,7 +20,7 @@ Trials start **simple and happy-path**, then ramp through **breadth**, **auth/wr
 | Gate | When | Action |
 | --- | --- | --- |
 | **G0** | Before FT1 | ✅ `v0.1.0` tagged |
-| **G1** | After FT1 | ✅ FT1 Issues closed; **Packagist** publication; patch `v0.1.x` if package fixes land |
+| **G1** | After FT1 | FT1 Issues closed; Packagist publication (**#16**, [`packagist-setup.md`](../development/packagist-setup.md)); patch `v0.1.x` |
 | **G2** | After FT6 | Evaluate `v0.2.0` need (catalog/env breaking changes) |
 | **G3** | After FT12 | Milestone reflection; consider `0.3.0` or stabilize toward `1.0.0` criteria |
 | **G4** | After FT18 | Full-series reflection; publish 1.0 readiness checklist or extend schedule |
@@ -48,7 +48,7 @@ Validate the documented happy path with standard tooling. Minimal intentional br
 
 | FT | Topic | Host / client | Primary verification | Adversarial level |
 | --- | --- | --- | --- | --- |
-| **FT2** | NeNe + Docker + **Cursor UI** | NeNe `docker compose up`; real `.cursor/mcp.json` | MCP server green in Cursor; `tools/list`; `getHealthCheck` from UI | **Low** — follow integration docs only |
+| **FT2** | ✅ Done | NeNe + Docker + Cursor config | Docker MySQL + host MCP + `.cursor/mcp.json` | Low |
 | **FT3** | **Security review** — read-only baseline | Same as FT2 or FT1 replay | SSRF/catalog URL control; `nene_mcp_about` leak check; malformed JSON-RPC; oversize stdin | **Medium** — checklist + deliberate misconfig |
 | **FT4** | Catalog-free minimal install | NeNe or empty bridge | Only `nene_mcp_about`; confirm MCP useful without `tools.json` | **Low** — smallest integrator story |
 

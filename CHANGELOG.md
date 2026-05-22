@@ -6,6 +6,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.1 — 2026-05-22
+
+Post-FT1 documentation and FT2 golden-path learnings. No runtime code changes.
+
+### Added
+
+- Field trial schedule FT2–FT18 (`docs/field-trials/schedule.md`)
+- Packagist setup guide (`docs/development/packagist-setup.md`)
+- FT2 report: NeNe Docker + host MCP + Cursor config
+
+### Changed
+
+- Integration docs: port 8080 conflict note, host MCP vs Docker vendor split
+- Adversarial / cross-repo FT policy in field-trial README and ADR 0001
+
 ## 0.1.0 — 2026-05-22
 
 First integration-preview release. Baseline for field trial FT1.
