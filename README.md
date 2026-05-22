@@ -1,4 +1,5 @@
 [![CI](https://github.com/hideyukiMORI/nene-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/hideyukiMORI/nene-mcp/actions/workflows/ci.yml)
+[![Docs](https://github.com/hideyukiMORI/nene-mcp/actions/workflows/docs.yml/badge.svg)](https://hideyukimori.github.io/nene-mcp/)
 
 # nene-mcp
 
@@ -6,7 +7,7 @@ A small PHP library that adds **stdio MCP (Model Context Protocol)** to [NeNe](h
 
 Developers familiar with legacy PHP can run it with **Composer and environment variables only**. It works **standalone** without importing NeNe or NENE2 source. Any HTTP API—Laravel, vanilla PHP, Node, etc.—can use the same bridge when you provide a NENE2-compatible `docs/mcp/tools.json`.
 
-**Learn more:** [docs/project.md](docs/project.md) · [NeNe integration](docs/integration/nene.md) · [Other platforms](docs/integration/other-platforms.md)
+**Learn more:** [Documentation site](https://hideyukimori.github.io/nene-mcp/) · [docs/project.md](docs/project.md) · [NeNe integration](docs/integration/nene.md)
 
 ## Features
 
