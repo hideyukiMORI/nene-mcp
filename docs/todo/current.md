@@ -18,6 +18,7 @@
 | FT450–479 | ✅ FT450 defer + L8 band ([index](field-trials/index-ft450-479.md)) |
 | FT480–509 | ✅ L9 band ([index](field-trials/index-ft480-509.md)) |
 | FT510–539 | ✅ L10 band ([index](field-trials/index-ft510-539.md)) |
+| FT540–569 | ✅ L11 band ([index](field-trials/index-ft540-569.md)) |
 
 ## Open Issues
 
@@ -32,4 +33,4 @@
 
 ## Next
 
-Re-run **FT450** when NeNe #395 merges. FT540+ — next adversarial band.
+Re-run **FT450** when NeNe #395 merges. FT570+ — next adversarial band.

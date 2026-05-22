@@ -10,7 +10,8 @@ DATE_PREFIX="${FT_DATE_PREFIX:-2026-05}"
 FT5_CATALOG="${FT5_CATALOG:-/home/xi/docker/nene-mcp-FT/ft5-nene-multi-read/docs/mcp/tools.json}"
 # Always reset harness env (probes must not leak base URL / bearer into the next FT).
 export NENE_MCP_API_BASE_URL="${FT_DEFAULT_BASE_URL:-http://localhost:8080}"
-unset NENE_MCP_BEARER_TOKEN NENE_MCP_BEARER_TOKENS NENE_MCP_TOOLS_JSON NENE_MCP_BIN
+unset NENE_MCP_BEARER_TOKEN NENE_MCP_BEARER_TOKENS NENE_MCP_TOOLS_JSON NENE_MCP_BIN \
+  NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
 
 N="${1:?FT number required}"
 DRY_RUN="${2:-}"
@@ -45,6 +46,15 @@ ft_topic() {
   esac
   if (( n == 450 )); then
     echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 540 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + timeout min boundary (L11)" ;;
+      1) echo "${base} + timeout max boundary (L11)" ;;
+      2) echo "${base} + timeout out-of-range clamp (L11)" ;;
+      3) echo "${base} + invalid log value (L11)" ;;
+      4) echo "${base} + empty TLS CA path (L11)" ;;
+      5) echo "${base} + combined operator flags (L11)" ;;
+    esac
   elif (( n >= 510 )); then
     case $(( n % 6 )) in
       0) echo "${base} + HTTP timeout env (L10)" ;;
@@ -671,6 +681,78 @@ l10_probe() {
   return "$rc"
 }
 
+l11_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local out rc=0
+
+  echo "" >>"$tmp"
+  echo "# L11 probe (FT540+, operator boundaries, variant ${variant})" >>"$tmp"
+
+  export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+  unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON
+
+  case "$variant" in
+    0)
+      export NENE_MCP_HTTP_TIMEOUT_SEC=1
+      unset NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":1' && echo "ADV-PASS timeout min=1 accepted" >>"$tmp" || { echo "FINDING (L11-1): min timeout not applied" >>"$tmp"; rc=1; }
+      ;;
+    1)
+      export NENE_MCP_HTTP_TIMEOUT_SEC=120
+      unset NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":120' && echo "ADV-PASS timeout max=120 accepted" >>"$tmp" || { echo "FINDING (L11-2): max timeout not applied" >>"$tmp"; rc=1; }
+      ;;
+    2)
+      export NENE_MCP_HTTP_TIMEOUT_SEC=999
+      unset NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":10' && echo "ADV-PASS out-of-range timeout falls back to 10" >>"$tmp" || { echo "FINDING (L11-3): OOR timeout not clamped" >>"$tmp"; rc=1; }
+      ;;
+    3)
+      unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE
+      export NENE_MCP_LOG=stdout
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpLogStderr":false' && echo "ADV-PASS invalid log value ignored" >>"$tmp" || { echo "FINDING (L11-4): invalid log enabled stderr" >>"$tmp"; rc=1; }
+      ;;
+    4)
+      unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_LOG
+      export NENE_MCP_TLS_CA_FILE='   '
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"tlsCaFileConfigured":false' && echo "ADV-PASS whitespace TLS CA treated as unset" >>"$tmp" || { echo "FINDING (L11-5): empty TLS CA misreported" >>"$tmp"; rc=1; }
+      ;;
+    5)
+      export NENE_MCP_HTTP_TIMEOUT_SEC=60
+      export NENE_MCP_LOG=stderr
+      unset NENE_MCP_TLS_CA_FILE
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -q '"httpTimeoutSec":60' && echo "$out" | grep -q '"httpLogStderr":true'; then
+        echo "ADV-PASS combined timeout+stderr flags in runtime" >>"$tmp"
+      else
+        echo "FINDING (L11-6): combined operator flags missing" >>"$tmp"
+        rc=1
+      fi
+      ;;
+  esac
+  unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -733,6 +815,13 @@ run_primary_suite() {
 
   if (( n == 450 )); then
     ft450_probe "$tmp" || rc=$?
+  elif (( n >= 540 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+    l9_probe "$n" "$tmp" || rc=$?
+    l10_probe "$n" "$tmp" || rc=$?
+    l11_probe "$n" "$tmp" || rc=$?
   elif (( n >= 510 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
@@ -829,6 +918,8 @@ write_report() {
     done)"
   elif (( n == 450 )); then
     friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
+  elif (( n >= 540 )); then
+    friction_block="L11 + L10 + L9 + L8 + L7 + L6 adversarial exercised — operator boundaries. FT450 on hold for NeNe #395."
   elif (( n >= 510 )); then
     friction_block="L10 + L9 + L8 + L7 + L6 adversarial exercised — v0.1.8 SMB probes. FT450 on hold for NeNe #395."
   elif (( n >= 480 )); then
