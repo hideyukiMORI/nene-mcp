@@ -154,7 +154,7 @@ persona_probe() {
       "$RUNNER" smoke "$cat" >>"$tmp" 2>&1
       ;;
     4)
-      "$ROOT/tools/packagist-verify.sh" 0.1.4 >>"$tmp" 2>&1
+      "$ROOT/tools/packagist-verify.sh" "$(grep "VERSION = " "$ROOT/src/Package.php" | sed "s/.*'\([^']*\)'.*/\1/")" >>"$tmp" 2>&1
       ;;
   esac
 }

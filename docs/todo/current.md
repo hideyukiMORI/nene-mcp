@@ -2,8 +2,8 @@
 
 ## Release
 
-- **v0.1.4** — shipped (FT223/224): docs persona band FT201–222 + PHPUnit query/path tests; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.4)
-- **v0.1.3** — superseded by 0.1.4 on Packagist
+- **v0.1.5** — tagging (FT295): whitespace Bearer fail-closed fix (#64)
+- **v0.1.4** — shipped; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.4)
 
 ## Field trials
 
@@ -11,7 +11,7 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
-| FT201–294 | ✅ Persona + regression + L6 adversarial ([201–224](field-trials/index-ft201-211.md), [225–254](field-trials/index-ft225-254.md), [255–294](field-trials/index-ft255-294.md)) |
+| FT201–295 | ✅ Persona + L6 adversarial + v0.1.5 release ([255–294 index](field-trials/index-ft255-294.md)) |
 
 ## Open Issues
 
