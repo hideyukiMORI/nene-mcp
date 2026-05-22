@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Docs: [Commercial use & production scope](/explanation/commercial-use-and-scope) — honest boundaries for developer vs gateway adoption (#87).
+
 ## 0.1.7 — 2026-05-22
 
 Quality release from external review (#85).

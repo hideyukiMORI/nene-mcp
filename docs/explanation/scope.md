@@ -20,6 +20,7 @@ Integrators add `composer require hideyukimori/nene-mcp`, configure MCP, and tru
 - Automatic OpenAPI → tools.json codegen (host responsibility)
 - Non-stdio MCP transports (HTTP/SSE server mode)
 - End-user UI or localization of MCP error strings
+- **Production API gateway / SLA-hosted MCP service** — see [Commercial use & production scope](/explanation/commercial-use-and-scope)
 
 ## Philosophy
 

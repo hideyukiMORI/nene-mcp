@@ -44,6 +44,15 @@ Duplicate tool names rejected at load (v0.1.3+).
 
 [Catalog smoke test](https://hideyukimori.github.io/nene-mcp/howto/catalog-smoke-test) — include tool-count checklist before announcing MCP to agents.
 
+## Commercial / production scope
+
+nene-mcp is a **developer MCP sidecar**, not a customer-facing API gateway. See [Commercial use & production scope](https://hideyukimori.github.io/nene-mcp/explanation/commercial-use-and-scope) before promising SLA, HA, or end-user production use on `0.x` releases.
+
+## Related
+
+- [Commercial use & production scope](https://hideyukimori.github.io/nene-mcp/explanation/commercial-use-and-scope)
+- [NeNe catalog patterns](https://hideyukimori.github.io/nene-mcp/howto/neene-catalog-patterns) + [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380)
+
 ## Repo-only detail
 
 NeNe-specific bootstrap notes also live in [`nene.md`](nene.md) (may lag the docs site).

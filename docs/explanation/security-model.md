@@ -2,6 +2,8 @@
 
 nene-mcp assumes a **local-dev MCP bridge** to a trusted base URL. Threat model focuses on misconfiguration and catalog mistakes.
 
+For **commercial adoption boundaries** (developer tool vs production gateway), see [Commercial use & production scope](/explanation/commercial-use-and-scope).
+
 ## Defaults
 
 | Control | Behavior |
