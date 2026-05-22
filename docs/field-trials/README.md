@@ -177,7 +177,7 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT201 | 2026-05-22 | Persona docs-only business app | [2026-05-field-trial-201.md](2026-05-field-trial-201.md) |
 | FT202 | 2026-05-22 | Persona security DevOps | [2026-05-field-trial-202.md](2026-05-field-trial-202.md) |
 | FT203 | 2026-05-22 | Persona ja-only frontend / Cursor | [2026-05-field-trial-203.md](2026-05-field-trial-203.md) |
-| FT201–217 | 2026-05-22 | Persona band (L1–L5) | [index-ft201-211.md](field-trials/index-ft201-211.md) |
+| FT201–220 | 2026-05-22 | Persona band (L1–L5) | [index-ft201-211.md](field-trials/index-ft201-211.md) |
 
 **Note:** Milestone files under `milestones/` aggregate pass/fail only. Each FT has its own `2026-05-field-trial-{N}.md`.
 

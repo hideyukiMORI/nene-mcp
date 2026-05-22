@@ -34,6 +34,10 @@ nene-mcp :
 
 Flux **login → listTodos → createTodo** : **impossible** de bout en bout sur l’échantillon NeNe stock sans auth côté hôte.
 
+## CSRF (`X-CSRF-Token`)
+
+Les écritures TODO exigent l’en-tête **`X-CSRF-Token`** (token du login) en plus du cookie. nene-mcp **ne envoie pas** cet en-tête — échec même si les cookies étaient persistés. Voir [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380).
+
 ## Outils d’écriture et bootstrap login
 
 `safety: write` exige Bearer en env (fail-closed). Pour un login HTTP public, un **Bearer placeholder** peut débloquer fail-closed.
