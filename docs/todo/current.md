@@ -24,10 +24,11 @@
 | FT630–659 | ✅ L14 band ([index](field-trials/index-ft630-659.md)) |
 | FT660–689 | ✅ L15 band ([index](field-trials/index-ft660-689.md)) |
 | FT690–719 | ✅ L16 band ([index](field-trials/index-ft690-719.md)) |
+| FT720–749 | ✅ L17 band ([index](field-trials/index-ft720-749.md)) |
 
 ## Open Issues
 
-- **nene-mcp:** 0
+- **nene-mcp:** [#110](https://github.com/hideyukiMORI/nene-mcp/issues/110) — L17 band (in PR)
 - **NeNe:** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) **CLOSED** — FT450 + L14 Bearer E2E confirmed
 
 ## Automation
@@ -38,4 +39,4 @@
 
 ## Next
 
-FT720+ — next adversarial band.
+FT750+ — next adversarial band.
