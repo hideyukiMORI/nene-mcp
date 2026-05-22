@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.5 — 2026-05-22
+
+Security patch from FT255 adversarial band (#64).
+
 ### Fixed
 
 - Reject whitespace-only `NENE_MCP_BEARER_TOKEN` so write tools stay fail-closed (FT255 / #64).
