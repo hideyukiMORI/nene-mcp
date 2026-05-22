@@ -6,6 +6,14 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.6 — 2026-05-22
+
+Docs patch from FT337 / #71 (F-7 safety mislabel).
+
+### Changed
+
+- Docs: `safety` label vs HTTP method — Bearer-protected POST must not use `safety: read` for fail-closed (en + ja/fr/zh/de/pt-br); catalog-format, catalog-smoke-test, bearer-native checklist.
+
 ## 0.1.5 — 2026-05-22
 
 Security patch from FT255 adversarial band (#64).
