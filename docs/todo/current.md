@@ -28,7 +28,7 @@
 
 ## Open Issues
 
-- **nene-mcp:** [#110](https://github.com/hideyukiMORI/nene-mcp/issues/110) — L17 band (in PR)
+- **nene-mcp:** 0
 - **NeNe:** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) **CLOSED** — FT450 + L14 Bearer E2E confirmed
 
 ## Automation
