@@ -1,39 +1,24 @@
-# Write tools & Bearer
+# Schreib-Tools & Bearer
 
-Catalog entries with `"safety": "write"` (or any non-`read` safety) require **`NENE_MCP_BEARER_TOKEN`** in the MCP server environment.
+Katalogeinträge mit `"safety": "write"` erfordern **`NENE_MCP_BEARER_TOKEN`** in der MCP-Server-Umgebung.
 
-## Fail-closed default
+## Fail-closed
 
-Without Bearer, `tools/call` returns a JSON-RPC error and **does not send HTTP**:
+Ohne Bearer: JSON-RPC-Fehler, **kein HTTP**.
 
-```text
-Write tool "myTool" requires bearer authentication. Set NENE_MCP_BEARER_TOKEN in the MCP server environment.
-```
+## Token-Quelle
 
-This prevents silent anonymous writes when an operator forgets to configure auth.
+- **Bearer-/JWT-APIs**: üblicher Auth-Flow
+- **NeNe TODO-Beispiel**: OpenAPI nutzt **`sessionCookie`** — [NeNe-Katalogmuster](/de/howto/neene-catalog-patterns)
+- **Öffentlicher Login als `write`**: ggf. **Platzhalter-Bearer** für fail-closed
 
-## Where to put the token
+## Geschützte GET (Read-Tools)
 
-| OK | Not OK |
-| --- | --- |
-| MCP host `env` block (Cursor, Claude Desktop) | `tools.json` |
-| OS environment for the MCP process | Git commits |
-| Secret manager → env at runtime | `nene_mcp_about` output |
+`safety: read` erfordert in nene-mcp kein Bearer, aber Ihre API kann GET mit Bearer schützen → **401** ohne env. Dann `NENE_MCP_BEARER_TOKEN` setzen. Siehe [Bearer-native Bridge-Beispiel](/de/howto/bearer-native-bridge-example).
 
-## Obtaining a token
+Session-Cookie-Hosts: [NeNe-Katalogmuster](/de/howto/neene-catalog-patterns).
 
-Use your app's normal session flow:
+## Weiter
 
-- **NeNe / NENE2**: login endpoint → session Bearer (see host docs)
-- **Custom API**: whatever your OpenAPI security scheme defines
-
-nene-mcp forwards the token as `Authorization: Bearer …` on write HTTP calls.
-
-## Read tools
-
-`safety: read` tools do not require Bearer unless your API enforces auth on GET.
-
-## Related
-
-- [Security model](/explanation/security-model)
-- [Environment variables](/reference/environment-variables)
+- [Sicherheitsmodell](/de/explanation/security-model)
+- [Umgebungsvariablen](/de/reference/environment-variables)
