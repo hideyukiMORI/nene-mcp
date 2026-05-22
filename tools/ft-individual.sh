@@ -16,31 +16,43 @@ DRY_RUN="${2:-}"
 
 ft_topic() {
   local n="$1"
+  local base
   case "$n" in
-    10) echo "Bearer write fail-closed (automated; live session deferred to host FT)" ;;
-    11) echo "Misconfiguration adversarial" ;;
-    12) echo "Security milestone — write surface" ;;
-    13) echo "Cross-platform host bootstrap" ;;
-    14) echo "Cross-platform read path" ;;
-    15) echo "Security review — cross-runtime" ;;
-    16) echo "URI root / subdirectory" ;;
-    17) echo "Agent-only MCP surface" ;;
-    18) echo "Phase B milestone reflection" ;;
+    10) echo "Bearer write fail-closed (automated; live session deferred to host FT)"; return ;;
+    11) echo "Misconfiguration adversarial"; return ;;
+    12) echo "Security milestone — write surface"; return ;;
+    13) echo "Cross-platform host bootstrap"; return ;;
+    14) echo "Cross-platform read path"; return ;;
+    15) echo "Security review — cross-runtime"; return ;;
+    16) echo "URI root / subdirectory"; return ;;
+    17) echo "Agent-only MCP surface"; return ;;
+    18) echo "Phase B milestone reflection"; return ;;
     *)
       case $(( n % 10 )) in
-        9) echo "Security review — catalog probes" ;;
-        0) echo "Packagist install regression" ;;
-        1) echo "Multi-tool read catalog" ;;
-        2) echo "About-only minimal install" ;;
-        3) echo "Misconfiguration adversarial" ;;
-        4) echo "Write fail-closed regression" ;;
-        5) echo "Catalog edge cases" ;;
-        6) echo "NeNe Docker golden path smoke" ;;
-        7) echo "Fresh clone bootstrap" ;;
-        8) echo "Combined smoke milestone" ;;
+        9) base="Security review — catalog probes" ;;
+        0) base="Packagist install regression" ;;
+        1) base="Multi-tool read catalog" ;;
+        2) base="About-only minimal install" ;;
+        3) base="Misconfiguration adversarial" ;;
+        4) base="Write fail-closed regression" ;;
+        5) base="Catalog edge cases" ;;
+        6) base="NeNe Docker golden path smoke" ;;
+        7) base="Fresh clone bootstrap" ;;
+        8) base="Combined smoke milestone" ;;
       esac
       ;;
   esac
+  if (( n >= 225 )); then
+    case $(( n % 5 )) in
+      0) echo "${base} + Bearer-native E2E (L4)" ;;
+      1) echo "${base} + NeNe multi-read (L3)" ;;
+      2) echo "${base} + NeNe TODO session wall (L5)" ;;
+      3) echo "${base} + partial catalog (L4)" ;;
+      4) echo "${base} + Packagist 0.1.4 pin" ;;
+    esac
+  else
+    echo "$base"
+  fi
 }
 
 run_misconfig() {
@@ -58,6 +70,82 @@ run_misconfig() {
   fi
   echo "FAIL misconfig" >>"$tmp"
   return 1
+}
+
+mcp_json() {
+  local catalog="$1"
+  local method="$2"
+  local params="$3"
+  if [[ -z "$params" ]]; then
+    params='{}'
+  fi
+  export NENE_MCP_TOOLS_JSON="$catalog"
+  printf '{"jsonrpc":"2.0","id":1,"method":"%s","params":%s}\n' "$method" "$params" \
+    | php "$ROOT/bin/nene-mcp" 2>/dev/null
+}
+
+persona_probe() {
+  local n="$1"
+  local tmp="$2"
+  local case=$(( n % 5 ))
+  echo "" >>"$tmp"
+  echo "# Persona probe (FT225+ band, variant ${case})" >>"$tmp"
+  case "$case" in
+    0)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      export NENE_MCP_BEARER_TOKEN=demo-agent-token
+      local cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools.json"
+      local out
+      out="$(mcp_json "$cat" "tools/call" '{"name":"listInventoryItems","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -qE '"statusCode":\s*200'; then
+        echo "PASS bearer-native list" >>"$tmp"
+      else
+        echo "FAIL bearer-native list" >>"$tmp"
+        return 1
+      fi
+      out="$(mcp_json "$cat" "tools/call" "{\"name\":\"createInventoryItem\",\"arguments\":{\"sku\":\"FT${n}\",\"qty\":1}}")"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -qE '"statusCode":\s*(201|200)'; then
+        echo "PASS bearer-native create" >>"$tmp"
+      else
+        echo "FAIL bearer-native create" >>"$tmp"
+        return 1
+      fi
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      unset NENE_MCP_BEARER_TOKEN
+      local cat="/home/xi/docker/nene-mcp-FT/ft5-nene-multi-read/docs/mcp/tools.json"
+      "$RUNNER" multi-read "$cat" >>"$tmp" 2>&1
+      ;;
+    2)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      export NENE_MCP_BEARER_TOKEN=placeholder
+      local cat="/home/xi/docker/nene-mcp-FT/ft204-persona-business-hard/docs/mcp/tools.json"
+      local out
+      out="$(mcp_json "$cat" "tools/call" '{"name":"sessionLogin","arguments":{"user_id":"demo","user_pass":"demo"}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"statusCode": 200' && echo "PASS sessionLogin HTTP" >>"$tmp" || echo "WARN sessionLogin status" >>"$tmp"
+      unset NENE_MCP_BEARER_TOKEN
+      out="$(mcp_json "$cat" "tools/call" '{"name":"listTodos","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -qE '"statusCode": (401|403)'; then
+        echo "PASS NeNe TODO session wall (expected 401 without cookie)" >>"$tmp"
+      else
+        echo "WARN NeNe TODO list without session — check host" >>"$tmp"
+      fi
+      ;;
+    3)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN
+      local cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      "$RUNNER" smoke "$cat" >>"$tmp" 2>&1
+      ;;
+    4)
+      "$ROOT/tools/packagist-verify.sh" 0.1.4 >>"$tmp" 2>&1
+      ;;
+  esac
 }
 
 run_primary_suite() {
@@ -119,6 +207,10 @@ run_primary_suite() {
       esac
       ;;
   esac
+
+  if (( n >= 225 )); then
+    persona_probe "$n" "$tmp" || rc=$?
+  fi
 
   cat "$tmp"
   rm -f "$tmp"

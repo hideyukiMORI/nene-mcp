@@ -31,4 +31,4 @@ Individual reports for the **docs-only persona band** (quality-first, difficulty
 
 Strategy: [`quality-strategy.md`](quality-strategy.md) — difficulty ramp table.
 
-Merged PRs: #37–#59 (v0.1.4 release).
+Merged PRs: #37–#59 (v0.1.4 release). FT225–254: [`index-ft225-254.md`](index-ft225-254.md).
