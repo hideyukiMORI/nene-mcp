@@ -26,8 +26,8 @@ Ship security patch: whitespace-only Bearer no longer bypasses write fail-closed
 
 ## Post-tag
 
-- [ ] GitHub Release `v0.1.5` published
-- [ ] `tools/packagist-verify.sh 0.1.5` pass
+- [x] GitHub Release `v0.1.5` published — https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.5
+- [x] `tools/packagist-verify.sh 0.1.5` pass
 
 ## Friction
 
