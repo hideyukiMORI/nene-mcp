@@ -10,4 +10,6 @@ Full row list: see [`milestone-ft630-659.md`](milestone-ft630-659.md) summary (3
 
 NeNe Bearer: **FT450 confirmed** — L14 repeats list/create/read regression each band.
 
+Next: [660–689](index-ft660-689.md).
+
 Prior: [600–629](index-ft600-629.md).
