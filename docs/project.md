@@ -97,3 +97,13 @@ Inherited from NENE2 and nene2-python, tightened for an English-first internatio
 | Self-review | `docs/development/self-review.md` + `docs/review/` |
 | ADRs | `docs/development/adr.md` |
 | Field trials | `docs/field-trials/README.md` |
+
+## Release and distribution
+
+| Policy | Document |
+| --- | --- |
+| Versioning, tags, Packagist | `docs/development/release-policy.md` |
+| Pre-tag checklist | `docs/development/release-checklist.md` |
+| First tag (`v0.1.0`) prep | `docs/development/release-v0.1.0-prep.md` |
+
+Tag **`v0.1.0` before FT1**; Packagist after early FTs. See release policy.

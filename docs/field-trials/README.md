@@ -57,7 +57,7 @@ Reports must be readable cold by someone who was not present. Use `docs/template
 
 Required themes for nene-mcp trials:
 
-- **Baseline** — nene-mcp version (tag/commit), PHP version, host app (NeNe / other), MCP client, env var names used.
+- **Baseline** — nene-mcp ref (**git tag preferred**, e.g. `v0.1.0`, else commit), PHP version, host app, MCP client, env var names used.
 - **Goal** — one or two sentences (e.g. "verify health catalog + Cursor stdio from NeNe clone").
 - **Steps Taken** — actual flow with inline `Finding (F-N)` at friction points.
 - **MCP verification** — `tools/list`, representative `tools/call`, HTTP response shape, error paths.
