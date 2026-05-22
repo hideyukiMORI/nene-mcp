@@ -25,6 +25,7 @@
 | FT660–689 | ✅ L15 band ([index](field-trials/index-ft660-689.md)) |
 | FT690–719 | ✅ L16 band ([index](field-trials/index-ft690-719.md)) |
 | FT720–749 | ✅ L17 band ([index](field-trials/index-ft720-749.md)) |
+| FT750–779 | ✅ L18 band ([index](field-trials/index-ft750-779.md)) |
 
 ## Open Issues
 
@@ -39,4 +40,4 @@
 
 ## Next
 
-FT750+ — next adversarial band.
+FT780+ — next adversarial band.
