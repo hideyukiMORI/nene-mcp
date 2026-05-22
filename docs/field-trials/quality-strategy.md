@@ -31,9 +31,11 @@ Quality means:
 ## Field trial rules (strict)
 
 1. **One FT → one report file** using `docs/templates/field-trial-report.md`.
-2. **FT{N+1} starts only after FT{N} actionable Issues are closed** (or deferred with row in `follow-ups.md`).
-3. **Batch milestone docs** aggregate metrics only—they never mark an FT “done” without its own report.
-4. **Finding friction is success**; zero findings on a complex FT is a signal to increase adversarial scope.
+2. **FT{N+1} starts only when every Issue opened for FT{N} is closed** with a merged fix, verified resolution, or an explicit defer row in [`follow-ups.md`](follow-ups.md) (deferral is exceptional—not the default).
+3. **nene-mcp repo:** zero open Issues tied to the FT before the next FT starts.
+4. **Cross-repo (NeNe / host):** fix-in-host Issues must be **closed in the host repository** (merged PR or verified won't-fix) before the next FT—not merely filed.
+5. **Batch milestone docs** aggregate metrics only—they never mark an FT “done” without its own report.
+6. **Finding friction is success**; zero findings on a complex FT is a signal to increase adversarial scope.
 
 ## What “FT complete” means
 
@@ -41,7 +43,7 @@ An FT is complete when:
 
 - [ ] Report merged on `main`
 - [ ] Friction table filled; security section when `N % 3 == 0`
-- [ ] Actionable Issues filed and **closed** (or deferred in `follow-ups.md`)
+- [ ] Actionable Issues filed and **closed** (fix merged, Packagist verified, or explicit defer in `follow-ups.md`)
 - [ ] Package/host fixes merged where decided
 - [ ] Tests added when behavior must not regress
 
