@@ -17,11 +17,12 @@
 | FT420–449 | ✅ L7 band ([index](field-trials/index-ft420-449.md)) |
 | FT450–479 | ✅ FT450 defer + L8 band ([index](field-trials/index-ft450-479.md)) |
 | FT480–509 | ✅ L9 band ([index](field-trials/index-ft480-509.md)) |
+| FT510–539 | ✅ L10 band ([index](field-trials/index-ft510-539.md)) |
 
 ## Open Issues
 
 - **nene-mcp:** 0
-- **NeNe (assigned on NeNe repo):** [#380](https://github.com/hideyukiMORI/NeNe/issues/380), [#395](https://github.com/hideyukiMORI/NeNe/issues/395) — Bearer TODO for MCP; **nene-mcp runs FT450 when closed**
+- **NeNe (assigned on NeNe repo):** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) — Bearer TODO for MCP; **assigned to host team** — nene-mcp re-runs **FT450** when merged
 
 ## Automation
 
@@ -31,4 +32,4 @@
 
 ## Next
 
-Re-run **FT450** when NeNe #380/#395 merge. FT510+ — next adversarial band.
+Re-run **FT450** when NeNe #395 merges. FT540+ — next adversarial band.

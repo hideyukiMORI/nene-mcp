@@ -45,6 +45,15 @@ ft_topic() {
   esac
   if (( n == 450 )); then
     echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 510 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + HTTP timeout env (L10)" ;;
+      1) echo "${base} + invalid timeout fallback (L10)" ;;
+      2) echo "${base} + invalid safety value (L10)" ;;
+      3) echo "${base} + stderr log flag (L10)" ;;
+      4) echo "${base} + TLS CA on http base (L10)" ;;
+      5) echo "${base} + v0.1.8 baseline pin (L10)" ;;
+    esac
   elif (( n >= 480 )); then
     case $(( n % 6 )) in
       0) echo "${base} + missing inputSchema catalog (L9)" ;;
@@ -439,7 +448,7 @@ ft450_probe() {
     echo "$out" >>"$tmp"
     echo "$out" | grep -q 'requires bearer\|"statusCode":401' && echo "FT450-PASS write fail-closed without Bearer" >>"$tmp" || { echo "FT450-FAIL write without bearer not blocked" >>"$tmp"; rc=1; }
   elif echo "$out" | grep -qiE 'SESSION-CLOSED|"statusCode":\s*401|"statusCode":403'; then
-    echo "FT450-DEFER NeNe #380/#395 open — Bearer TODO E2E blocked (expected until merge)" >>"$tmp"
+    echo "FT450-DEFER NeNe #395 assigned — awaiting host merge; re-run when Bearer E2E ready" >>"$tmp"
   else
     echo "FT450-WARN listTodos unexpected response — recheck NeNe + catalog" >>"$tmp"
   fi
@@ -580,6 +589,88 @@ l9_probe() {
   return "$rc"
 }
 
+l10_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local dir="/tmp/ft-l10-${n}"
+  local cat out rc=0 ver
+
+  echo "" >>"$tmp"
+  echo "# L10 probe (FT510+, v0.1.8 SMB, variant ${variant})" >>"$tmp"
+
+  case "$variant" in
+    0)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      export NENE_MCP_HTTP_TIMEOUT_SEC=30
+      out="$(mcp_json "" "tools/call" '{"name":"nene_mcp_about","arguments":{}}' 2>/dev/null || true)"
+      if [[ -z "$out" || "$out" != *"nene_mcp_about"* ]]; then
+        unset NENE_MCP_TOOLS_JSON
+        out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+          | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      fi
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":30' && echo "ADV-PASS HTTP timeout env=30 in runtime" >>"$tmp" || { echo "FINDING (L10-1): timeout env not applied" >>"$tmp"; rc=1; }
+      unset NENE_MCP_HTTP_TIMEOUT_SEC
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      export NENE_MCP_HTTP_TIMEOUT_SEC=abc
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":10' && echo "ADV-PASS invalid timeout falls back to 10" >>"$tmp" || { echo "FINDING (L10-2): invalid timeout not clamped" >>"$tmp"; rc=1; }
+      unset NENE_MCP_HTTP_TIMEOUT_SEC
+      ;;
+    2)
+      cat="$(adv_catalog "$dir" badsafe.json '{"tools":[{"name":"x","title":"x","description":"x","safety":"admin","source":{"type":"openapi","operationId":"x","method":"GET","path":"/health"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}')"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      out="$(mcp_json "$cat" "tools/list" '{}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'safety\|"error"' && echo "ADV-PASS invalid safety rejected (#85)" >>"$tmp" || { echo "FINDING (L10-3): invalid safety accepted" >>"$tmp"; rc=1; }
+      ;;
+    3)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON NENE_MCP_TLS_CA_FILE
+      export NENE_MCP_LOG=stderr
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpLogStderr":true' && echo "ADV-PASS stderr log flag in runtime" >>"$tmp" || { echo "FINDING (L10-4): log flag missing" >>"$tmp"; rc=1; }
+      unset NENE_MCP_LOG
+      ;;
+    4)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN
+      export NENE_MCP_TLS_CA_FILE=/nonexistent/ca.pem
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      out="$(mcp_json "$cat" "tools/list" '{}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'nene_mcp_about' && echo "ADV-PASS TLS CA env ignored for http base URL" >>"$tmp" || rc=1
+      unset NENE_MCP_TLS_CA_FILE
+      ;;
+    5)
+      ver="$(grep "VERSION = " "$ROOT/src/Package.php" | sed "s/.*'\([^']*\)'.*/\1/")"
+      echo "Package baseline: ${ver}" >>"$tmp"
+      if [[ "$ver" == "0.1.8" ]]; then
+        echo "ADV-PASS v0.1.8 SMB baseline pinned" >>"$tmp"
+      else
+        echo "WARN package version ${ver} (expected 0.1.8 for this band)" >>"$tmp"
+      fi
+      if command -v curl >/dev/null 2>&1; then
+        if curl -sf "https://packagist.org/packages/hideyukimori/nene-mcp.json" | grep -q '"0.1.8"'; then
+          echo "ADV-PASS Packagist lists 0.1.8" >>"$tmp"
+        else
+          echo "WARN Packagist 0.1.8 not visible yet" >>"$tmp"
+        fi
+      fi
+      ;;
+  esac
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -642,6 +733,12 @@ run_primary_suite() {
 
   if (( n == 450 )); then
     ft450_probe "$tmp" || rc=$?
+  elif (( n >= 510 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+    l9_probe "$n" "$tmp" || rc=$?
+    l10_probe "$n" "$tmp" || rc=$?
   elif (( n >= 480 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
@@ -731,7 +828,9 @@ write_report() {
       echo "${line} | medium | security-gap / docs-gap | see probe log |"
     done)"
   elif (( n == 450 )); then
-    friction_block="FT450 gate: NeNe Bearer E2E deferred until [#380](https://github.com/hideyukiMORI/NeNe/issues/380)/[#395](https://github.com/hideyukiMORI/NeNe/issues/395) merge — re-run for full PASS."
+    friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
+  elif (( n >= 510 )); then
+    friction_block="L10 + L9 + L8 + L7 + L6 adversarial exercised — v0.1.8 SMB probes. FT450 on hold for NeNe #395."
   elif (( n >= 480 )); then
     friction_block="L9 + L8 + L7 + L6 adversarial exercised — see probe log. FT450 reserved for NeNe merge."
   elif (( n >= 451 )); then
