@@ -17,8 +17,10 @@ composer require hideyukimori/nene-mcp
 Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Pin a version for reproducible field trials:
 
 ```bash
-composer require hideyukimori/nene-mcp:0.1.3
+composer require hideyukimori/nene-mcp:^0.1
 ```
+
+Check [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp) or [GitHub Releases](https://github.com/hideyukiMORI/nene-mcp/releases) for the latest tag. If a docs page shows a newer version than Packagist, use the newest **published** tag until Packagist syncs.
 
 ## Development clone
 

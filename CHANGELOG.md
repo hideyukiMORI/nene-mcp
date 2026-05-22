@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- FT201 persona: docs site version pin aligned with Packagist (`^0.1`); NeNe bootstrap steps on integrate-nene; health catalog on docs site; catalog-format `operationId` matches NeNe OpenAPI.
+
 ## 0.1.3 — 2026-05-22
 
 Quality release from Field Trial 9 and FT6 follow-up #22.

@@ -17,6 +17,7 @@ type SidebarLabels = {
   otherPlatforms: string;
   writeTools: string;
   catalogSmoke: string;
+  healthCatalog: string;
   explGroup: string;
   scope: string;
   architecture: string;
@@ -88,6 +89,7 @@ function sidebar(t: SidebarLabels, p: string = '') {
           { text: t.otherPlatforms, link: `${p}/howto/other-platforms` },
           { text: t.writeTools, link: `${p}/howto/write-tools-bearer` },
           { text: t.catalogSmoke, link: `${p}/howto/catalog-smoke-test` },
+          { text: t.healthCatalog, link: `${p}/howto/health-catalog-example` },
         ],
       },
     ],
@@ -146,6 +148,7 @@ const enSide: SidebarLabels = {
   otherPlatforms: 'Other platforms',
   writeTools: 'Write tools & Bearer',
   catalogSmoke: 'Catalog smoke test',
+  healthCatalog: 'NeNe health catalog example',
   explGroup: 'Explanation',
   scope: 'Scope & mission',
   architecture: 'Architecture',
@@ -178,6 +181,7 @@ const jaSide: SidebarLabels = {
   otherPlatforms: 'その他プラットフォーム',
   writeTools: '書き込みツールと Bearer',
   catalogSmoke: 'カタログ smoke テスト',
+  healthCatalog: 'NeNe health カタログ例',
   explGroup: '解説',
   scope: 'スコープとミッション',
   architecture: 'アーキテクチャ',
@@ -210,6 +214,7 @@ const frSide: SidebarLabels = {
   otherPlatforms: 'Autres plateformes',
   writeTools: 'Outils d’écriture & Bearer',
   catalogSmoke: 'Test smoke du catalogue',
+  healthCatalog: 'Exemple catalogue health NeNe',
   explGroup: 'Explication',
   scope: 'Périmètre & mission',
   architecture: 'Architecture',
@@ -242,6 +247,7 @@ const zhSide: SidebarLabels = {
   otherPlatforms: '其他平台',
   writeTools: '写入工具与 Bearer',
   catalogSmoke: '目录 smoke 测试',
+  healthCatalog: 'NeNe health 目录示例',
   explGroup: '说明',
   scope: '范围与使命',
   architecture: '架构',
@@ -274,6 +280,7 @@ const ptSide: SidebarLabels = {
   otherPlatforms: 'Outras plataformas',
   writeTools: 'Ferramentas de escrita & Bearer',
   catalogSmoke: 'Smoke test do catálogo',
+  healthCatalog: 'Exemplo catálogo health NeNe',
   explGroup: 'Explicação',
   scope: 'Escopo & missão',
   architecture: 'Arquitetura',
@@ -306,6 +313,7 @@ const deSide: SidebarLabels = {
   otherPlatforms: 'Andere Plattformen',
   writeTools: 'Schreib-Tools & Bearer',
   catalogSmoke: 'Katalog-Smoke-Test',
+  healthCatalog: 'NeNe Health-Katalog Beispiel',
   explGroup: 'Erklärung',
   scope: 'Umfang & Mission',
   architecture: 'Architektur',

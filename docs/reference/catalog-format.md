@@ -14,7 +14,7 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
       "safety": "read",
       "source": {
         "type": "openapi",
-        "operationId": "getHealthIndex",
+        "operationId": "healthCheck",
         "method": "GET",
         "path": "/health/index"
       },
@@ -37,6 +37,7 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
 | `safety` | `read` or `write` (non-read requires Bearer) |
 | `source.type` | Must be `openapi` in JSON catalogs |
 | `source.path` | Relative path preferred; appended to base URL |
+| `source.operationId` | Should match OpenAPI `operationId` for traceability |
 | `inputSchema` | JSON Schema object for MCP clients |
 
 ## Path parameters
@@ -49,4 +50,4 @@ Invalid JSON, duplicate names, or missing required fields fail at `tools/list` w
 
 ## Sample
 
-See `docs/example-ne-health-catalog.md` in the repository for a NeNe health example.
+Full NeNe health example: [NeNe health catalog example](/howto/health-catalog-example).
