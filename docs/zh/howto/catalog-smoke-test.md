@@ -1,8 +1,8 @@
-# Catalog smoke test
+# 目录 smoke 测试
 
-Verify MCP wiring before exposing write tools.
+在暴露写入工具前验证 MCP 连接。
 
-## 1. About-only
+## 1. 仅 about
 
 ```bash
 unset NENE_MCP_TOOLS_JSON
@@ -10,31 +10,35 @@ export NENE_MCP_API_BASE_URL=http://localhost:8080
 printf '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n' | php vendor/bin/nene-mcp
 ```
 
-Expect exactly one tool: `nene_mcp_about`.
+期望：仅 `nene_mcp_about`。
 
-## 2. With catalog
+## 2. 带目录
 
 ```bash
-export NENE_MCP_TOOLS_JSON=/ABS/PATH/docs/mcp/tools.json
+export NENE_MCP_TOOLS_JSON=/绝对路径/docs/mcp/tools.json
 printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
   | php vendor/bin/nene-mcp
 ```
 
-Expect `statusCode` and JSON `body` in structured content.
+期望：`statusCode` 与 JSON `body`。
 
-## 3. Automation harness
+## 2b. 工具数量（部分目录）
 
-From the nene-mcp repo:
+`tools/list` 后确认 **所有** 预期业务工具均已列出。见 [Bearer 原生 bridge](/zh/howto/bearer-native-bridge-example)。
+
+## 3. 自动化
 
 ```bash
 tools/ft-runner.sh smoke /path/to/tools.json
 tools/ft-runner.sh write-failclosed /tmp/ft-write
 ```
 
-## Common failures
+## 常见失败
 
-| Symptom | Likely cause |
+| 症状 | 原因 |
 | --- | --- |
-| `tools/list` error on startup | Invalid or missing catalog path |
-| HTTP connection refused | App not running or wrong base URL |
-| Duplicate name error | Two tools share the same `name` (v0.1.3+) |
+| `tools/list` 错误 | 目录路径无效 |
+| 连接被拒绝 | 应用未运行或 URL 错误 |
+| 重复名称 | 两个 tool 同名 |
+| read HTTP 401 | Bearer GET — 设置 `NENE_MCP_BEARER_TOKEN` |
+| 工具缺失 | 部分目录 — §2b |
