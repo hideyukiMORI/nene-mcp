@@ -42,7 +42,9 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
 
 ## Path parameters
 
-Use `{param}` in `path`; provide values in `tools/call` arguments.
+Use `{param}` in `path`; provide values in `tools/call` arguments. nene-mcp URL-encodes each replacement.
+
+**NeNe convention:** paths like `/todo/item/id_{id}` — copy the OpenAPI path literally, not `/todo/item/{id}`. See [NeNe catalog patterns](/howto/neene-catalog-patterns).
 
 ## Validation errors
 

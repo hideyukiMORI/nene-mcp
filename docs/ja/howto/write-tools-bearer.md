@@ -1,7 +1,43 @@
 # 書き込みツールと Bearer
 
-`safety: write`（および non-read）は **`NENE_MCP_BEARER_TOKEN`** 必須。未設定時は HTTP を送らず JSON-RPC エラー（fail-closed）。
+カタログで `"safety": "write"`（または non-read）のエントリは、MCP サーバー環境に **`NENE_MCP_BEARER_TOKEN`** が必要です。
 
-トークンは MCP ホストの env のみ — `tools.json` や git に置かない。
+## Fail-closed デフォルト
 
-[セキュリティモデル](/ja/explanation/security-model)
+Bearer なしでは `tools/call` は JSON-RPC エラーを返し **HTTP を送信しません**:
+
+```text
+Write tool "myTool" requires bearer authentication. Set NENE_MCP_BEARER_TOKEN in the MCP server environment.
+```
+
+## トークンの置き場所
+
+| OK | NG |
+| --- | --- |
+| MCP ホストの `env`（Cursor 等） | `tools.json` |
+| MCP プロセスの OS 環境 | git コミット |
+| シークレットマネージャ → 実行時 env | `nene_mcp_about` 出力 |
+
+## トークンの取得
+
+**OpenAPI の security scheme** に従います:
+
+- **Bearer / JWT API**: 通常の auth フローで発行
+- **NeNe TODO サンプル**: OpenAPI は **`sessionCookie`** — [NeNe カタログパターン](/ja/howto/neene-catalog-patterns) を参照（MCP  alone では認証 TODO 不可）
+- **`write` の login ツール**: HTTP login が公開でも env Bearer 必須 — Cookie ホストでは **プレースホルダ** で fail-closed を満たす場合あり
+
+nene-mcp は env が設定されていれば `Authorization: Bearer …` を HTTP に付与します。
+
+## MCP 引数の資格情報
+
+`tools/call` の `user_id` / `user_pass` は **MCP ログとエージェント transcript** に残ります。dev 専用アカウントを使い、git に載せないでください。
+
+## 読み取りツール
+
+`safety: read` は nene-mcp 上 Bearer 不要（env を設定した場合は GET にも Bearer 送信）。GET に session cookie が必要なホストは Bearer だけでは不足 — [NeNe カタログパターン](/ja/howto/neene-catalog-patterns)。
+
+## 関連
+
+- [セキュリティモデル](/ja/explanation/security-model)
+- [環境変数](/ja/reference/environment-variables)
+- [NeNe カタログパターン](/ja/howto/neene-catalog-patterns)

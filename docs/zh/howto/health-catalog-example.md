@@ -1,6 +1,6 @@
-# NeNe health catalog example
+# NeNe health 目录示例
 
-Copy this to `docs/mcp/tools.json` in your NeNe app. Aligned with NeNe `docs/api/openapi.yaml` (`operationId: healthCheck`).
+复制到 NeNe 应用的 `docs/mcp/tools.json`。与 OpenAPI `operationId: healthCheck` 一致。
 
 ```json
 {
@@ -27,22 +27,22 @@ Copy this to `docs/mcp/tools.json` in your NeNe app. Aligned with NeNe `docs/api
 }
 ```
 
-## Subdirectory deploy (`URI_ROOT`)
+## 子目录部署（`URI_ROOT`）
 
-When NeNe runs under a path prefix, set **`NENE_MCP_API_BASE_URL`** to include that prefix (e.g. `http://localhost:8080/mybiz`). Catalog paths stay route-relative (`/health/index`). Details: [NeNe catalog patterns](/howto/neene-catalog-patterns).
+NeNe 使用路径前缀时，在 **`NENE_MCP_API_BASE_URL`** 中包含该前缀（如 `http://localhost:8080/mybiz`）。目录 path 仍为 `/health/index`。见 [NeNe 目录模式](/zh/howto/neene-catalog-patterns)。
 
-## Verify
+## 验证
 
 ```bash
 export NENE_MCP_API_BASE_URL=http://localhost:8080
-export NENE_MCP_TOOLS_JSON=/ABS/PATH/docs/mcp/tools.json
+export NENE_MCP_TOOLS_JSON=/绝对路径/docs/mcp/tools.json
 printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
   | php vendor/bin/nene-mcp
 ```
 
-Expect `statusCode` 200 in structured content.
+期望 `statusCode` 200。
 
-## Related
+## 相关
 
-- [Tool catalog JSON reference](/reference/catalog-format)
-- [Integrate with NeNe](/howto/integrate-nene)
+- [工具目录 JSON](/zh/reference/catalog-format)
+- [集成 NeNe](/zh/howto/integrate-nene)

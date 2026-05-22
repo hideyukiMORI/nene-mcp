@@ -14,7 +14,7 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
       "safety": "read",
       "source": {
         "type": "openapi",
-        "operationId": "getHealthIndex",
+        "operationId": "healthCheck",
         "method": "GET",
         "path": "/health/index"
       },
@@ -41,7 +41,9 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
 
 ## Path parameters
 
-Use `{param}` in `path`; provide values in `tools/call` arguments.
+在 `path` 中使用 `{param}`；在 `tools/call` 参数中提供值。
+
+**NeNe：** 路径如 `/todo/item/id_{id}` — 按 OpenAPI 原样复制。见 [NeNe 目录模式](/zh/howto/neene-catalog-patterns)。
 
 ## Validation errors
 
@@ -49,4 +51,4 @@ Invalid JSON, duplicate names, or missing required fields fail at `tools/list` w
 
 ## Sample
 
-See `docs/example-ne-health-catalog.md` in the repository for a NeNe health example.
+完整示例：[NeNe health 目录示例](/zh/howto/health-catalog-example)。

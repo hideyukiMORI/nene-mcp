@@ -37,6 +37,23 @@ Quality means:
 5. **Batch milestone docs** aggregate metrics only—they never mark an FT “done” without its own report.
 6. **Finding friction is success**; zero findings on a complex FT is a signal to increase adversarial scope.
 
+## Persona FT difficulty ramp (FT201+)
+
+Docs-only persona trials start simple and **increase scope until the persona stalls** on a realistic integrator task—not until automation passes.
+
+| Tier | Example FT | Business / auth scope | Expected friction |
+| --- | --- | --- | --- |
+| **L1** | FT201 | Health + one fake read (404) | Install pin, bootstrap links, catalog examples |
+| **L2** | FT202–203 | Write fail-closed, locale/host setup | Security JSON-RPC edges, i18n doc lag |
+| **L3** | FT204 | Multi-tool TODO module: login, list, create, path params, URI_ROOT | Session cookie vs Bearer, path conventions, base URL |
+| **L4+** | FT205+ | Cross-locale parity, Bearer-native hosts, CSRF write chains, partial catalogs | Host-specific auth, operator mistakes |
+
+**Rules:**
+
+- Do **not** report “zero friction” when only L1 checks ran—say what was *not* exercised yet.
+- When an FT completes with fewer than two actionable findings, **raise tier** (more tools, auth, deployment) before the next persona FT.
+- Shallow pass (health-only) does not satisfy “business app integrated”—escalate catalog and verification table accordingly.
+
 ## What “FT complete” means
 
 An FT is complete when:

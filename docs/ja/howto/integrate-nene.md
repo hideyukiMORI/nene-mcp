@@ -29,10 +29,19 @@ composer require hideyukimori/nene-mcp:^0.1
 2. `docs/mcp/tools.json` をコミット — NENE2 形式（[カタログリファレンス](/ja/reference/catalog-format)）。[health カタログ例](/ja/howto/health-catalog-example) から開始可
 3. `vendor/bin/nene-mcp` と `tools.json` への **絶対パス** で MCP ホストを設定
 4. 読み取りツールを [smoke テスト](/ja/howto/catalog-smoke-test) してから書き込みを有効化
+5. NeNe TODO / セッションルートは [NeNe カタログパターン](/ja/howto/neene-catalog-patterns) を参照（パス、`URI_ROOT`、セッション vs Bearer）
 
 ::: warning カタログパスは絶対パス
 `NENE_MCP_TOOLS_JSON` は **絶対パス** を使ってください。相対パスは MCP プロセスの cwd に依存し、Cursor 起動時に `docs/mcp/tools.json` が解決しないことがあります。
 :::
+
+::: info NeNe セッション Cookie の制限
+標準 NeNe サンプルは `/todo/*` を **セッション Cookie** で保護します。nene-mcp は **ステートレス Bearer プロキシ** で、MCP 呼び出し間に Cookie を保持しません。health 等の公開 read は可。**login → 一覧 → 作成** はホスト側 auth 変更なしでは完結しません。詳細: [NeNe カタログパターン](/ja/howto/neene-catalog-patterns)。
+:::
+
+## ベース URL（`NENE_MCP_API_BASE_URL`）
+
+NeNe が実際に HTTP を提供する URL（`URI_ROOT` やリバースプロキシ prefix 含む）と一致させます。例: `http://localhost:8080/mybiz/…` → `NENE_MCP_API_BASE_URL=http://localhost:8080/mybiz`、path は `/health/index` のまま。prefix 不一致 → **404**。[NeNe カタログパターン](/ja/howto/neene-catalog-patterns) を参照。
 
 ## エイリアス
 
@@ -49,3 +58,4 @@ NeNe Docker や拡張の前提で止まった場合は **NeNe リポジトリ** 
 
 - [その他プラットフォーム](/ja/howto/other-platforms)
 - [エコシステム](/ja/integrations/ecosystem)
+- [NeNe カタログパターン](/ja/howto/neene-catalog-patterns)
