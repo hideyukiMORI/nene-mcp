@@ -42,7 +42,18 @@ ft_topic() {
       esac
       ;;
   esac
-  if (( n >= 420 )); then
+  if (( n == 450 )); then
+    echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 451 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + newline/tab Bearer (L8)" ;;
+      1) echo "${base} + trailing-space base URL (L8)" ;;
+      2) echo "${base} + truncated catalog JSON (L8)" ;;
+      3) echo "${base} + duplicate tool names (L8)" ;;
+      4) echo "${base} + empty base URL (L8)" ;;
+      5) echo "${base} + invalid JSON-RPC version (L8)" ;;
+    esac
+  elif (( n >= 420 )); then
     case $(( n % 6 )) in
       0) echo "${base} + wrong Bearer env typo (L7)" ;;
       1) echo "${base} + double JSON-RPC stdin (L7)" ;;
@@ -384,6 +395,118 @@ l7_probe() {
   return "$rc"
 }
 
+ft450_probe() {
+  local tmp="$1"
+  local dir="/tmp/ft450-gate"
+  local cat="/home/xi/docker/nene-mcp-FT/ft204-persona-business-hard/docs/mcp/tools.json"
+  local token="${NENE_FT450_BEARER_TOKEN:-${NENE_MCP_BEARER_TOKEN:-demo-agent-token}}"
+  local out rc=0
+
+  echo "" >>"$tmp"
+  echo "# FT450 NeNe Bearer confirmation gate" >>"$tmp"
+  export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+  export NENE_MCP_BEARER_TOKEN="$token"
+
+  out="$(mcp_json "$cat" "tools/call" '{"name":"getHealthCheck","arguments":{}}')"
+  echo "$out" >>"$tmp"
+  echo "$out" | grep -qE '"statusCode":\s*200' && echo "FT450 health OK" >>"$tmp" || echo "FT450 health check logged" >>"$tmp"
+
+  out="$(mcp_json "$cat" "tools/call" '{"name":"listTodos","arguments":{}}')"
+  echo "$out" >>"$tmp"
+
+  if echo "$out" | grep -qE '"statusCode":\s*200'; then
+    echo "FT450-PASS listTodos without session cookie" >>"$tmp"
+    out="$(mcp_json "$cat" "tools/call" '{"name":"createTodo","arguments":{"title":"FT450 confirm"}}')"
+    echo "$out" >>"$tmp"
+    if echo "$out" | grep -qE '"statusCode":\s*2'; then
+      echo "FT450-PASS createTodo without CSRF" >>"$tmp"
+    else
+      echo "FT450-FAIL createTodo expected 2xx after Bearer fix" >>"$tmp"
+      rc=1
+    fi
+    unset NENE_MCP_BEARER_TOKEN
+    out="$(mcp_json "$cat" "tools/call" '{"name":"createTodo","arguments":{"title":"FT450 no bearer"}}')"
+    echo "$out" >>"$tmp"
+    echo "$out" | grep -q 'requires bearer\|"statusCode":401' && echo "FT450-PASS write fail-closed without Bearer" >>"$tmp" || { echo "FT450-FAIL write without bearer not blocked" >>"$tmp"; rc=1; }
+  elif echo "$out" | grep -qiE 'SESSION-CLOSED|"statusCode":\s*401|"statusCode":403'; then
+    echo "FT450-DEFER NeNe #380/#395 open — Bearer TODO E2E blocked (expected until merge)" >>"$tmp"
+  else
+    echo "FT450-WARN listTodos unexpected response — recheck NeNe + catalog" >>"$tmp"
+  fi
+  return "$rc"
+}
+
+l8_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local dir="/tmp/ft-l8-${n}"
+  local cat out rc=0
+
+  echo "" >>"$tmp"
+  echo "# L8 probe (FT451+, variant ${variant})" >>"$tmp"
+
+  case "$variant" in
+    0)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      cat="$(adv_catalog "$dir" w.json '{"tools":[{"name":"w","title":"w","description":"w","safety":"write","source":{"type":"openapi","operationId":"x","method":"POST","path":"/session/login"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}')"
+      export NENE_MCP_BEARER_TOKEN=$'demo\nagent\ttoken'
+      out="$(mcp_json "$cat" "tools/call" '{"name":"w","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -q 'requires bearer'; then
+        echo "ADV-PASS newline/tab bearer normalized to empty → fail-closed" >>"$tmp"
+      elif echo "$out" | grep -qE '"statusCode":\s*2'; then
+        echo "FINDING (L8-1): control chars in bearer not rejected" >>"$tmp"
+        rc=1
+      else
+        echo "ADV-PASS newline bearer did not bypass write gate" >>"$tmp"
+      fi
+      unset NENE_MCP_BEARER_TOKEN
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL='http://127.0.0.1:9090 '
+      unset NENE_MCP_BEARER_TOKEN
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealth","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*200' && echo "ADV-PASS trailing-space base URL trimmed" >>"$tmp" || echo "ADV-PASS trailing space yields safe non-200" >>"$tmp"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      ;;
+    2)
+      cat="$(adv_catalog "$dir" bad.json '{"tools":[{"name":"x","title":"x","description":"x","safety":"read","source":{"type":"openapi","operationId":"x","method":"GET","path":"/health"')}"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      out="$(mcp_json "$cat" "tools/list" '{}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"error"' && echo "ADV-PASS truncated catalog JSON rejected" >>"$tmp" || { echo "FINDING (L8-2): truncated catalog not rejected" >>"$tmp"; rc=1; }
+      ;;
+    3)
+      cat="$(adv_catalog "$dir" dup.json '{"tools":[{"name":"dup","title":"a","description":"a","safety":"read","source":{"type":"openapi","operationId":"a","method":"GET","path":"/health"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null},{"name":"dup","title":"b","description":"b","safety":"read","source":{"type":"openapi","operationId":"b","method":"GET","path":"/health"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}')"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      out="$(mcp_json "$cat" "tools/list" '{}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'duplicate\|"error"' && echo "ADV-PASS duplicate tool names rejected (#22)" >>"$tmp" || { echo "FINDING (L8-3): duplicate names listed" >>"$tmp"; rc=1; }
+      ;;
+    4)
+      export NENE_MCP_API_BASE_URL=''
+      unset NENE_MCP_BEARER_TOKEN
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealth","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"error"\|requires\|base' && echo "ADV-PASS empty base URL fails safe" >>"$tmp" || echo "ADV-PASS empty base did not reach off-host" >>"$tmp"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      ;;
+    5)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      export NENE_MCP_TOOLS_JSON="$cat"
+      out="$(mcp_raw '{"jsonrpc":"1.0","id":1,"method":"tools/list","params":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"error"' && echo "ADV-PASS invalid JSON-RPC version rejected" >>"$tmp" || echo "WARN jsonrpc 1.0 response logged" >>"$tmp"
+      ;;
+  esac
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -444,7 +567,13 @@ run_primary_suite() {
       ;;
   esac
 
-  if (( n >= 420 )); then
+  if (( n == 450 )); then
+    ft450_probe "$tmp" || rc=$?
+  elif (( n >= 451 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+  elif (( n >= 420 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
   elif (( n >= 255 )); then
@@ -523,6 +652,10 @@ write_report() {
     friction_block="$(echo "$output" | grep 'FINDING (F-' | sed 's/^/| /' | while read -r line; do
       echo "${line} | medium | security-gap / docs-gap | see probe log |"
     done)"
+  elif (( n == 450 )); then
+    friction_block="FT450 gate: NeNe Bearer E2E deferred until [#380](https://github.com/hideyukiMORI/NeNe/issues/380)/[#395](https://github.com/hideyukiMORI/NeNe/issues/395) merge — re-run for full PASS."
+  elif (( n >= 451 )); then
+    friction_block="L8 + L7 + L6 adversarial exercised — see probe log. FT450 reserved for NeNe merge."
   elif (( n >= 420 )); then
     friction_block="L7 + L6 adversarial exercised — see probe log. NeNe Bearer gate: FT450 after #380/#395."
   elif (( n >= 255 )); then
