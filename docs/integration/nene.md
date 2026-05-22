@@ -18,6 +18,11 @@ NeNe app repo
 └── class/ ...             ← NeNe core unchanged
 ```
 
+## Prerequisites
+
+- **PHP 8.4+** with **`ext-intl`** for NeNe Composer dependencies (Symfony String). Without `intl`, `composer install` in a fresh NeNe clone fails before nene-mcp is reachable. NeNe Docker images include the extension.
+- A running NeNe HTTP API (Docker recommended; see step 3 for a SQLite fallback).
+
 ## Steps
 
 ### 1. Add via Composer
@@ -29,6 +34,21 @@ composer require hideyukimori/nene-mcp
 ```
 
 Same after cloning the NeNe template repo when the app already has `composer.json`.
+
+#### Pre-Packagist install
+
+Until [Packagist](https://packagist.org/) publication, add a VCS repository and pin the release tag:
+
+```json
+"repositories": [
+  { "type": "vcs", "url": "https://github.com/hideyukiMORI/nene-mcp" }
+],
+"require": {
+  "hideyukimori/nene-mcp": "0.1.0"
+}
+```
+
+Then run `composer update hideyukimori/nene-mcp`. A local path repository works only when the checkout matches the version constraint (e.g. checked out at tag `v0.1.0`); `dev-main` does not satisfy `0.1.0`.
 
 ### 2. Add a tool catalog
 
@@ -52,6 +72,18 @@ docker compose up
 ```
 
 Default base URL: `http://localhost:8080`
+
+#### Without Docker (read-only MCP smoke tests)
+
+When Docker is unavailable, SQLite + PHP's built-in server is enough for health-catalog verification:
+
+```bash
+cp .env.example .env   # set NENE_DB_TYPE=SQLite3
+php cli/initSQLite.php --yes
+cd htdocs && php -S localhost:8080
+```
+
+Docker remains the recommended NeNe development path; this shortcut is for local MCP trials and CI-like smoke checks.
 
 ### 4. Configure the MCP client (Cursor)
 
