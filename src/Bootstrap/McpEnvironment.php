@@ -7,6 +7,7 @@ namespace HideyukiMori\NeneMcp\Bootstrap;
 use HideyukiMori\NeneMcp\Catalog\JsonToolCatalog;
 use HideyukiMori\NeneMcp\Catalog\MergedCatalog;
 use HideyukiMori\NeneMcp\Http\NativeMcpHttpClient;
+use HideyukiMori\NeneMcp\Http\StderrHttpOperationLogger;
 use HideyukiMori\NeneMcp\StdioMcpServer;
 
 /**
@@ -26,12 +27,16 @@ final class McpEnvironment
         public readonly ?string $catalogPath,
         public readonly string $apiBaseUrl,
         public readonly ?string $bearerToken,
+        public readonly McpOperatorConfig $operatorConfig = new McpOperatorConfig(),
     ) {
         $hasBearer = $this->bearerToken !== null && $this->bearerToken !== '';
         $this->context = [
             'catalogPath' => $this->catalogPath,
             'apiBaseUrl' => $this->apiBaseUrl,
             'hasBearerTokenConfigured' => $hasBearer,
+            'httpTimeoutSec' => $this->operatorConfig->httpTimeoutSec,
+            'tlsCaFileConfigured' => $this->operatorConfig->tlsCaFile !== null,
+            'httpLogStderr' => $this->operatorConfig->logHttpToStderr,
         ];
     }
 
@@ -61,7 +66,12 @@ final class McpEnvironment
 
         $token = getenv('NENE_MCP_BEARER_TOKEN');
 
-        return new self($catalogPath, $base, self::normalizeBearerToken(is_string($token) ? $token : null));
+        return new self(
+            $catalogPath,
+            $base,
+            self::normalizeBearerToken(is_string($token) ? $token : null),
+            McpOperatorConfig::fromGlobals(),
+        );
     }
 
     private static function normalizeBearerToken(?string $token): ?string
@@ -79,10 +89,16 @@ final class McpEnvironment
     {
         $jsonCatalog = $this->catalogPath !== null ? new JsonToolCatalog($this->catalogPath) : null;
         $merged = new MergedCatalog($jsonCatalog);
+        $operator = $this->operatorConfig;
 
         return new StdioMcpServer(
             $merged,
-            new NativeMcpHttpClient($this->bearerToken),
+            new NativeMcpHttpClient(
+                $this->bearerToken,
+                $operator->httpTimeoutSec,
+                $operator->tlsCaFile,
+                $operator->logHttpToStderr ? new StderrHttpOperationLogger() : null,
+            ),
             $this->apiBaseUrl,
             $this->context,
         );

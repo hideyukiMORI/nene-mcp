@@ -9,8 +9,12 @@ use HideyukiMori\NeneMcp\Exception\McpRuntimeException;
 /** Native PHP stream HTTP client suitable for localhost tools. */
 final readonly class NativeMcpHttpClient implements McpHttpClientInterface
 {
-    public function __construct(private ?string $bearerToken = null)
-    {
+    public function __construct(
+        private ?string $bearerToken = null,
+        private int $timeoutSeconds = 10,
+        private ?string $tlsCaFile = null,
+        private ?HttpOperationLoggerInterface $operationLogger = null,
+    ) {
     }
 
     public function get(string $baseUrl, string $path): McpHttpResponse
@@ -51,6 +55,7 @@ final readonly class NativeMcpHttpClient implements McpHttpClientInterface
      */
     private function request(string $method, string $baseUrl, string $path, ?array $body): McpHttpResponse
     {
+        $startedAt = hrtime(true);
         $headers = ['Accept: application/json'];
 
         if ($this->hasAuthentication()) {
@@ -69,7 +74,7 @@ final readonly class NativeMcpHttpClient implements McpHttpClientInterface
                 'method' => $method,
                 'header' => implode("\r\n", $headers),
                 'ignore_errors' => true,
-                'timeout' => 10,
+                'timeout' => $this->timeoutSeconds,
                 'follow_location' => 0,
                 'max_redirects' => 0,
             ],
@@ -79,10 +84,22 @@ final readonly class NativeMcpHttpClient implements McpHttpClientInterface
             $options['http']['content'] = $content;
         }
 
+        $sslOptions = $this->sslContextOptions($baseUrl);
+
+        if ($sslOptions !== null) {
+            $options['ssl'] = $sslOptions;
+        }
+
         $context = stream_context_create($options);
         $url = rtrim($baseUrl, '/') . $path;
 
         $responseBody = @file_get_contents($url, false, $context);
+
+        if ($responseBody === false) {
+            $this->logOperation($method, $path, 0, $startedAt);
+
+            throw new McpRuntimeException(sprintf('HTTP request failed for "%s".', $url));
+        }
 
         /** @var list<string> $headerLines */
         $headerLines = [];
@@ -91,15 +108,49 @@ final readonly class NativeMcpHttpClient implements McpHttpClientInterface
             $headerLines[] = $hdr;
         }
 
-        if ($responseBody === false) {
-            throw new McpRuntimeException(sprintf('HTTP request failed for "%s".', $url));
-        }
-
-        return new McpHttpResponse(
+        $response = new McpHttpResponse(
             $this->statusCode($headerLines),
             $this->headers($headerLines),
             $responseBody,
         );
+
+        $this->logOperation($method, $path, $response->statusCode, $startedAt);
+
+        return $response;
+    }
+
+    /**
+     * @return array<string, bool|string>|null
+     */
+    private function sslContextOptions(string $baseUrl): ?array
+    {
+        if ($this->tlsCaFile === null || !str_starts_with(strtolower($baseUrl), 'https://')) {
+            return null;
+        }
+
+        if (!is_readable($this->tlsCaFile)) {
+            throw new McpRuntimeException(sprintf(
+                'TLS CA bundle "%s" is not readable. Set NENE_MCP_TLS_CA_FILE to a valid PEM file or unset it.',
+                $this->tlsCaFile,
+            ));
+        }
+
+        return [
+            'verify_peer' => true,
+            'verify_peer_name' => true,
+            'cafile' => $this->tlsCaFile,
+        ];
+    }
+
+    private function logOperation(string $method, string $path, int $statusCode, int $startedAtNs): void
+    {
+        if ($this->operationLogger === null) {
+            return;
+        }
+
+        $durationMs = (int) round((hrtime(true) - $startedAtNs) / 1_000_000);
+
+        $this->operationLogger->log($method, $path, $statusCode, $durationMs);
     }
 
     /**

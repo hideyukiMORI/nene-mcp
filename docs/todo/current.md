@@ -2,7 +2,8 @@
 
 ## Release
 
-- **v0.1.7** — quality release (#85): PHPStan L8, safety validation, RecordingHttpClient bodies
+- **v0.1.8** — SMB adoption tier (#89): timeout, TLS CA, stderr log
+- **v0.1.7** — quality release (#85): PHPStan L8, safety validation
 - **v0.1.6** — shipped (FT379/380): F-7 docs; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.6)
 - **v0.1.5** — superseded on Packagist
 
@@ -25,7 +26,7 @@
 ## Automation
 
 - `tools/ft-runner.sh` — all suites green on main
-- `tools/packagist-verify.sh` — pass on 0.1.7
+- `tools/packagist-verify.sh` — pass on 0.1.8
 - `composer check` — PHPUnit + PHPStan L8
 
 ## Next

@@ -6,9 +6,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.8 — 2026-05-22
+
+SMB adoption tier (#89): operator-tunable HTTP and diagnostics.
+
 ### Added
 
-- Docs: [Commercial use & production scope](/explanation/commercial-use-and-scope) — honest boundaries for developer vs gateway adoption (#87).
+- `McpOperatorConfig` — `NENE_MCP_HTTP_TIMEOUT_SEC` (1–120, default 10), `NENE_MCP_TLS_CA_FILE`, `NENE_MCP_LOG=stderr`
+- `HttpOperationLoggerInterface` + `StderrHttpOperationLogger` (safe metadata only)
+- Docs: [SMB adoption checklist](/explanation/smb-adoption-checklist); env reference expanded
+- PHPUnit: operator config, HTTP client TLS/log behavior
+
+### Changed
+
+- `nene_mcp_about` runtime flags: `httpTimeoutSec`, `tlsCaFileConfigured`, `httpLogStderr`
+- [Commercial use](/explanation/commercial-use-and-scope) — SMB tier row
 
 ## 0.1.7 — 2026-05-22
 

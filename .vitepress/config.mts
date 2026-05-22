@@ -23,6 +23,7 @@ type SidebarLabels = {
   explGroup: string;
   scope: string;
   commercialUse: string;
+  smbAdoption: string;
   architecture: string;
   security: string;
   refGroup: string;
@@ -52,7 +53,7 @@ function nav(t: NavLabels, p: string = '') {
       activeMatch: `${p}/integrations/`,
     },
     {
-      text: 'v0.1.7',
+      text: 'v0.1.8',
       items: [
         {
           text: 'Packagist',
@@ -104,6 +105,7 @@ function sidebar(t: SidebarLabels, p: string = '') {
         items: [
           { text: t.scope, link: `${p}/explanation/scope` },
           { text: t.commercialUse, link: `/explanation/commercial-use-and-scope` },
+          { text: t.smbAdoption, link: `/explanation/smb-adoption-checklist` },
           { text: t.architecture, link: `${p}/explanation/architecture` },
           { text: t.security, link: `${p}/explanation/security-model` },
         ],
@@ -160,6 +162,7 @@ const enSide: SidebarLabels = {
   explGroup: 'Explanation',
   scope: 'Scope & mission',
   commercialUse: 'Commercial use & scope',
+  smbAdoption: 'SMB adoption checklist',
   architecture: 'Architecture',
   security: 'Security model',
   refGroup: 'Reference',
@@ -196,6 +199,7 @@ const jaSide: SidebarLabels = {
   explGroup: '解説',
   scope: 'スコープとミッション',
   commercialUse: 'Commercial use & scope',
+  smbAdoption: 'SMB adoption checklist',
   architecture: 'アーキテクチャ',
   security: 'セキュリティモデル',
   refGroup: 'リファレンス',
@@ -232,6 +236,7 @@ const frSide: SidebarLabels = {
   explGroup: 'Explication',
   scope: 'Périmètre & mission',
   commercialUse: 'Commercial use & scope',
+  smbAdoption: 'SMB adoption checklist',
   architecture: 'Architecture',
   security: 'Modèle de sécurité',
   refGroup: 'Référence',
@@ -268,6 +273,7 @@ const zhSide: SidebarLabels = {
   explGroup: '说明',
   scope: '范围与使命',
   commercialUse: 'Commercial use & scope',
+  smbAdoption: 'SMB adoption checklist',
   architecture: '架构',
   security: '安全模型',
   refGroup: '参考',
@@ -304,6 +310,7 @@ const ptSide: SidebarLabels = {
   explGroup: 'Explicação',
   scope: 'Escopo & missão',
   commercialUse: 'Commercial use & scope',
+  smbAdoption: 'SMB adoption checklist',
   architecture: 'Arquitetura',
   security: 'Modelo de segurança',
   refGroup: 'Referência',
@@ -340,6 +347,7 @@ const deSide: SidebarLabels = {
   explGroup: 'Erklärung',
   scope: 'Umfang & Mission',
   commercialUse: 'Commercial use & scope',
+  smbAdoption: 'SMB adoption checklist',
   architecture: 'Architektur',
   security: 'Sicherheitsmodell',
   refGroup: 'Referenz',

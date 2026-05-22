@@ -24,6 +24,7 @@ That is the starting point. Commercial viability depends on **which side of the 
 | --- | --- | --- |
 | Developer tool (Cursor / Claude Desktop / IDE MCP) | **Yes** | Matches design intent; fail-closed writes, SSRF mitigation, secret handling validated in FT band |
 | Internal AI workflow (dev / QA teams) | **Yes** | Pin Composer version + Bearer in host env; treat API base URL as trusted |
+| **SMB internal / staging** (checklist) | **Yes with checklist** | v0.1.8+: timeout, TLS CA, stderr HTTP log — see [SMB adoption checklist](/explanation/smb-adoption-checklist) |
 | Staging demos & verification | **Yes** | Same constraints as local dev; pin versions for reproducibility |
 | End-user production API gateway | **No** | Wrong architecture—see [Out of scope](#out-of-scope-for-production-gateway-use) |
 | SLA-backed hosted service | **No** | `0.x` releases do not promise long-term wire/env/catalog stability ([release policy](/development/release-policy)) |
@@ -61,39 +62,32 @@ MCP hosts start a **new PHP process per session** (or per tool batch). There is:
 
 High-frequency or multi-tenant traffic needs a **long-lived HTTP/SSE MCP server** or a reverse proxy layer—out of scope for this library.
 
-### 2. Fixed HTTP timeout
+### 2. HTTP timeout (configurable since v0.1.8)
 
-`NativeMcpHttpClient` uses a **10 second** stream timeout (not configurable via env today). Slow upstream APIs or long-running operations may fail without operator code changes.
+`NENE_MCP_HTTP_TIMEOUT_SEC` (default `10`, range `1`–`120`) replaces the former hard-coded limit. Invalid values fall back to `10`.
 
-### 3. Limited TLS flexibility
+### 3. TLS flexibility (partial, v0.1.8+)
 
-Default PHP stream TLS verification applies for `https://` targets. This package does **not** expose:
+`NENE_MCP_TLS_CA_FILE` sets a PEM CA bundle for `https://` base URLs. Still **no** client certificates or certificate pinning in the default client.
 
-- Custom CA bundles
-- Client certificates
-- Certificate pinning
+### 4. Observability (opt-in, v0.1.8+)
 
-Operators needing these controls should terminate TLS elsewhere or inject a custom `McpHttpClientInterface` in a fork/wrapper (not shipped here).
+`NENE_MCP_LOG=stderr` emits one safe line per HTTP call on stderr. stdout remains JSON-RPC only. No metrics/trace IDs in-package.
 
-### 4. No retry or observability hooks
+### 5. No automatic retry
 
-Network failures surface immediately as MCP JSON-RPC errors. By design:
+Network failures surface immediately as MCP JSON-RPC errors unless the host or upstream API retries.
 
-- No automatic retries or circuit breakers
-- No structured logging, metrics, or trace IDs on stdout/stderr (stdout is JSON-RPC only)
-
-Production monitoring requires wrapping the process or instrumenting at the MCP host level.
-
-### 5. Pre-1.0 contract
+### 6. Pre-1.0 contract
 
 During `0.x.y` ([release policy](/development/release-policy)):
 
 - JSON-RPC behavior, env var names, and catalog schema may change with CHANGELOG notice
 - Do not promise multi-year API stability or SLA on `0.x` tags
 
-Pin exact versions (`0.1.7`, not floating `^0.1`) when compliance or audit requires reproducibility.
+Pin exact versions (`0.1.8`, not floating `^0.1`) when compliance or audit requires reproducibility.
 
-### 6. Cross-repo integration gaps
+### 7. Cross-repo integration gaps
 
 Some host paths remain **verified only after host fixes**. Example: NeNe TODO Bearer E2E is gated on [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380) / [#395](https://github.com/hideyukiMORI/NeNe/issues/395); nene-mcp **FT450** runs when those close. Until then, stock NeNe TODO over MCP is a documented defer—not a nene-mcp regression.
 
@@ -104,6 +98,7 @@ Some host paths remain **verified only after host fixes**. Example: NeNe TODO Be
 | Practice | Why |
 | --- | --- |
 | Pin Composer version | Avoid silent behavior changes on `0.x` |
+| Tune timeout / TLS CA / stderr log | See [SMB adoption checklist](/explanation/smb-adoption-checklist) |
 | Keep Bearer in MCP host `env` | Never in catalog or git |
 | Use trusted base URLs only | SSRF model assumes operator-controlled target |
 | Run [catalog smoke test](/howto/catalog-smoke-test) before rollout | Catches catalog mistakes early |
