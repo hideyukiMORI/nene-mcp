@@ -6,9 +6,14 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
-### Fixed
+### Added
 
-- FT201 persona: docs site version pin aligned with Packagist (`^0.1`); NeNe bootstrap steps on integrate-nene; health catalog on docs site; catalog-format `operationId` matches NeNe OpenAPI.
+- Docs site: NeNe catalog patterns (session cookie, CSRF, `id_{id}` paths, URI_ROOT); Bearer-native bridge example; persona band FT201–222 reports.
+- PHPUnit: GET query-string args and NeNe-style `id_{id}` path interpolation regression tests (FT219).
+
+### Changed
+
+- Integration README and i18n locales aligned with auth model (no “NeNe session Bearer”); catalog-format query parameter documentation.
 
 ## 0.1.3 — 2026-05-22
 
