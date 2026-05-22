@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.4 — 2026-05-22
+
+Docs and regression release from persona field trials FT201–222.
+
 ### Added
 
 - Docs site: NeNe catalog patterns (session cookie, CSRF, `id_{id}` paths, URI_ROOT); Bearer-native bridge example; persona band FT201–222 reports.
