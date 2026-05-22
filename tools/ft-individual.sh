@@ -47,6 +47,15 @@ ft_topic() {
   esac
   if (( n == 450 )); then
     echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 750 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + getTodoById without Bearer (L18)" ;;
+      1) echo "${base} + createTodo invalid Bearer (L18)" ;;
+      2) echo "${base} + getTodoById not found (L18)" ;;
+      3) echo "${base} + createTodo missing title (L18)" ;;
+      4) echo "${base} + Bearer health then list (L18)" ;;
+      5) echo "${base} + NENE2 catalog + getTodoById (L18)" ;;
+    esac
   elif (( n >= 720 )); then
     case $(( n % 6 )) in
       0) echo "${base} + FT450 micro-gate listTodos (L17)" ;;
@@ -1264,6 +1273,78 @@ l17_probe() {
   return "$rc"
 }
 
+l18_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local cat="/home/xi/docker/nene-mcp-FT/ft204-persona-business-hard/docs/mcp/tools.json"
+  local token="${NENE_FT450_BEARER_TOKEN:-demo-agent-token}"
+  local out rc=0
+
+  echo "" >>"$tmp"
+  echo "# L18 probe (FT750+, Bearer read-path hardening, variant ${variant})" >>"$tmp"
+
+  unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG NENE2_LOCAL_TOOLS_JSON NENE2_LOCAL_API_BASE_URL
+
+  case "$variant" in
+    0)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      unset NENE_MCP_BEARER_TOKEN
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getTodoById","arguments":{"id":"id_1"}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*401' && echo "ADV-PASS getTodoById without Bearer returns 401" >>"$tmp" || { echo "FINDING (L18-1): unauthenticated getTodoById not blocked" >>"$tmp"; rc=1; }
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      export NENE_MCP_BEARER_TOKEN=invalid-ft750-token
+      out="$(mcp_json "$cat" "tools/call" '{"name":"createTodo","arguments":{"title":"L18 invalid bearer"}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*401' && echo "ADV-PASS createTodo invalid Bearer returns 401" >>"$tmp" || { echo "FINDING (L18-2): invalid Bearer write not rejected" >>"$tmp"; rc=1; }
+      ;;
+    2)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getTodoById","arguments":{"id":"id_999999"}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*404' && echo "ADV-PASS getTodoById not found returns 404" >>"$tmp" || { echo "FINDING (L18-3): missing todo not 404" >>"$tmp"; rc=1; }
+      ;;
+    3)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"createTodo","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*400' && echo "ADV-PASS createTodo missing title returns 400" >>"$tmp" || { echo "FINDING (L18-4): missing title not rejected" >>"$tmp"; rc=1; }
+      ;;
+    4)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealthCheck","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"listTodos","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -qE '"statusCode":\s*200' && echo "$out" | grep -q 'listTodos'; then
+        echo "ADV-PASS Bearer health then listTodos both succeed" >>"$tmp"
+      else
+        echo "FINDING (L18-5): Bearer read chain failed" >>"$tmp"
+        rc=1
+      fi
+      ;;
+    5)
+      unset NENE_MCP_API_BASE_URL
+      export NENE2_LOCAL_API_BASE_URL=http://127.0.0.1:8080
+      export NENE2_LOCAL_TOOLS_JSON="$cat"
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getTodoById","arguments":{"id":"id_1"}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*200' && echo "ADV-PASS NENE2 catalog alias + Bearer getTodoById" >>"$tmp" || { echo "FINDING (L18-6): NENE2 catalog getTodoById failed" >>"$tmp"; rc=1; }
+      ;;
+  esac
+  unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG NENE2_LOCAL_TOOLS_JSON NENE2_LOCAL_API_BASE_URL
+  unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON
+  export NENE_MCP_API_BASE_URL="${FT_DEFAULT_BASE_URL:-http://localhost:8080}"
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -1326,6 +1407,20 @@ run_primary_suite() {
 
   if (( n == 450 )); then
     ft450_probe "$tmp" || rc=$?
+  elif (( n >= 750 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+    l9_probe "$n" "$tmp" || rc=$?
+    l10_probe "$n" "$tmp" || rc=$?
+    l11_probe "$n" "$tmp" || rc=$?
+    l12_probe "$n" "$tmp" || rc=$?
+    l13_probe "$n" "$tmp" || rc=$?
+    l14_probe "$n" "$tmp" || rc=$?
+    l15_probe "$n" "$tmp" || rc=$?
+    l16_probe "$n" "$tmp" || rc=$?
+    l17_probe "$n" "$tmp" || rc=$?
+    l18_probe "$n" "$tmp" || rc=$?
   elif (( n >= 720 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
@@ -1496,6 +1591,8 @@ write_report() {
     else
       friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
     fi
+  elif (( n >= 750 )); then
+    friction_block="L18 + L17 … L6 adversarial exercised — Bearer read-path hardening band."
   elif (( n >= 720 )); then
     friction_block="L17 + L16 … L6 adversarial exercised — Bearer gate sustain band."
   elif (( n >= 690 )); then
