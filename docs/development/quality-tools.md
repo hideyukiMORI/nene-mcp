@@ -13,28 +13,28 @@ Quality checks are explicit, fast, and required before merge. Policy inherits [N
 | Tool | Status | Purpose |
 | --- | --- | --- |
 | PHPUnit | **Adopted** | Unit tests (`composer test`) |
-| PHPStan | **Planned** | Static analysis at level 6+ |
+| PHPStan | **Adopted** | Static analysis level 8 (`composer analyse`) |
 | PHP-CS-Fixer | **Planned** | PSR-12 formatting (`@PSR12`, `declare_strict_types`) |
 
-CI today (`.github/workflows/ci.yml`): `composer test` on PHP 8.2 and 8.4.
+CI today (`.github/workflows/ci.yml`): `composer check` (`@test` + `@analyse`) on PHP 8.2 and 8.4.
 
 ## Target composer scripts
 
-When PHPStan and PHP-CS-Fixer land, standardize on:
+Current scripts:
 
 ```json
 {
   "scripts": {
     "test": "phpunit --configuration phpunit.dist.xml",
-    "analyse": "phpstan analyse --memory-limit=256M",
-    "cs": "php-cs-fixer fix --dry-run --diff --allow-risky=yes",
-    "cs:fix": "php-cs-fixer fix --allow-risky=yes",
-    "check": ["@test", "@analyse", "@cs"]
+    "analyse": "phpstan analyse --configuration=phpstan.neon.dist --memory-limit=256M",
+    "check": ["@test", "@analyse"]
   }
 }
 ```
 
-Until then, **`composer test` is mandatory** before every PR.
+When PHP-CS-Fixer lands, extend `check` with `@cs`.
+
+Until then, **`composer check` is mandatory** before every PR.
 
 ## Introduction checklist
 

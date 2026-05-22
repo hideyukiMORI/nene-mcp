@@ -6,6 +6,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## 0.1.7 — 2026-05-22
+
+Quality release from external review (#85).
+
+### Added
+
+- PHPStan level 8 (`composer analyse`, `composer check`) in CI.
+- Catalog `safety` must be `read` or `write` (rejects other values at load).
+- `RecordingHttpClient` records POST/PUT/PATCH bodies; PHPUnit for POST body and DELETE delegation.
+
+### Changed
+
+- `.gitignore`: Packagist smoke dirs (`0.1.4/`, `/tmp/ft*-packagist/`).
+- Docs: quality-tools, security-model, catalog-format aligned with enforced validation.
+
 ## 0.1.6 — 2026-05-22
 
 Docs patch from FT337 / #71 (F-7 safety mislabel).

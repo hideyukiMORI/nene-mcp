@@ -84,14 +84,11 @@ final readonly class NativeMcpHttpClient implements McpHttpClientInterface
 
         $responseBody = @file_get_contents($url, false, $context);
 
+        /** @var list<string> $headerLines */
         $headerLines = [];
 
-        if (isset($http_response_header) && is_array($http_response_header)) {
-            foreach ($http_response_header as $hdr) {
-                if (is_string($hdr)) {
-                    $headerLines[] = $hdr;
-                }
-            }
+        foreach ($http_response_header as $hdr) {
+            $headerLines[] = $hdr;
         }
 
         if ($responseBody === false) {

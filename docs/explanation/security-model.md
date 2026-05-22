@@ -9,6 +9,7 @@ nene-mcp assumes a **local-dev MCP bridge** to a trusted base URL. Threat model 
 | Write tools | Fail closed without `NENE_MCP_BEARER_TOKEN` |
 | HTTP redirects | Disabled (`follow_location = 0`) — prevents internal SSRF via redirects |
 | Duplicate tool names | Rejected at catalog load (v0.1.3+) |
+| Invalid `safety` value | Rejected at catalog load — must be `read` or `write` (v0.1.7+) |
 | Secrets | Bearer only in env; never in catalog or `nene_mcp_about` |
 | JSON-RPC errors | Safe messages; no stack traces on stdout |
 
@@ -23,6 +24,7 @@ nene-mcp assumes a **local-dev MCP bridge** to a trusted base URL. Threat model 
 - Keep Bearer tokens out of git and catalog JSON
 - Pin Packagist versions for production-like trials
 - Review `safety: write` entries before sharing MCP config
+- `nene_mcp_about` may include `catalogPath` (filesystem path to `tools.json`) for operator debugging — not a secret, but omit catalog from shared MCP configs if path disclosure matters
 - Align `safety` with HTTP method + OpenAPI auth — do not label Bearer-protected POST as `read` ([write-tools-bearer](/howto/write-tools-bearer#safety-label-vs-http-method))
 
 ## Reporting
