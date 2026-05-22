@@ -35,6 +35,6 @@ Post-v0.1.4 regression band with persona sandbox probes (Bearer-native, NeNe mul
 | 253 | pass | [2026-05-field-trial-253.md](2026-05-field-trial-253.md) | Partial catalog (L4) |
 | 254 | pass | [2026-05-field-trial-254.md](2026-05-field-trial-254.md) | Packagist 0.1.4 pin |
 
-Batch summary: [`milestone-ft225-254.md`](milestone-ft225-254.md). Persona band FT201–224: [`index-ft201-211.md`](index-ft201-211.md).
+Batch summary: [`milestone-ft225-254.md`](milestone-ft225-254.md). L6 adversarial: [`index-ft255-294.md`](index-ft255-294.md).
 
 Strategy: [`quality-strategy.md`](quality-strategy.md).

@@ -61,7 +61,18 @@ final class McpEnvironment
 
         $token = getenv('NENE_MCP_BEARER_TOKEN');
 
-        return new self($catalogPath, $base, is_string($token) && $token !== '' ? $token : null);
+        return new self($catalogPath, $base, self::normalizeBearerToken(is_string($token) ? $token : null));
+    }
+
+    private static function normalizeBearerToken(?string $token): ?string
+    {
+        if ($token === null) {
+            return null;
+        }
+
+        $trimmed = trim($token);
+
+        return $trimmed !== '' ? $trimmed : null;
     }
 
     public function buildServer(): StdioMcpServer

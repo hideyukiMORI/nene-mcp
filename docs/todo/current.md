@@ -11,11 +11,11 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
-| FT201–254 | ✅ Persona + post-v0.1.4 regression ([201–224 index](field-trials/index-ft201-211.md), [225–254 index](field-trials/index-ft225-254.md)) |
+| FT201–294 | ✅ Persona + regression + L6 adversarial ([201–224](field-trials/index-ft201-211.md), [225–254](field-trials/index-ft225-254.md), [255–294](field-trials/index-ft255-294.md)) |
 
 ## Open Issues
 
-- **nene-mcp:** 0
+- **nene-mcp:** #65 (this band PR)
 - **NeNe cross-repo:** [#380](https://github.com/hideyukiMORI/NeNe/issues/380) — optional Bearer for MCP agents (FT204)
 
 ## Automation
@@ -25,4 +25,4 @@
 
 ## Next
 
-FT255+ — NeNe #380 (Bearer E2E); continue regression band or cut v0.1.5 when friction warrants.
+FT295+ — F-7 doc callout for mislabeled `safety:read`; NeNe #380; v0.1.5 when warranted.

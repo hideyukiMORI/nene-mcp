@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Reject whitespace-only `NENE_MCP_BEARER_TOKEN` so write tools stay fail-closed (FT255 / #64).
+
 ## 0.1.4 — 2026-05-22
 
 Docs and regression release from persona field trials FT201–222.
