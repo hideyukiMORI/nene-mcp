@@ -13,8 +13,9 @@ Individual reports for the **docs-only persona band** (quality-first, difficulty
 | 207 | [2026-05-field-trial-207.md](2026-05-field-trial-207.md) | L4 | Partial catalog + security |
 | 208 | [2026-05-field-trial-208.md](2026-05-field-trial-208.md) | L2 | de locale parity |
 | 209 | [2026-05-field-trial-209.md](2026-05-field-trial-209.md) | L2 | pt-br locale parity |
-| 210, 211 | [2026-05-field-trial-210.md](2026-05-field-trial-210.md) | — | Regression + security cadence |
+| 210 | [2026-05-field-trial-210.md](2026-05-field-trial-210.md) | — | Regression + security cadence |
+| 211 | [2026-05-field-trial-211.md](2026-05-field-trial-211.md) | L2 | fr/zh catalog-smoke §2b |
 
 Strategy: [`quality-strategy.md`](quality-strategy.md) — difficulty ramp table.
 
-Merged PRs: #37, #39, #41, #43.
+Merged PRs: #37, #39, #41, #43, #44.
