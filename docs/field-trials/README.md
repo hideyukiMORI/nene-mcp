@@ -174,6 +174,8 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT8 | 2026-05-22 | Packagist regression | [2026-05-field-trial-8.md](2026-05-field-trial-8.md) |
 | FT9 | 2026-05-22 | Security write + Bearer fail-closed | [2026-05-field-trial-9.md](2026-05-field-trial-9.md) |
 | FT10–FT200 | 2026-05-22 | Quality-first individual reports | [index-ft10-200.md](index-ft10-200.md) |
+| FT201 | 2026-05-22 | Persona docs-only business app | [2026-05-field-trial-201.md](2026-05-field-trial-201.md) |
+| FT202 | 2026-05-22 | Persona security DevOps | [2026-05-field-trial-202.md](2026-05-field-trial-202.md) |
 
 **Note:** Milestone files under `milestones/` aggregate pass/fail only. Each FT has its own `2026-05-field-trial-{N}.md`.
 
