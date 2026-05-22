@@ -2,8 +2,8 @@
 
 ## Release
 
-- **v0.1.6** — tagging (FT379): F-7 safety mislabel docs (#71)
-- **v0.1.5** — shipped; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.5)
+- **v0.1.6** — shipped (FT379/380): F-7 docs; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.6)
+- **v0.1.5** — superseded on Packagist
 
 ## Field trials
 
@@ -11,7 +11,7 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
-| FT201–378 | ✅ v0.1.5 + L6 + F-7 ([337–338](field-trials/2026-05-field-trial-337.md), [339–378](field-trials/index-ft339-378.md)) |
+| FT201–419 | ✅ through v0.1.6 ([339–378](field-trials/index-ft339-378.md), [380–419](field-trials/index-ft380-419.md)) |
 
 ## Open Issues
 
@@ -25,4 +25,4 @@
 
 ## Next
 
-FT379+ — v0.1.6 doc patch (F-7); NeNe #380.
+FT420+ — NeNe #380; escalate L6 probes if zero friction persists.

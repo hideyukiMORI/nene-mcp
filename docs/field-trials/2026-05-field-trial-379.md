@@ -24,8 +24,8 @@ Doc-only patch release for safety mislabel documentation.
 
 ## Post-tag
 
-- [ ] GitHub Release `v0.1.6` published
-- [ ] `tools/packagist-verify.sh 0.1.6` pass
+- [x] GitHub Release `v0.1.6` published — https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.6
+- [x] `tools/packagist-verify.sh 0.1.6` pass
 
 ## Friction
 
