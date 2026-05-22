@@ -15,7 +15,7 @@ How to attach nene-mcp to your app and MCP client.
 ## Shared prerequisites
 
 1. **App** — documented HTTP API (OpenAPI recommended) running locally
-2. **nene-mcp** — `composer require hideyukimori/nene-mcp` so `vendor/bin/nene-mcp` is available ([pre-Packagist VCS install](nene.md#pre-packagist-install) until Packagist is live)
+2. **nene-mcp** — `composer require hideyukimori/nene-mcp` ([Packagist](https://packagist.org/packages/hideyukimori/nene-mcp)) so `vendor/bin/nene-mcp` is available
 3. **MCP client** — spawn `nene-mcp` over stdio and pass API URL + catalog path via env
 
 **NeNe hosts:** PHP **`ext-intl`** and Docker quick start — see [`nene.md`](nene.md#prerequisites). Host-side fixes are filed in the NeNe repository when FTs find bootstrap gaps.

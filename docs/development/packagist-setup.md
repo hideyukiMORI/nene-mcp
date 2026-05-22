@@ -1,8 +1,10 @@
 # Packagist Setup (G1)
 
-One-time maintainer guide to publish `hideyukimori/nene-mcp` on [Packagist](https://packagist.org/). Policy: [`release-policy.md`](release-policy.md).
+**Status: complete** — https://packagist.org/packages/hideyukimori/nene-mcp (registered 2026-05-22).
 
-Tracked in GitHub Issue **#16**.
+One-time maintainer guide used to publish `hideyukimori/nene-mcp` on [Packagist](https://packagist.org/). Policy: [`release-policy.md`](release-policy.md).
+
+Closed: GitHub Issue **#16**.
 
 ## Preconditions
 

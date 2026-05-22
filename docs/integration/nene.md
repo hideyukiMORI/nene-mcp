@@ -35,20 +35,7 @@ composer require hideyukimori/nene-mcp
 
 Same after cloning the NeNe template repo when the app already has `composer.json`.
 
-#### Pre-Packagist install
-
-Until [Packagist](https://packagist.org/) publication, add a VCS repository and pin the release tag:
-
-```json
-"repositories": [
-  { "type": "vcs", "url": "https://github.com/hideyukiMORI/nene-mcp" }
-],
-"require": {
-  "hideyukimori/nene-mcp": "0.1.0"
-}
-```
-
-Then run `composer update hideyukimori/nene-mcp`. A local path repository works only when the checkout matches the version constraint (e.g. checked out at tag `v0.1.0`); `dev-main` does not satisfy `0.1.0`.
+Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Before Packagist (FT1 era), a VCS repository stanza was required—see [packagist-setup.md](../development/packagist-setup.md) for history.
 
 ### 2. Add a tool catalog
 

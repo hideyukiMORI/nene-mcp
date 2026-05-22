@@ -2,21 +2,18 @@
 
 ## Release
 
-- **v0.1.1** — doc + FT2 baseline (pending tag with PR #17)
-- **G1:** Packagist — Issue #16 ([packagist-setup.md](../development/packagist-setup.md))
+- **v0.1.1** tagged — https://packagist.org/packages/hideyukimori/nene-mcp
+- **G1** ✅ Packagist published (Issue #16 closed)
 
-## Field Trial 2 — complete
+## Field trials
 
-Report: [docs/field-trials/2026-05-field-trial-2.md](../field-trials/2026-05-field-trial-2.md)
-
-Open follow-ups:
-
-- #16 — Packagist submission (maintainer one-time)
-- #17 — integration doc gaps from FT2 (if filed)
+| FT | Status |
+| --- | --- |
+| FT1 | ✅ [report](../field-trials/2026-05-field-trial-1.md) |
+| FT2 | ✅ [report](../field-trials/2026-05-field-trial-2.md) |
 
 ## Next
 
-- Complete **G1** (Packagist) — closes #16
-- **FT3** — security review read-only baseline ([schedule.md](../field-trials/schedule.md))
+- **FT3** — security review, read-only baseline ([schedule.md](../field-trials/schedule.md))
 
 Long-horizon plan: [docs/field-trials/schedule.md](../field-trials/schedule.md)
