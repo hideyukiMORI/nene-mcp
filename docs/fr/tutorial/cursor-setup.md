@@ -1,62 +1,43 @@
-# Cursor / MCP client setup
+# Configuration Cursor / MCP
 
-Configure your MCP host to spawn `vendor/bin/nene-mcp` over stdio with environment variables.
+Configurez le hôte MCP pour lancer `vendor/bin/nene-mcp` en stdio. **Chemins absolus** obligatoires.
 
-## With tool catalog (typical)
-
-Use **absolute paths** for `php` args and `NENE_MCP_TOOLS_JSON`:
+## Avec catalogue (typique)
 
 ```json
 {
   "mcpServers": {
     "nene-mcp": {
       "command": "php",
-      "args": ["/ABS/PATH/vendor/bin/nene-mcp"],
+      "args": ["/CHEMIN/ABS/vendor/bin/nene-mcp"],
       "env": {
         "NENE_MCP_API_BASE_URL": "http://localhost:8080",
-        "NENE_MCP_TOOLS_JSON": "/ABS/PATH/your-app/docs/mcp/tools.json"
+        "NENE_MCP_TOOLS_JSON": "/CHEMIN/ABS/your-app/docs/mcp/tools.json"
       }
     }
   }
 }
 ```
 
-## Catalog-free smoke test
+## Smoke sans catalogue
 
-Omit `NENE_MCP_TOOLS_JSON` until the catalog file exists:
+Omettez `NENE_MCP_TOOLS_JSON` tant que le fichier n’existe pas.
 
-```json
-{
-  "mcpServers": {
-    "nene-mcp": {
-      "command": "php",
-      "args": ["/ABS/PATH/vendor/bin/nene-mcp"],
-      "env": {
-        "NENE_MCP_API_BASE_URL": "http://localhost:8080"
-      }
-    }
-  }
-}
-```
+## Outils d’écriture
 
-Do **not** point `NENE_MCP_TOOLS_JSON` at a placeholder path — a missing file fails `tools/list` entirely.
+Bearer uniquement dans le bloc `env` du hôte MCP — jamais dans git. Voir [Outils d’écriture & Bearer](/fr/howto/write-tools-bearer).
 
-## Write tools
+## Vérifier
 
-When the catalog includes `"safety": "write"` entries, add Bearer only in the MCP host env block — never in git:
+1. Démarrage sans stack trace stderr
+2. `tools/list` → `nene_mcp_about` (+ outils catalogue)
+3. `tools/call` read → status HTTP + JSON
 
-```json
-"env": {
-  "NENE_MCP_API_BASE_URL": "http://localhost:8080",
-  "NENE_MCP_TOOLS_JSON": "/ABS/PATH/docs/mcp/tools.json",
-  "NENE_MCP_BEARER_TOKEN": "your-session-token"
-}
-```
+## Équipes frontend / Cursor
 
-See [Write tools & Bearer](/howto/write-tools-bearer).
+`.cursor/mcp.json` dans le repo : **chemins absolus par machine**. Remplacez `/CHEMIN/ABS` ou documentez la procédure.
 
-## Verify
+## Voir aussi
 
-1. MCP server starts without stderr stack traces
-2. `tools/list` returns `nene_mcp_about` (+ catalog tools when configured)
-3. `tools/call` on a read tool returns HTTP status and JSON body
+- [Intégrer avec NeNe](/fr/howto/integrate-nene)
+- [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns)

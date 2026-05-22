@@ -1,39 +1,43 @@
-# Write tools & Bearer
+# Outils d’écriture & Bearer
 
-Catalog entries with `"safety": "write"` (or any non-`read` safety) require **`NENE_MCP_BEARER_TOKEN`** in the MCP server environment.
+Les entrées `"safety": "write"` exigent **`NENE_MCP_BEARER_TOKEN`** dans l’environnement du serveur MCP.
 
-## Fail-closed default
+## Fail-closed
 
-Without Bearer, `tools/call` returns a JSON-RPC error and **does not send HTTP**:
+Sans Bearer, `tools/call` renvoie une erreur JSON-RPC **sans HTTP** :
 
 ```text
 Write tool "myTool" requires bearer authentication. Set NENE_MCP_BEARER_TOKEN in the MCP server environment.
 ```
 
-This prevents silent anonymous writes when an operator forgets to configure auth.
+## Où mettre le token
 
-## Where to put the token
-
-| OK | Not OK |
+| OK | Interdit |
 | --- | --- |
-| MCP host `env` block (Cursor, Claude Desktop) | `tools.json` |
-| OS environment for the MCP process | Git commits |
-| Secret manager → env at runtime | `nene_mcp_about` output |
+| Bloc `env` du hôte MCP | `tools.json` |
+| Environnement OS du processus MCP | Commits git |
+| Secret manager → env runtime | Sortie `nene_mcp_about` |
 
-## Obtaining a token
+## Obtenir un token
 
-Use your app's normal session flow:
+Suivre le **schéma de sécurité OpenAPI** :
 
-- **NeNe / NENE2**: login endpoint → session Bearer (see host docs)
-- **Custom API**: whatever your OpenAPI security scheme defines
+- **API Bearer / JWT** : flux auth habituel
+- **Module TODO NeNe** : OpenAPI utilise **`sessionCookie`** — voir [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns)
+- **Login marqué `write`** : Bearer env requis même si la route HTTP est publique — **placeholder** possible sur hôtes cookie
 
-nene-mcp forwards the token as `Authorization: Bearer …` on write HTTP calls.
+nene-mcp envoie `Authorization: Bearer …` quand la variable est définie.
 
-## Read tools
+## Identifiants dans les arguments MCP
 
-`safety: read` tools do not require Bearer unless your API enforces auth on GET.
+Mots de passe dans `tools/call` → **logs MCP et transcripts agent**. Comptes dev uniquement.
 
-## Related
+## Outils read
 
-- [Security model](/explanation/security-model)
-- [Environment variables](/reference/environment-variables)
+`safety: read` n’exige pas Bearer dans nene-mcp. Les GET nécessitant des cookies session ne sont pas couverts par Bearer seul — [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns).
+
+## Voir aussi
+
+- [Modèle de sécurité](/fr/explanation/security-model)
+- [Variables d’environnement](/fr/reference/environment-variables)
+- [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns)

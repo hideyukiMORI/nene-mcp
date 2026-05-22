@@ -22,18 +22,24 @@ This prevents silent anonymous writes when an operator forgets to configure auth
 
 ## Obtaining a token
 
-Use your app's normal session flow:
+Use whatever your **OpenAPI security scheme** defines:
 
-- **NeNe / NENE2**: login endpoint → session Bearer (see host docs)
-- **Custom API**: whatever your OpenAPI security scheme defines
+- **Bearer / JWT APIs**: issue or copy the token from your auth flow
+- **NeNe sample TODO module**: OpenAPI uses **`sessionCookie`**, not Bearer — see [NeNe catalog patterns](/howto/neene-catalog-patterns) (authenticated TODO over MCP needs host-side Bearer support or a different API)
+- **Login tools marked `write`**: nene-mcp requires env Bearer even when the HTTP login route is public — you may use a placeholder value for fail-closed bootstrap on cookie-based hosts
 
-nene-mcp forwards the token as `Authorization: Bearer …` on write HTTP calls.
+nene-mcp forwards the token as `Authorization: Bearer …` on HTTP calls when the env var is set.
+
+## Credentials in MCP arguments
+
+Login or write tools that take passwords in `tools/call` arguments expose those values to **MCP host logs and agent transcripts**. Use dev-only accounts; never commit secrets to catalog JSON or git.
 
 ## Read tools
 
-`safety: read` tools do not require Bearer unless your API enforces auth on GET.
+`safety: read` tools do not require Bearer in nene-mcp unless you set the env var (Bearer is then sent on GET as well). Hosts that require session cookies on GET are not covered by Bearer alone — see [NeNe catalog patterns](/howto/neene-catalog-patterns).
 
 ## Related
 
 - [Security model](/explanation/security-model)
 - [Environment variables](/reference/environment-variables)
+- [NeNe catalog patterns](/howto/neene-catalog-patterns)

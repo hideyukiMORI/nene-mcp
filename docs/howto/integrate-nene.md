@@ -29,10 +29,19 @@ composer require hideyukimori/nene-mcp:^0.1
 2. **Commit** `docs/mcp/tools.json` — NENE2-compatible format ([catalog reference](/reference/catalog-format)). Start from [NeNe health catalog example](/howto/health-catalog-example).
 3. **Configure MCP host** with absolute paths to `vendor/bin/nene-mcp` and `tools.json`.
 4. **Smoke** read tools ([catalog smoke test](/howto/catalog-smoke-test)) before enabling write tools.
+5. For NeNe TODO / session routes, read [NeNe catalog patterns](/howto/neene-catalog-patterns) (path params, `URI_ROOT`, session vs Bearer).
 
 ::: warning Absolute catalog path
 Use an **absolute** path for `NENE_MCP_TOOLS_JSON`. Relative paths depend on the MCP process working directory — Cursor may start with a cwd where `docs/mcp/tools.json` does not resolve.
 :::
+
+::: info NeNe session cookie limitation
+The stock NeNe sample secures `/todo/*` with **session cookies**. nene-mcp is a **stateless Bearer proxy** — it does not keep cookies between MCP calls. Health and other public reads work; multi-step login → list → create on the sample TODO module **does not** work end-to-end without host auth changes. Details: [NeNe catalog patterns](/howto/neene-catalog-patterns).
+:::
+
+## Base URL (`NENE_MCP_API_BASE_URL`)
+
+Must match where NeNe actually serves HTTP (including `URI_ROOT` or reverse-proxy prefix). Example: app at `http://localhost:8080/mybiz/…` → set `NENE_MCP_API_BASE_URL=http://localhost:8080/mybiz` and keep catalog paths like `/health/index`. Wrong prefix → HTTP 404. See [NeNe catalog patterns](/howto/neene-catalog-patterns).
 
 ## Environment aliases
 
@@ -49,3 +58,4 @@ If NeNe Docker or extension prerequisites block integration, file Issues in the 
 
 - [Other platforms](/howto/other-platforms)
 - [Ecosystem map](/integrations/ecosystem)
+- [NeNe catalog patterns](/howto/neene-catalog-patterns)

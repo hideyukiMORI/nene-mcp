@@ -1,6 +1,6 @@
-# NeNe health catalog example
+# Exemple catalogue health NeNe
 
-Copy this to `docs/mcp/tools.json` in your NeNe app. Aligned with NeNe `docs/api/openapi.yaml` (`operationId: healthCheck`).
+Copiez dans `docs/mcp/tools.json` de votre app NeNe. Aligné sur OpenAPI `operationId: healthCheck`.
 
 ```json
 {
@@ -27,22 +27,22 @@ Copy this to `docs/mcp/tools.json` in your NeNe app. Aligned with NeNe `docs/api
 }
 ```
 
-## Subdirectory deploy (`URI_ROOT`)
+## Déploiement sous-répertoire (`URI_ROOT`)
 
-When NeNe runs under a path prefix, set **`NENE_MCP_API_BASE_URL`** to include that prefix (e.g. `http://localhost:8080/mybiz`). Catalog paths stay route-relative (`/health/index`). Details: [NeNe catalog patterns](/howto/neene-catalog-patterns).
+Avec un prefix NeNe, définissez **`NENE_MCP_API_BASE_URL`** avec ce prefix (ex. `http://localhost:8080/mybiz`). Les chemins catalogue restent `/health/index`. Voir [Motifs catalogue NeNe](/fr/howto/neene-catalog-patterns).
 
-## Verify
+## Vérifier
 
 ```bash
 export NENE_MCP_API_BASE_URL=http://localhost:8080
-export NENE_MCP_TOOLS_JSON=/ABS/PATH/docs/mcp/tools.json
+export NENE_MCP_TOOLS_JSON=/CHEMIN/ABS/docs/mcp/tools.json
 printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
   | php vendor/bin/nene-mcp
 ```
 
-Expect `statusCode` 200 in structured content.
+Attendu : `statusCode` 200.
 
-## Related
+## Voir aussi
 
-- [Tool catalog JSON reference](/reference/catalog-format)
-- [Integrate with NeNe](/howto/integrate-nene)
+- [JSON du catalogue](/fr/reference/catalog-format)
+- [Intégrer avec NeNe](/fr/howto/integrate-nene)
