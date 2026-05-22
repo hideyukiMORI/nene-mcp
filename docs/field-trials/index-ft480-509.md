@@ -10,4 +10,6 @@ Full row list: see [`milestone-ft480-509.md`](milestone-ft480-509.md) summary (3
 
 NeNe Bearer confirmation: **FT450** ([gate](nene-380-confirmation-gate.md)).
 
+Next: [510–539](index-ft510-539.md).
+
 Prior: [450–479](index-ft450-479.md).
