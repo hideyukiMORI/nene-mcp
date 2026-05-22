@@ -32,6 +32,6 @@ When [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380) / [#395](https
 
 ## Until then
 
-nene-mcp continues **L7** adversarial band (FT420+) and does **not** block on NeNe.
+nene-mcp continues **L8** adversarial band (FT451+) and does **not** block on NeNe. Run **`tools/ft-individual.sh 450`** after merge — harness auto-runs full matrix when `listTodos` returns 200.
 
 NeNe assignment: implementation checklist [#395](https://github.com/hideyukiMORI/NeNe/issues/395).
