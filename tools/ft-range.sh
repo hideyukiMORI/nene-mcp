@@ -16,6 +16,8 @@ pass=0
 fail=0
 
 for (( n=START; n<=END; n++ )); do
+  export NENE_MCP_API_BASE_URL="${FT_DEFAULT_BASE_URL:-http://localhost:8080}"
+  unset NENE_MCP_BEARER_TOKEN NENE_MCP_BEARER_TOKENS NENE_MCP_TOOLS_JSON
   echo "======== FT${n} $(date -Iseconds) ========" | tee -a "$LOG"
   if "$INDIV" "$n" >>"$LOG" 2>&1; then
     echo -e "${n}\tpass\t${ROOT}/docs/field-trials/2026-05-field-trial-${n}.md" >>"$SUMMARY"
