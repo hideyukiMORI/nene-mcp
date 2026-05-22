@@ -2,7 +2,7 @@
 
 ## Release
 
-- **v0.1.3** — pending merge (PR #24): duplicate names, FT9 quality
+- **v0.1.3** — FT201 persona fixes (#29); tag + Packagist sync pending
 - **v0.3.0** — evaluate after FT200 gate ([milestone](field-trials/milestones/2026-05-ft200-gate.md))
 
 ## Field trials
@@ -11,6 +11,11 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
+| FT201+ | Persona / docs-only adversarial band |
+
+## Persona FT sandbox
+
+External clones: `../nene-mcp-FT/` (e.g. `ft201-persona-business/`)
 
 Methodology: [`quality-strategy.md`](field-trials/quality-strategy.md)
 
