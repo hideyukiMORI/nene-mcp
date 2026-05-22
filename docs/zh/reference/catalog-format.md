@@ -45,6 +45,10 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
 
 **NeNe：** 路径如 `/todo/item/id_{id}` — 按 OpenAPI 原样复制。见 [NeNe 目录模式](/zh/howto/neene-catalog-patterns)。
 
+## 查询参数（GET）
+
+**GET** 工具中未用于 `{path}` 的参数会变为 **查询字符串**。见 [Tool catalog JSON (en)](/reference/catalog-format)。
+
 ## Validation errors
 
 Invalid JSON, duplicate names, or missing required fields fail at `tools/list` with a safe JSON-RPC error.
