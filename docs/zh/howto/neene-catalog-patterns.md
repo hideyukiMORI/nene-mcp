@@ -34,6 +34,10 @@ nene-mcp 当前：
 
 因此 **login → listTodos → createTodo** 在 stock NeNe 示例上 **无法** 通过 MCP  alone 完成。
 
+## CSRF（`X-CSRF-Token`）
+
+TODO **写入** 除 cookie 外还需要 login 返回的 token 作为 **`X-CSRF-Token` 头**。nene-mcp **不支持**该头。见 [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380)。
+
 ## 写入工具与 login 引导
 
 `safety: write` 需要 env Bearer（fail-closed）。HTTP login 公开时可用 **占位 Bearer** 满足 fail-closed。

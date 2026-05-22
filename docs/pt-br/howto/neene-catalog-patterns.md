@@ -67,6 +67,10 @@ So a docs-only flow **login → listTodos → createTodo** on the **stock NeNe s
 
 This is a **host auth model** limitation, not a catalog JSON bug.
 
+## CSRF on NeNe writes (`X-CSRF-Token`)
+
+NeNe TODO writes require **`X-CSRF-Token`** from login plus session cookie. nene-mcp does not send CSRF headers. See [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380).
+
 ## Write tools and login bootstrap
 
 Tools with `"safety": "write"` require `NENE_MCP_BEARER_TOKEN` in the MCP process env **before HTTP** (fail-closed).

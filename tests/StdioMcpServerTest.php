@@ -91,6 +91,100 @@ final class StdioMcpServerTest extends TestCase
         self::assertSame('rq-42', $response['result']['structuredContent']['requestId']);
     }
 
+    public function testGetToolAppendsRemainingArgumentsAsQueryString(): void
+    {
+        $catalogPath = sys_get_temp_dir() . '/nene-mcp-query-' . uniqid('', true) . '.json';
+        file_put_contents($catalogPath, json_encode([
+            'tools' => [[
+                'name' => 'searchItems',
+                'title' => 'Search',
+                'description' => 'Search with query',
+                'safety' => 'read',
+                'source' => [
+                    'type' => 'openapi',
+                    'operationId' => 'searchItems',
+                    'method' => 'GET',
+                    'path' => '/api/items',
+                ],
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'sku' => ['type' => 'string'],
+                        'limit' => ['type' => 'integer'],
+                    ],
+                    'additionalProperties' => false,
+                ],
+                'responseSchemaRef' => null,
+            ]],
+        ], JSON_THROW_ON_ERROR));
+
+        $client = new RecordingHttpClient(new McpHttpResponse(200, [], '{"items":[]}'));
+        $server = new StdioMcpServer(
+            new MergedCatalog(new JsonToolCatalog($catalogPath)),
+            $client,
+            'http://app.test',
+            [],
+        );
+
+        $server->handle([
+            'jsonrpc' => '2.0',
+            'id' => 7,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'searchItems',
+                'arguments' => ['sku' => 'WIDGET-1', 'limit' => 10],
+            ],
+        ]);
+
+        self::assertSame(['GET', 'http://app.test', '/api/items?sku=WIDGET-1&limit=10'], $client->requests[0]);
+    }
+
+    public function testGetToolInterpolatesNeNeStylePathSegments(): void
+    {
+        $catalogPath = sys_get_temp_dir() . '/nene-mcp-path-' . uniqid('', true) . '.json';
+        file_put_contents($catalogPath, json_encode([
+            'tools' => [[
+                'name' => 'getTodoById',
+                'title' => 'Get todo',
+                'description' => 'NeNe path style',
+                'safety' => 'read',
+                'source' => [
+                    'type' => 'openapi',
+                    'operationId' => 'getTodo',
+                    'method' => 'GET',
+                    'path' => '/todo/item/id_{id}',
+                ],
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => ['id' => ['type' => 'string']],
+                    'required' => ['id'],
+                    'additionalProperties' => false,
+                ],
+                'responseSchemaRef' => null,
+            ]],
+        ], JSON_THROW_ON_ERROR));
+
+        $client = new RecordingHttpClient(new McpHttpResponse(200, [], '{}'));
+        $server = new StdioMcpServer(
+            new MergedCatalog(new JsonToolCatalog($catalogPath)),
+            $client,
+            'http://app.test',
+            [],
+        );
+
+        $server->handle([
+            'jsonrpc' => '2.0',
+            'id' => 8,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'getTodoById',
+                'arguments' => ['id' => '42'],
+            ],
+        ]);
+
+        self::assertSame(['GET', 'http://app.test', '/todo/item/id_42'], $client->requests[0]);
+    }
+
     public function testNotificationWithoutIdReturnsNull(): void
     {
         $server = $this->createServer(null);
