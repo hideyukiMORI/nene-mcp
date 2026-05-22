@@ -10,7 +10,8 @@ use HideyukiMori\NeneMcp\Exception\McpRuntimeException;
  * Loads MCP tool entries from a committed JSON catalog compatible with NENE2 `docs/mcp/tools.json`.
  *
  * @phpstan-type McpToolSource array{type: string, operationId: string, method: string, path: string}
- * @phpstan-type McpTool array{name: string, title: string, description: string, safety: string, source: McpToolSource|array{type: string}, inputSchema: array<string, mixed>, responseSchemaRef: string|null}
+ * @phpstan-type McpToolSafety 'read'|'write'
+ * @phpstan-type McpTool array{name: string, title: string, description: string, safety: McpToolSafety, source: McpToolSource|array{type: string}, inputSchema: array<string, mixed>, responseSchemaRef: string|null}
  */
 final class JsonToolCatalog
 {
@@ -137,15 +138,35 @@ final class JsonToolCatalog
             'path' => $this->stringValue($source, 'path'),
         ];
 
+        $safety = $this->safetyValue($value);
+
         return [
             'name' => $this->stringValue($value, 'name'),
             'title' => $this->stringValue($value, 'title'),
             'description' => $this->stringValue($value, 'description'),
-            'safety' => $this->stringValue($value, 'safety'),
+            'safety' => $safety,
             'source' => $resolvedSource,
             'inputSchema' => $inputSchema,
             'responseSchemaRef' => $this->nullableStringValue($value, 'responseSchemaRef'),
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $values
+     * @return 'read'|'write'
+     */
+    private function safetyValue(array $values): string
+    {
+        $safety = $this->stringValue($values, 'safety');
+
+        if ($safety !== 'read' && $safety !== 'write') {
+            throw new McpRuntimeException(sprintf(
+                'MCP catalog field "safety" must be "read" or "write", got "%s".',
+                $safety,
+            ));
+        }
+
+        return $safety;
     }
 
     /**

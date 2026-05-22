@@ -39,6 +39,22 @@ final class JsonToolCatalogTest extends TestCase
         $catalog->tools();
     }
 
+    public function testRejectsInvalidSafetyValue(): void
+    {
+        $path = $this->writeCatalog([
+            'tools' => [
+                array_merge($this->openapiTool('unsafe', 'unsafeOp'), ['safety' => 'admin']),
+            ],
+        ]);
+
+        $catalog = new JsonToolCatalog($path);
+
+        $this->expectException(McpRuntimeException::class);
+        $this->expectExceptionMessage('MCP catalog field "safety" must be "read" or "write"');
+
+        $catalog->tools();
+    }
+
     public function testRejectsInvalidJson(): void
     {
         $path = sys_get_temp_dir() . '/nene-mcp-invalid-' . uniqid('', true) . '.json';

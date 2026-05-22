@@ -19,7 +19,7 @@ final class StdioMcpServerTest extends TestCase
     {
         $server = $this->createServer(null);
 
-        $response = $server->handle([
+        $response = $this->request($server, [
             'jsonrpc' => '2.0',
             'id' => 1,
             'method' => 'initialize',
@@ -37,7 +37,7 @@ final class StdioMcpServerTest extends TestCase
     {
         $server = $this->createServer(self::FIXTURE_CATALOG);
 
-        $response = $server->handle([
+        $response = $this->request($server, [
             'jsonrpc' => '2.0',
             'id' => 2,
             'method' => 'tools/list',
@@ -54,7 +54,7 @@ final class StdioMcpServerTest extends TestCase
     {
         $server = $this->createServer(null);
 
-        $response = $server->handle([
+        $response = $this->request($server, [
             'jsonrpc' => '2.0',
             'id' => 3,
             'method' => 'tools/call',
@@ -75,7 +75,7 @@ final class StdioMcpServerTest extends TestCase
         $catalog = new MergedCatalog(new JsonToolCatalog(self::FIXTURE_CATALOG));
         $server = new StdioMcpServer($catalog, $client, 'http://app.test', []);
 
-        $response = $server->handle([
+        $response = $this->request($server, [
             'jsonrpc' => '2.0',
             'id' => 4,
             'method' => 'tools/call',
@@ -86,7 +86,7 @@ final class StdioMcpServerTest extends TestCase
         ]);
 
         self::assertCount(1, $client->requests);
-        self::assertSame(['GET', 'http://app.test', '/demo/health'], $client->requests[0]);
+        self::assertSame(['GET', 'http://app.test', '/demo/health', null], $client->requests[0]);
         self::assertSame(200, $response['result']['structuredContent']['statusCode']);
         self::assertSame('rq-42', $response['result']['structuredContent']['requestId']);
     }
@@ -136,7 +136,7 @@ final class StdioMcpServerTest extends TestCase
             ],
         ]);
 
-        self::assertSame(['GET', 'http://app.test', '/api/items?sku=WIDGET-1&limit=10'], $client->requests[0]);
+        self::assertSame(['GET', 'http://app.test', '/api/items?sku=WIDGET-1&limit=10', null], $client->requests[0]);
     }
 
     public function testGetToolInterpolatesNeNeStylePathSegments(): void
@@ -182,7 +182,7 @@ final class StdioMcpServerTest extends TestCase
             ],
         ]);
 
-        self::assertSame(['GET', 'http://app.test', '/todo/item/id_42'], $client->requests[0]);
+        self::assertSame(['GET', 'http://app.test', '/todo/item/id_42', null], $client->requests[0]);
     }
 
     public function testNotificationWithoutIdReturnsNull(): void
@@ -229,7 +229,7 @@ final class StdioMcpServerTest extends TestCase
             [],
         );
 
-        $response = $server->handle([
+        $response = $this->request($server, [
             'jsonrpc' => '2.0',
             'id' => 5,
             'method' => 'tools/call',
@@ -277,7 +277,7 @@ final class StdioMcpServerTest extends TestCase
             [],
         );
 
-        $response = $server->handle([
+        $response = $this->request($server, [
             'jsonrpc' => '2.0',
             'id' => 6,
             'method' => 'tools/list',
@@ -286,6 +286,101 @@ final class StdioMcpServerTest extends TestCase
 
         self::assertSame(-32603, $response['error']['code']);
         self::assertStringContainsString('duplicated', $response['error']['message']);
+    }
+
+    public function testPostToolForwardsRequestBodyToHttpClient(): void
+    {
+        $catalogPath = sys_get_temp_dir() . '/nene-mcp-post-' . uniqid('', true) . '.json';
+        file_put_contents($catalogPath, json_encode([
+            'tools' => [[
+                'name' => 'createItem',
+                'title' => 'Create',
+                'description' => 'Create item',
+                'safety' => 'write',
+                'source' => [
+                    'type' => 'openapi',
+                    'operationId' => 'createItem',
+                    'method' => 'POST',
+                    'path' => '/api/items',
+                ],
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => ['title' => ['type' => 'string']],
+                    'required' => ['title'],
+                    'additionalProperties' => false,
+                ],
+                'responseSchemaRef' => null,
+            ]],
+        ], JSON_THROW_ON_ERROR));
+
+        $client = new RecordingHttpClient(new McpHttpResponse(201, [], '{"id":1}'), true);
+        $server = new StdioMcpServer(
+            new MergedCatalog(new JsonToolCatalog($catalogPath)),
+            $client,
+            'http://app.test',
+            [],
+        );
+
+        $server->handle([
+            'jsonrpc' => '2.0',
+            'id' => 9,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'createItem',
+                'arguments' => ['title' => 'FT probe'],
+            ],
+        ]);
+
+        self::assertSame(
+            ['POST', 'http://app.test', '/api/items', ['title' => 'FT probe']],
+            $client->requests[0],
+        );
+    }
+
+    public function testDeleteToolDelegatesToHttpClient(): void
+    {
+        $catalogPath = sys_get_temp_dir() . '/nene-mcp-delete-' . uniqid('', true) . '.json';
+        file_put_contents($catalogPath, json_encode([
+            'tools' => [[
+                'name' => 'deleteItem',
+                'title' => 'Delete',
+                'description' => 'Delete item',
+                'safety' => 'write',
+                'source' => [
+                    'type' => 'openapi',
+                    'operationId' => 'deleteItem',
+                    'method' => 'DELETE',
+                    'path' => '/api/items/{id}',
+                ],
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => ['id' => ['type' => 'string']],
+                    'required' => ['id'],
+                    'additionalProperties' => false,
+                ],
+                'responseSchemaRef' => null,
+            ]],
+        ], JSON_THROW_ON_ERROR));
+
+        $client = new RecordingHttpClient(new McpHttpResponse(204, [], ''), true);
+        $server = new StdioMcpServer(
+            new MergedCatalog(new JsonToolCatalog($catalogPath)),
+            $client,
+            'http://app.test',
+            [],
+        );
+
+        $server->handle([
+            'jsonrpc' => '2.0',
+            'id' => 10,
+            'method' => 'tools/call',
+            'params' => [
+                'name' => 'deleteItem',
+                'arguments' => ['id' => '99'],
+            ],
+        ]);
+
+        self::assertSame(['DELETE', 'http://app.test', '/api/items/99', null], $client->requests[0]);
     }
 
     /** @internal */
@@ -301,5 +396,17 @@ final class StdioMcpServerTest extends TestCase
             'http://stub',
             [],
         );
+    }
+
+    /**
+     * @param array<string, mixed> $message
+     * @return array<string, mixed>
+     */
+    private function request(StdioMcpServer $server, array $message): array
+    {
+        $response = $server->handle($message);
+        self::assertIsArray($response);
+
+        return $response;
     }
 }

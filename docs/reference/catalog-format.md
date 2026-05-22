@@ -34,7 +34,7 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
 | Field | Rule |
 | --- | --- |
 | `name` | Unique across catalog (enforced v0.1.3+) |
-| `safety` | `read` or `write` (non-read requires Bearer env **before HTTP**) |
+| `safety` | **`read` or `write` only** (enforced at catalog load; non-read requires Bearer env **before HTTP**) |
 | `source.type` | Must be `openapi` in JSON catalogs |
 | `source.path` | Relative path preferred; appended to base URL |
 | `source.operationId` | Should match OpenAPI `operationId` for traceability |

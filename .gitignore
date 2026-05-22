@@ -1,8 +1,12 @@
 /vendor/
 /.phpunit.cache/
+/.phpstan-cache/
 /.idea/
 .env
 *.log
 node_modules/
 .vitepress/cache
 .vitepress/dist
+# Packagist smoke installs (tools/packagist-verify.sh, ft-runner packagist suite)
+0.1.4/
+/tmp/ft*-packagist/

@@ -95,6 +95,10 @@ final readonly class StdioMcpServer
     }
 
     /** @param array<string, mixed> $schema */
+    /**
+     * @param array<string, mixed> $schema
+     * @return array<string, mixed>
+     */
     private function mcpInputSchema(array $schema): array
     {
         if (($schema['properties'] ?? null) === []) {
@@ -190,14 +194,11 @@ final readonly class StdioMcpServer
      */
     private function httpToolResult(array $tool, array $arguments): array
     {
-        $source = $tool['source'];
-        /** @phpstan-ignore offsetAccess.invalidOffset */
+        $source = $this->requireOpenApiSource($tool);
         $pathTpl = $source['path'];
+        [$path, $remainingArgs] = $this->interpolatePath($pathTpl, $arguments);
 
-        [$path, $remainingArgs] = $this->interpolatePath(is_string($pathTpl) ? $pathTpl : '', $arguments);
-
-        /** @phpstan-ignore offsetAccess.invalidOffset */
-        $method = is_string($source['method'] ?? null) ? $source['method'] : '';
+        $method = $source['method'];
 
         $response = match ($method) {
             'GET'    => $this->httpClient->get($this->apiBaseUrl, $this->appendQuery($path, $remainingArgs)),
@@ -237,7 +238,7 @@ final readonly class StdioMcpServer
     private function interpolatePath(string $path, array $arguments): array
     {
         preg_match_all('/\{([^}]+)\}/', $path, $matches);
-        /** @var list<string> $pathParams */
+        /** @var list<non-empty-string> $pathParams */
         $pathParams = $matches[1];
 
         $remaining = $arguments;
@@ -254,6 +255,32 @@ final readonly class StdioMcpServer
         }
 
         return [$path, $remaining];
+    }
+
+    /**
+     * @param McpTool $tool
+     * @return array{type: 'openapi', operationId: string, method: string, path: string}
+     */
+    private function requireOpenApiSource(array $tool): array
+    {
+        $source = $tool['source'];
+
+        if (($source['type'] ?? null) !== 'openapi') {
+            throw new McpRuntimeException(sprintf('MCP tool "%s" does not map to a supported backend.', $tool['name']));
+        }
+
+        foreach (['operationId', 'method', 'path'] as $key) {
+            if (!isset($source[$key]) || !is_string($source[$key]) || $source[$key] === '') {
+                throw new McpRuntimeException(sprintf('OpenAPI source field "%s" must be a non-empty string.', $key));
+            }
+        }
+
+        return [
+            'type' => 'openapi',
+            'operationId' => $source['operationId'],
+            'method' => $source['method'],
+            'path' => $source['path'],
+        ];
     }
 
     /** @param array<string, mixed> $queryArgs */

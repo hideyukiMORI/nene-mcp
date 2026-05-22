@@ -18,7 +18,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - uses: ramsey/composer-install@v4
-      - run: composer test
+      - run: composer check
       - name: FT regression smoke (fixture catalog)
         run: |
           chmod +x tools/ft-runner.sh
