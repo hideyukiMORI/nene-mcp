@@ -41,6 +41,12 @@ nene-mcp は現状:
 | health 等の公開 read | ドキュメント通り MCP で可 |
 | NeNe TODO を MCP 化 | NeNe 側で Bearer 対応を追加、または Bearer 前提の API を使う |
 
+## CSRF（`X-CSRF-Token`）
+
+NeNe の TODO **書き込み**は OpenAPI 上 **`csrfToken`** 必須。login 応答の `Data.csrfToken` を **`X-CSRF-Token` ヘッダ** で送る（session cookie とセット）。
+
+nene-mcp は **CSRF ヘッダを送れない**し、login 応答の token を次の HTTP に載せられません。Cookie 問題に加え、**書き込みは CSRF でも失敗**します。[NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380) 参照。
+
 ## 書き込みツールと login ブートストラップ
 
 `safety: write` は env に Bearer 必須（fail-closed）。NeNe `/session/login` は未認証 POST 可だが、カタログ上 login ツールも Bearer なしでは **HTTP 前に拒否**されます。Cookie ホストでは **プレースホルダ Bearer** で fail-closed を満たす運用があります。

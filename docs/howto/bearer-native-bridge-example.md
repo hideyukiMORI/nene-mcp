@@ -145,6 +145,8 @@ printf '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"createIn
 
 Expect **201** (or your API’s success code).
 
+Optional GET filter — add `"sku"` to a search tool’s `inputSchema`; remaining GET args become query string ([catalog-format](/reference/catalog-format)).
+
 ## 6. Team checklist — avoid partial catalog drift
 
 Before telling agents “inventory tools are live”:

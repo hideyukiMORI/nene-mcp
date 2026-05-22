@@ -46,6 +46,34 @@ Use `{param}` in `path`; provide values in `tools/call` arguments. nene-mcp URL-
 
 **NeNe convention:** paths like `/todo/item/id_{id}` — copy the OpenAPI path literally, not `/todo/item/{id}`. See [NeNe catalog patterns](/howto/neene-catalog-patterns).
 
+## Query parameters (GET)
+
+For `GET` tools, arguments **not consumed** as `{path}` tokens are appended as a **query string** (`http_build_query`).
+
+Example catalog entry:
+
+```json
+{
+  "name": "searchInventory",
+  "safety": "read",
+  "source": {
+    "type": "openapi",
+    "operationId": "searchItems",
+    "method": "GET",
+    "path": "/api/inventory/items"
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": { "sku": { "type": "string" } },
+    "additionalProperties": false
+  }
+}
+```
+
+`tools/call` with `{ "sku": "WIDGET-1" }` → `GET /api/inventory/items?sku=WIDGET-1`.
+
+POST/PUT/PATCH: remaining arguments become JSON body (not query).
+
 ## Validation errors
 
 Invalid JSON, duplicate names, or missing required fields fail at `tools/list` with a safe JSON-RPC error.

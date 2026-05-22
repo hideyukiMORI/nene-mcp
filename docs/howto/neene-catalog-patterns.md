@@ -67,6 +67,33 @@ So a docs-only flow **login → listTodos → createTodo** on the **stock NeNe s
 
 This is a **host auth model** limitation, not a catalog JSON bug.
 
+## CSRF on NeNe writes (`X-CSRF-Token`)
+
+NeNe TODO **POST/PUT/DELETE** routes declare **`csrfToken`** security in OpenAPI. After login, the API returns `Data.csrfToken` and expects:
+
+```http
+X-CSRF-Token: <token from login>
+```
+
+on mutating requests (with session cookie).
+
+**Observed (FT215):** `POST /todo/index` with session cookie but **without** `X-CSRF-Token` → `CSRF-TOKEN-INVALID`. With header → success.
+
+nene-mcp today:
+
+- Sends **only** `Authorization: Bearer …` (optional) and `Content-Type` — **no** `X-CSRF-Token` header support
+- Does **not** map login response fields into follow-up HTTP headers
+- Catalog JSON has no field for per-request headers
+
+So even if session cookies were persisted, **NeNe write tools over MCP would still fail CSRF** unless the host adds Bearer-only writes or nene-mcp gains header/cookie plumbing (out of scope unless ADR).
+
+| Step | NeNe browser app | nene-mcp MCP |
+| --- | --- | --- |
+| Login | Sets cookie + stores CSRF | `sessionLogin` may return `csrfToken` in tool body only |
+| Create todo | Cookie + `X-CSRF-Token` | No cookie jar, no CSRF header → **fail** |
+
+See [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380) for optional Bearer auth aimed at agents.
+
 ## Write tools and login bootstrap
 
 Tools with `"safety": "write"` require `NENE_MCP_BEARER_TOKEN` in the MCP process env **before HTTP** (fail-closed).
