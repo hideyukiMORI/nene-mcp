@@ -51,7 +51,7 @@ function nav(t: NavLabels, p: string = '') {
       activeMatch: `${p}/integrations/`,
     },
     {
-      text: 'v0.1.3',
+      text: 'v0.1.4',
       items: [
         {
           text: 'Packagist',
