@@ -34,7 +34,22 @@ nene-mcp は env が設定されていれば `Authorization: Bearer …` を HTT
 
 ## 読み取りツール
 
-`safety: read` は nene-mcp 上 Bearer 不要（env を設定した場合は GET にも Bearer 送信）。GET に session cookie が必要なホストは Bearer だけでは不足 — [NeNe カタログパターン](/ja/howto/neene-catalog-patterns)。
+`safety: read` は nene-mcp 上 Bearer 不要（env を設定した場合は GET にも Bearer 送信）。
+
+**Bearer 必須 GET:** read でも API が **401** を返すなら `NENE_MCP_BEARER_TOKEN` を設定 — fail-closed 前に HTTP が飛ぶ。[Bearer-native 例](/ja/howto/bearer-native-bridge-example)
+
+## safety ラベルと HTTP メソッド
+
+fail-closed は **`safety` が `read` でないとき** のみ。OpenAPI の security からは推論しません。
+
+| 誤り | 症状 |
+| --- | --- |
+| Bearer 必須 **POST** を `"safety": "read"` | env Bearer なしで HTTP → **401**（JSON-RPC fail-closed なし） |
+| 同じルートを `"safety": "write"` | env Bearer なし → JSON-RPC エラー（HTTP 送信前） |
+
+**ルール:** ミューティングで Bearer 必須なら `write` を使う（または read のまま env Bearer を設定）。FT262+ F-7 参照。
+
+GET に session cookie が必要なホストは Bearer だけでは不足 — [NeNe カタログパターン](/ja/howto/neene-catalog-patterns)。
 
 ## 関連
 

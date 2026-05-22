@@ -36,6 +36,7 @@ Without a catalog, only `nene_mcp_about` is exposed.
 - Token in MCP host `env` only — never in catalog or git
 - **NeNe:** not session Bearer — cookie/CSRF host; use Bearer-native APIs or NeNe #380
 - **GET with auth:** set Bearer even for `safety: read` when API returns 401
+- **POST/PUT with auth:** use `safety: write` when API requires Bearer — `read` skips fail-closed ([write-tools-bearer](https://hideyukimori.github.io/nene-mcp/howto/write-tools-bearer#safety-label-vs-http-method))
 
 Duplicate tool names rejected at load (v0.1.3+).
 

@@ -154,6 +154,7 @@ Before telling agents “inventory tools are live”:
 1. `tools/list` shows **every** tool name you expect (not only `getHealth`).
 2. Run [catalog smoke test](/howto/catalog-smoke-test) on **each** read and write tool.
 3. Commit the same `tools.json` path configured in `.cursor/mcp.json`.
+4. Mutating tools that require Bearer use `"safety": "write"` — not `read` ([safety vs method](/howto/write-tools-bearer#safety-label-vs-http-method)).
 
 Deploying health-only JSON while docs promise inventory tools is an operator mistake — MCP cannot infer missing tools.
 

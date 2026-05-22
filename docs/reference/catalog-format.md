@@ -34,7 +34,7 @@ Committed catalog format compatible with NENE2 `docs/mcp/tools.json`.
 | Field | Rule |
 | --- | --- |
 | `name` | Unique across catalog (enforced v0.1.3+) |
-| `safety` | `read` or `write` (non-read requires Bearer) |
+| `safety` | `read` or `write` (non-read requires Bearer env **before HTTP**) |
 | `source.type` | Must be `openapi` in JSON catalogs |
 | `source.path` | Relative path preferred; appended to base URL |
 | `source.operationId` | Should match OpenAPI `operationId` for traceability |
@@ -73,6 +73,18 @@ Example catalog entry:
 `tools/call` with `{ "sku": "WIDGET-1" }` → `GET /api/inventory/items?sku=WIDGET-1`.
 
 POST/PUT/PATCH: remaining arguments become JSON body (not query).
+
+## Safety vs HTTP method
+
+`safety` controls **nene-mcp fail-closed**, not OpenAPI security alone.
+
+| `source.method` | OpenAPI auth | Recommended `safety` |
+| --- | --- | --- |
+| GET | public | `read` |
+| GET | Bearer required | `read` + set `NENE_MCP_BEARER_TOKEN` in MCP env |
+| POST / PUT / PATCH / DELETE | Bearer required | **`write`** (fail-closed without env Bearer) |
+
+Do **not** mark a Bearer-protected **POST** as `"safety": "read"` expecting fail-closed — MCP will send HTTP without Bearer and the API returns 401. See [Write tools & Bearer — safety label vs HTTP method](/howto/write-tools-bearer#safety-label-vs-http-method).
 
 ## Validation errors
 

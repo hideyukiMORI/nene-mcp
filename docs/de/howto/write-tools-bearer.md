@@ -16,6 +16,10 @@ Ohne Bearer: JSON-RPC-Fehler, **kein HTTP**.
 
 `safety: read` erfordert in nene-mcp kein Bearer, aber Ihre API kann GET mit Bearer schützen → **401** ohne env. Dann `NENE_MCP_BEARER_TOKEN` setzen. Siehe [Bearer-native Bridge-Beispiel](/de/howto/bearer-native-bridge-example).
 
+## Safety-Label vs HTTP-Methode
+
+Fail-closed nur bei `safety` ≠ `read`. Bearer-geschütztes **POST** als `"safety": "read"` → HTTP ohne env Bearer, API **401** (kein JSON-RPC-Fehler). Mutierende Bearer-Routen: **`write`** verwenden. Siehe [Schreib-Tools](/de/howto/write-tools-bearer).
+
 Session-Cookie-Hosts: [NeNe-Katalogmuster](/de/howto/neene-catalog-patterns).
 
 ## Weiter
