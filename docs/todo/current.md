@@ -15,17 +15,18 @@
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
 | FT201–419 | ✅ through v0.1.6 ([339–378](field-trials/index-ft339-378.md), [380–419](field-trials/index-ft380-419.md)) |
 | FT420–449 | ✅ L7 band ([index](field-trials/index-ft420-449.md)) |
-| FT450–479 | ✅ FT450 defer + L8 band ([index](field-trials/index-ft450-479.md)) |
+| FT450–479 | ✅ FT450 PASS + L8 band ([index](field-trials/index-ft450-479.md)) |
 | FT480–509 | ✅ L9 band ([index](field-trials/index-ft480-509.md)) |
 | FT510–539 | ✅ L10 band ([index](field-trials/index-ft510-539.md)) |
 | FT540–569 | ✅ L11 band ([index](field-trials/index-ft540-569.md)) |
 | FT570–599 | ✅ L12 band ([index](field-trials/index-ft570-599.md)) |
 | FT600–629 | ✅ L13 band ([index](field-trials/index-ft600-629.md)) |
+| FT630–659 | ✅ L14 band ([index](field-trials/index-ft630-659.md)) |
 
 ## Open Issues
 
-- **nene-mcp:** 0 (FT band PRs #96–102 pending merge)
-- **NeNe:** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) **CLOSED** — FT450 confirmed PASS (2026-05-23)
+- **nene-mcp:** 0
+- **NeNe:** [#395](https://github.com/hideyukiMORI/NeNe/issues/395) **CLOSED** — FT450 + L14 Bearer E2E confirmed
 
 ## Automation
 
@@ -35,4 +36,4 @@
 
 ## Next
 
-Merge FT510–629 PR chain (#96 → #102). FT630+ — next adversarial band.
+FT660+ — next adversarial band.
