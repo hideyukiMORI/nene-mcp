@@ -20,7 +20,7 @@ Trials start **simple and happy-path**, then ramp through **breadth**, **auth/wr
 | Gate | When | Action |
 | --- | --- | --- |
 | **G0** | Before FT1 | ✅ `v0.1.0` tagged |
-| **G1** | After FT1 | FT1 Issues closed; Packagist publication (**#16**, [`packagist-setup.md`](../development/packagist-setup.md)); patch `v0.1.x` |
+| **G1** | After FT1 | ✅ Packagist live; `composer require hideyukimori/nene-mcp` |
 | **G2** | After FT6 | Evaluate `v0.2.0` need (catalog/env breaking changes) |
 | **G3** | After FT12 | Milestone reflection; consider `0.3.0` or stabilize toward `1.0.0` criteria |
 | **G4** | After FT18 | Full-series reflection; publish 1.0 readiness checklist or extend schedule |

@@ -22,7 +22,7 @@ Developers familiar with legacy PHP can run it with **Composer and environment v
 composer require hideyukimori/nene-mcp
 ```
 
-Until Packagist publication, add a VCS repository to your app `composer.json` and pin a tag (see [NeNe integration — pre-Packagist](docs/integration/nene.md#pre-packagist-install)).
+Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Pin a version for field trials: `composer require hideyukimori/nene-mcp:0.1.1`.
 
 Or clone for development:
 

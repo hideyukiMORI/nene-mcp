@@ -6,6 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+
+- README and integration docs: Packagist is the primary install path (G1 complete)
+
 ## 0.1.1 — 2026-05-22
 
 Post-FT1 documentation and FT2 golden-path learnings. No runtime code changes.
