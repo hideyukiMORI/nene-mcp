@@ -2,7 +2,7 @@
 
 ## Release
 
-- **v0.1.2** — FT3 security patch (redirect following); pending tag
+- **v0.1.2** tagged — FT3 security patch ([release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.2))
 - Packagist: https://packagist.org/packages/hideyukimori/nene-mcp
 
 ## Field trials
