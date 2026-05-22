@@ -11,7 +11,7 @@
 | --- | --- |
 | FT1–FT9 | ✅ Individual reports |
 | FT10–FT200 | ✅ Individual reports ([index](field-trials/index-ft10-200.md)) |
-| FT201–224 | ✅ Persona band + v0.1.4 release ([index](field-trials/index-ft201-211.md)) |
+| FT201–254 | ✅ Persona + post-v0.1.4 regression ([201–224 index](field-trials/index-ft201-211.md), [225–254 index](field-trials/index-ft225-254.md)) |
 
 ## Open Issues
 
@@ -25,4 +25,4 @@
 
 ## Next
 
-FT225+ — NeNe #380 (Bearer E2E on stock NeNe TODO); persona band as friction appears.
+FT255+ — NeNe #380 (Bearer E2E); continue regression band or cut v0.1.5 when friction warrants.
