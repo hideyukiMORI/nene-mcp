@@ -96,3 +96,4 @@ Inherited from NENE2 and nene2-python, tightened for an English-first internatio
 | Security | `docs/development/security-policy.md` |
 | Self-review | `docs/development/self-review.md` + `docs/review/` |
 | ADRs | `docs/development/adr.md` |
+| Field trials | `docs/field-trials/README.md` |

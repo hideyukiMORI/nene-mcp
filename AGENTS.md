@@ -20,6 +20,8 @@ Full context: `docs/project.md`
 | **Quality tools** | `docs/development/quality-tools.md` |
 | **Security policy** | `docs/development/security-policy.md` |
 | **Self-review policy** | `docs/development/self-review.md` |
+| **Field trials** | `docs/field-trials/README.md` |
+| FT report checklist | `docs/review/field-trial-report.md` |
 | MCP server checklist | `docs/review/mcp-server.md` |
 | NeNe integration | `docs/integration/nene.md` |
 | Other platforms | `docs/integration/other-platforms.md` |
@@ -46,6 +48,7 @@ Do not import sibling code. Link policies instead of duplicating full framework 
 6. **Secrets** — never commit tokens, `.env`, or bearer values.
 7. **Boundaries** — MCP stays in this package; no NeNe `class/xion/` changes from here.
 8. **Docs first** — when Cursor rules and `docs/` conflict, update `docs/` first.
+9. **Field trials** — validate integrations externally; record `F-N` friction; close Issues before the next FT (`docs/field-trials/README.md`).
 
 ## MCP-specific rules
 

@@ -28,6 +28,11 @@ Read: `docs/project.md`, NeNe `docs/project.md` (sibling repo).
 - Commit secrets, tokens, or `.env` values
 - Mix unrelated framework migration with MCP changes in one PR
 - Write Issues, PRs, or commits in non-English (project language is English)
+- Start FT{N+1} before closing actionable Issues from FT{N}
+
+## Field trials
+
+External integration trials under `../nene-mcp-FT/`. Record `F-N` friction, file Issues, close before next FT. Security review when FT number is a multiple of 3. See `docs/field-trials/README.md`.
 
 ## Docs map
 

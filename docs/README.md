@@ -35,6 +35,15 @@ Documentation index for the NeNe ecosystem MCP bridge and generic HTTP app integ
 | [`adr/README.md`](adr/README.md) | ADR index |
 | [`todo/current.md`](todo/current.md) | Short-lived TODO summary |
 
+## Field trials
+
+| Document | Contents |
+| --- | --- |
+| [`field-trials/README.md`](field-trials/README.md) | FT methodology (inherited from NeNe / NENE2 / nene2-python) |
+| [`field-trials/follow-ups.md`](field-trials/follow-ups.md) | Deferred FT findings |
+| [`templates/field-trial-report.md`](templates/field-trial-report.md) | Report skeleton |
+| [`review/field-trial-report.md`](review/field-trial-report.md) | Pre-commit checklist for reports |
+
 ## AI / Cursor
 
 | Path | Contents |
