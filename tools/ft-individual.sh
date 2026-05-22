@@ -47,6 +47,15 @@ ft_topic() {
   esac
   if (( n == 450 )); then
     echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 690 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + NeNe requestId present (L16)" ;;
+      1) echo "${base} + empty title rejected (L16)" ;;
+      2) echo "${base} + public health without Bearer (L16)" ;;
+      3) echo "${base} + Bearer + min timeout (L16)" ;;
+      4) echo "${base} + sequential list/create (L16)" ;;
+      5) echo "${base} + long title write (L16)" ;;
+    esac
   elif (( n >= 660 )); then
     case $(( n % 6 )) in
       0) echo "${base} + unicode Bearer write (L15)" ;;
@@ -1116,6 +1125,73 @@ l15_probe() {
   return "$rc"
 }
 
+l16_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local cat="/home/xi/docker/nene-mcp-FT/ft204-persona-business-hard/docs/mcp/tools.json"
+  local token="${NENE_FT450_BEARER_TOKEN:-demo-agent-token}"
+  local out rc=0 long_title
+
+  echo "" >>"$tmp"
+  echo "# L16 probe (FT690+, NeNe observability, variant ${variant})" >>"$tmp"
+
+  export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+  unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG NENE2_LOCAL_TOOLS_JSON NENE2_LOCAL_API_BASE_URL
+
+  case "$variant" in
+    0)
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"listTodos","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"requestId":\s*"[0-9a-f]{16,}"' && echo "ADV-PASS NeNe requestId present on Bearer read" >>"$tmp" || { echo "FINDING (L16-1): requestId missing" >>"$tmp"; rc=1; }
+      ;;
+    1)
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"createTodo","arguments":{"title":""}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*400' && echo "ADV-PASS empty title rejected with 400" >>"$tmp" || { echo "FINDING (L16-2): empty title not rejected" >>"$tmp"; rc=1; }
+      ;;
+    2)
+      unset NENE_MCP_BEARER_TOKEN
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealthCheck","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*200' && echo "ADV-PASS public health without Bearer" >>"$tmp" || { echo "FINDING (L16-3): health requires Bearer" >>"$tmp"; rc=1; }
+      ;;
+    3)
+      export NENE_MCP_BEARER_TOKEN="$token"
+      export NENE_MCP_HTTP_TIMEOUT_SEC=1
+      out="$(mcp_json "$cat" "tools/call" '{"name":"listTodos","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*200' && echo "ADV-PASS Bearer listTodos with timeout=1" >>"$tmp" || { echo "FINDING (L16-4): min timeout broke Bearer read" >>"$tmp"; rc=1; }
+      ;;
+    4)
+      export NENE_MCP_BEARER_TOKEN="$token"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"listTodos","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"createTodo","arguments":{"title":"L16 sequential"}}')"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -qE '"statusCode":\s*200'; then
+        echo "ADV-PASS sequential list then create both succeed" >>"$tmp"
+      else
+        echo "FINDING (L16-5): sequential Bearer calls failed" >>"$tmp"
+        rc=1
+      fi
+      ;;
+    5)
+      export NENE_MCP_BEARER_TOKEN="$token"
+      long_title="L16$(printf '%0.sx' {1..196})"
+      out="$(mcp_json "$cat" "tools/call" "{\"name\":\"createTodo\",\"arguments\":{\"title\":\"${long_title}\"}}")"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -qE '"statusCode":\s*200' && echo "ADV-PASS long title (200 chars) accepted" >>"$tmp" || { echo "FINDING (L16-6): long title write failed" >>"$tmp"; rc=1; }
+      ;;
+  esac
+  unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG NENE2_LOCAL_API_BASE_URL
+  unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON
+  export NENE_MCP_API_BASE_URL="${FT_DEFAULT_BASE_URL:-http://localhost:8080}"
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -1178,6 +1254,18 @@ run_primary_suite() {
 
   if (( n == 450 )); then
     ft450_probe "$tmp" || rc=$?
+  elif (( n >= 690 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+    l9_probe "$n" "$tmp" || rc=$?
+    l10_probe "$n" "$tmp" || rc=$?
+    l11_probe "$n" "$tmp" || rc=$?
+    l12_probe "$n" "$tmp" || rc=$?
+    l13_probe "$n" "$tmp" || rc=$?
+    l14_probe "$n" "$tmp" || rc=$?
+    l15_probe "$n" "$tmp" || rc=$?
+    l16_probe "$n" "$tmp" || rc=$?
   elif (( n >= 660 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
@@ -1323,6 +1411,8 @@ write_report() {
     else
       friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
     fi
+  elif (( n >= 690 )); then
+    friction_block="L16 + L15 … L6 adversarial exercised — NeNe observability and Bearer edge cases."
   elif (( n >= 660 )); then
     friction_block="L15 + L14 … L6 adversarial exercised — Bearer+operator composite probes."
   elif (( n >= 630 )); then

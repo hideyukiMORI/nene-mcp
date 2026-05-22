@@ -23,6 +23,7 @@
 | FT600–629 | ✅ L13 band ([index](field-trials/index-ft600-629.md)) |
 | FT630–659 | ✅ L14 band ([index](field-trials/index-ft630-659.md)) |
 | FT660–689 | ✅ L15 band ([index](field-trials/index-ft660-689.md)) |
+| FT690–719 | ✅ L16 band ([index](field-trials/index-ft690-719.md)) |
 
 ## Open Issues
 
@@ -37,4 +38,4 @@
 
 ## Next
 
-FT690+ — next adversarial band.
+FT720+ — next adversarial band.
