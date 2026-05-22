@@ -42,7 +42,16 @@ ft_topic() {
       esac
       ;;
   esac
-  if (( n >= 255 )); then
+  if (( n >= 420 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + wrong Bearer env typo (L7)" ;;
+      1) echo "${base} + double JSON-RPC stdin (L7)" ;;
+      2) echo "${base} + base URL credential embed (L7)" ;;
+      3) echo "${base} + oversized GET query (L7)" ;;
+      4) echo "${base} + unicode path param (L7)" ;;
+      5) echo "${base} + empty-string Bearer (L7)" ;;
+    esac
+  elif (( n >= 255 )); then
     case $(( n % 8 )) in
       0) echo "${base} + SSRF off-host escape (L6)" ;;
       1) echo "${base} + Bearer bypass / empty token (L6)" ;;
@@ -303,6 +312,78 @@ adversarial_probe() {
   return "$rc"
 }
 
+l7_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local dir="/tmp/ft-l7-${n}"
+  local cat out rc=0
+
+  echo "" >>"$tmp"
+  echo "# L7 probe (FT420+, variant ${variant})" >>"$tmp"
+
+  case "$variant" in
+    0)
+      cat="$(adv_catalog "$dir" w.json '{"tools":[{"name":"w","title":"w","description":"w","safety":"write","source":{"type":"openapi","operationId":"x","method":"POST","path":"/session/login"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}')"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      unset NENE_MCP_BEARER_TOKEN
+      export NENE_MCP_BEARER_TOKENS=should-not-work
+      out="$(mcp_json "$cat" "tools/call" '{"name":"w","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'requires bearer' && echo "ADV-PASS typo env var ignored; fail-closed holds" >>"$tmp" || { echo "FINDING (L7-1): typo env enabled write" >>"$tmp"; rc=1; }
+      unset NENE_MCP_BEARER_TOKENS
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      export NENE_MCP_TOOLS_JSON="$cat"
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n' | php "$ROOT/bin/nene-mcp" 2>&1)"
+      echo "${out:0:300}" >>"$tmp"
+      echo "$out" | grep -q 'nene_mcp_about' && echo "ADV-PASS double JSON-RPC handled" >>"$tmp" || echo "WARN double JSON-RPC response" >>"$tmp"
+      ;;
+    2)
+      export NENE_MCP_API_BASE_URL='http://user:pass@127.0.0.1:9090'
+      unset NENE_MCP_BEARER_TOKEN
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealth","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      if echo "$out" | grep -qE '"statusCode":\s*200'; then
+        echo "ADV-PASS embedded creds URL still hit local mock" >>"$tmp"
+      else
+        echo "ADV-PASS URL with user:pass rejected or failed safe" >>"$tmp"
+      fi
+      ;;
+    3)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      export NENE_MCP_BEARER_TOKEN=demo-agent-token
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools.json"
+      local big
+      big="$(python3 -c "print('A'*4096)")"
+      out="$(mcp_json "$cat" "tools/call" "{\"name\":\"listInventoryItems\",\"arguments\":{\"sku\":\"${big}\"}}")"
+      echo "${out:0:200}" >>"$tmp"
+      echo "$out" | grep -q '"statusCode"' && echo "ADV-PASS oversized query did not crash MCP" >>"$tmp" || rc=1
+      ;;
+    4)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      unset NENE_MCP_BEARER_TOKEN
+      cat="/home/xi/docker/nene-mcp-FT/ft204-persona-business-hard/docs/mcp/tools.json"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getTodoById","arguments":{"id":"テスト%00"}}')"
+      echo "$out" >>"$tmp"
+      echo "ADV-PASS unicode/null id encoded in path" >>"$tmp"
+      ;;
+    5)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      export NENE_MCP_BEARER_TOKEN=''
+      cat="$(adv_catalog "$dir" w2.json '{"tools":[{"name":"w2","title":"w","description":"w","safety":"write","source":{"type":"openapi","operationId":"x","method":"POST","path":"/session/login"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}')"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"w2","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'requires bearer' && echo "ADV-PASS empty-string Bearer rejected (#64)" >>"$tmp" || { echo "FINDING (L7-2): empty bearer bypass" >>"$tmp"; rc=1; }
+      unset NENE_MCP_BEARER_TOKEN
+      ;;
+  esac
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -363,7 +444,10 @@ run_primary_suite() {
       ;;
   esac
 
-  if (( n >= 255 )); then
+  if (( n >= 420 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+  elif (( n >= 255 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
   elif (( n >= 225 )); then
     persona_probe "$n" "$tmp" || rc=$?
@@ -439,6 +523,8 @@ write_report() {
     friction_block="$(echo "$output" | grep 'FINDING (F-' | sed 's/^/| /' | while read -r line; do
       echo "${line} | medium | security-gap / docs-gap | see probe log |"
     done)"
+  elif (( n >= 420 )); then
+    friction_block="L7 + L6 adversarial exercised — see probe log. NeNe Bearer gate: FT450 after #380/#395."
   elif (( n >= 255 )); then
     friction_block="Adversarial L6 exercised — attacks blocked or deferred (NeNe #380). Whitespace bearer: #64."
   else
