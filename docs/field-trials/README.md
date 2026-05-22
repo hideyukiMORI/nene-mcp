@@ -176,6 +176,7 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT10–FT200 | 2026-05-22 | Quality-first individual reports | [index-ft10-200.md](index-ft10-200.md) |
 | FT201 | 2026-05-22 | Persona docs-only business app | [2026-05-field-trial-201.md](2026-05-field-trial-201.md) |
 | FT202 | 2026-05-22 | Persona security DevOps | [2026-05-field-trial-202.md](2026-05-field-trial-202.md) |
+| FT203 | 2026-05-22 | Persona ja-only frontend / Cursor | [2026-05-field-trial-203.md](2026-05-field-trial-203.md) |
 
 **Note:** Milestone files under `milestones/` aggregate pass/fail only. Each FT has its own `2026-05-field-trial-{N}.md`.
 

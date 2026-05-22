@@ -41,7 +41,7 @@ Use English for:
 ## Translations
 
 - Integrator-facing VitePress pages (`docs/tutorial/`, `docs/howto/`, etc.) may be translated per locale directories (`docs/ja/`, …).
-- When English integrator docs change, update translations in the same PR when practical, or file a follow-up Issue.
+- **When English integrator pages change, update `docs/ja/` (and other locales) in the same PR when practical** — FT203 showed lag on `/ja/` vs FT201 English fixes.
 - Do not translate MCP wire error strings or code identifiers for localization alone.
 
 ## Japanese and mixed language
