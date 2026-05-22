@@ -17,8 +17,10 @@ composer require hideyukimori/nene-mcp
 [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp) 公開済み。再現性のためバージョン固定:
 
 ```bash
-composer require hideyukimori/nene-mcp:0.1.3
+composer require hideyukimori/nene-mcp:^0.1
 ```
+
+最新タグは [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp) または [GitHub Releases](https://github.com/hideyukiMORI/nene-mcp/releases) を確認してください。ドキュメントのバージョンより Packagist が古い場合は、公開済みの最新タグを使ってください。
 
 ## Day 0 — about のみ
 
