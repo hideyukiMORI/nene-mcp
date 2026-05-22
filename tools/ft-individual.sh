@@ -8,8 +8,9 @@ RUNNER="$ROOT/tools/ft-runner.sh"
 REPORT_DIR="$ROOT/docs/field-trials"
 DATE_PREFIX="${FT_DATE_PREFIX:-2026-05}"
 FT5_CATALOG="${FT5_CATALOG:-/home/xi/docker/nene-mcp-FT/ft5-nene-multi-read/docs/mcp/tools.json}"
-export NENE_MCP_API_BASE_URL="${NENE_MCP_API_BASE_URL:-http://localhost:8080}"
-unset NENE_MCP_BIN
+# Always reset harness env (probes must not leak base URL / bearer into the next FT).
+export NENE_MCP_API_BASE_URL="${FT_DEFAULT_BASE_URL:-http://localhost:8080}"
+unset NENE_MCP_BEARER_TOKEN NENE_MCP_BEARER_TOKENS NENE_MCP_TOOLS_JSON NENE_MCP_BIN
 
 N="${1:?FT number required}"
 DRY_RUN="${2:-}"
@@ -44,6 +45,15 @@ ft_topic() {
   esac
   if (( n == 450 )); then
     echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 480 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + missing inputSchema catalog (L9)" ;;
+      1) echo "${base} + oversized Bearer token (L9)" ;;
+      2) echo "${base} + JSON-RPC params array (L9)" ;;
+      3) echo "${base} + DELETE write safety (L9)" ;;
+      4) echo "${base} + base URL without scheme (L9)" ;;
+      5) echo "${base} + null tools/call arguments (L9)" ;;
+    esac
   elif (( n >= 451 )); then
     case $(( n % 6 )) in
       0) echo "${base} + newline/tab Bearer (L8)" ;;
@@ -507,6 +517,69 @@ l8_probe() {
   return "$rc"
 }
 
+l9_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local dir="/tmp/ft-l9-${n}"
+  local cat out rc=0 big
+
+  echo "" >>"$tmp"
+  echo "# L9 probe (FT480+, variant ${variant})" >>"$tmp"
+
+  case "$variant" in
+    0)
+      cat="$(adv_catalog "$dir" noschema.json '{"tools":[{"name":"bad","title":"bad","description":"bad","safety":"read","source":{"type":"openapi","operationId":"x","method":"GET","path":"/health"},"responseSchemaRef":null}]}')"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      out="$(mcp_json "$cat" "tools/list" '{}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'inputSchema\|"error"' && echo "ADV-PASS missing inputSchema rejected" >>"$tmp" || { echo "FINDING (L9-1): catalog without inputSchema loaded" >>"$tmp"; rc=1; }
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      export NENE_MCP_BEARER_TOKEN="$(python3 -c "print('B'*8192)")"
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools.json"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealth","arguments":{}}')"
+      echo "${out:0:200}" >>"$tmp"
+      echo "$out" | grep -q '"statusCode"\|"error"' && echo "ADV-PASS oversized bearer did not crash MCP" >>"$tmp" || { echo "FINDING (L9-2): oversized bearer broke process" >>"$tmp"; rc=1; }
+      unset NENE_MCP_BEARER_TOKEN
+      ;;
+    2)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      export NENE_MCP_TOOLS_JSON="$cat"
+      out="$(mcp_raw '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":[]}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"error"' && echo "ADV-PASS params array rejected" >>"$tmp" || echo "WARN params array response logged" >>"$tmp"
+      ;;
+    3)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:8080
+      unset NENE_MCP_BEARER_TOKEN
+      cat="$(adv_catalog "$dir" del.json '{"tools":[{"name":"delw","title":"d","description":"d","safety":"write","source":{"type":"openapi","operationId":"x","method":"DELETE","path":"/todo/item/id_{id}"},"inputSchema":{"type":"object","properties":{"id":{"type":"string"}},"required":["id"],"additionalProperties":false},"responseSchemaRef":null}]}')"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"delw","arguments":{"id":"1"}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'requires bearer' && echo "ADV-PASS DELETE write blocked without bearer" >>"$tmp" || { echo "FINDING (L9-3): DELETE write bypassed fail-closed" >>"$tmp"; rc=1; }
+      ;;
+    4)
+      export NENE_MCP_API_BASE_URL=127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      out="$(mcp_json "$cat" "tools/call" '{"name":"getHealth","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"error"\|HTTP request failed' && echo "ADV-PASS scheme-less base URL fails safe" >>"$tmp" || { echo "FINDING (L9-4): scheme-less base reached HTTP" >>"$tmp"; rc=1; }
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      ;;
+    5)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      cat="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      out="$(mcp_raw '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealth","arguments":null}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"error"' && echo "ADV-PASS null arguments rejected" >>"$tmp" || echo "ADV-PASS null arguments handled without crash" >>"$tmp"
+      ;;
+  esac
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -569,6 +642,11 @@ run_primary_suite() {
 
   if (( n == 450 )); then
     ft450_probe "$tmp" || rc=$?
+  elif (( n >= 480 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+    l9_probe "$n" "$tmp" || rc=$?
   elif (( n >= 451 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
@@ -654,6 +732,8 @@ write_report() {
     done)"
   elif (( n == 450 )); then
     friction_block="FT450 gate: NeNe Bearer E2E deferred until [#380](https://github.com/hideyukiMORI/NeNe/issues/380)/[#395](https://github.com/hideyukiMORI/NeNe/issues/395) merge — re-run for full PASS."
+  elif (( n >= 480 )); then
+    friction_block="L9 + L8 + L7 + L6 adversarial exercised — see probe log. FT450 reserved for NeNe merge."
   elif (( n >= 451 )); then
     friction_block="L8 + L7 + L6 adversarial exercised — see probe log. FT450 reserved for NeNe merge."
   elif (( n >= 420 )); then
