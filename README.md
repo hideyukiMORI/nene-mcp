@@ -14,8 +14,11 @@ Developers familiar with legacy PHP can run it with **Composer and environment v
 - **Standalone**: built-in read-only tool `nene_mcp_about` out of the box.
 - **NENE2-compatible wire**: newline-delimited JSON-RPC with `initialize` / `tools/list` / `tools/call`.
 - **Committed catalog JSON** (optional) adds OpenAPI-aligned tool entries.
-- **Environment aliases**: accepts `NENE2_LOCAL_API_BASE_URL` / `NENE2_LOCAL_TOOLS_JSON` to align with NENE2 docs quickly.
+- **Security defaults**: write fail-closed, no redirect following, catalog validation (`safety: read|write`).
+- **SMB / staging operators** (v0.1.8+): configurable HTTP timeout, optional TLS CA bundle, opt-in stderr HTTP log — see [SMB adoption checklist](https://hideyukimori.github.io/nene-mcp/explanation/smb-adoption-checklist).
 - Shared **[Issue-driven workflow + Conventional Commits](docs/development/commit-conventions.md)** with NeNe and NENE2.
+
+**Scope:** MCP sidecar for developers and small teams (Cursor, Claude Desktop, internal staging)—not a customer-facing API gateway. See [Commercial use & scope](https://hideyukimori.github.io/nene-mcp/explanation/commercial-use-and-scope).
 
 ## Install
 
@@ -23,7 +26,11 @@ Developers familiar with legacy PHP can run it with **Composer and environment v
 composer require hideyukimori/nene-mcp
 ```
 
-Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Pin a version for field trials: `composer require hideyukimori/nene-mcp:0.1.2`.
+Published on [Packagist](https://packagist.org/packages/hideyukimori/nene-mcp). Pin for reproducible deploys:
+
+```bash
+composer require hideyukimori/nene-mcp:0.1.8
+```
 
 Or clone for development:
 
@@ -85,10 +92,21 @@ Without a catalog, MCP still starts and `tools/list` exposes only `nene_mcp_abou
 | `NENE_MCP_TOOLS_JSON` | Path to NENE2-compatible tool catalog JSON. When omitted, no OpenAPI HTTP tools—only `nene_mcp_about`. Also accepts `NENE2_LOCAL_TOOLS_JSON`. |
 | `NENE_MCP_BEARER_TOKEN` | For endpoints that require Bearer (e.g. `safety: write`). **Keep secrets in env only.** |
 
+Optional (SMB / staging — v0.1.8+):
+
+| Variable | Meaning |
+| --- | --- |
+| `NENE_MCP_HTTP_TIMEOUT_SEC` | HTTP timeout seconds (`1`–`120`, default `10`) |
+| `NENE_MCP_TLS_CA_FILE` | PEM CA bundle path for `https://` base URLs |
+| `NENE_MCP_LOG` | Set to `stderr` for safe per-request HTTP lines (never stdout) |
+
+Full reference: [Environment variables](https://hideyukimori.github.io/nene-mcp/reference/environment-variables).
+
 ## Composer scripts
 
 ```bash
-composer test
+composer test          # PHPUnit
+composer check         # PHPUnit + PHPStan level 8
 ```
 
 ## Documentation
