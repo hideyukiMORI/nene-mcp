@@ -166,5 +166,11 @@ See `docs/development/security-policy.md` and `SECURITY.md`.
 | FT2 | 2026-05-22 | NeNe Docker + host MCP + Cursor config | [2026-05-field-trial-2.md](2026-05-field-trial-2.md) |
 | FT3 | 2026-05-22 | Security review (read-only) | [2026-05-field-trial-3.md](2026-05-field-trial-3.md) |
 | FT4 | 2026-05-22 | Catalog-free minimal install | [2026-05-field-trial-4.md](2026-05-field-trial-4.md) |
+| FT5 | 2026-05-22 | Multi-tool read catalog | [2026-05-field-trial-5.md](2026-05-field-trial-5.md) |
+| FT6 | 2026-05-22 | Security review (catalog) | [2026-05-field-trial-6.md](2026-05-field-trial-6.md) |
+| FT7 | 2026-05-22 | Vanilla PHP bridge | [2026-05-field-trial-7.md](2026-05-field-trial-7.md) |
+| FT8 | 2026-05-22 | Packagist regression | [2026-05-field-trial-8.md](2026-05-field-trial-8.md) |
+| FT9–FT18 | 2026-05-22 | Phase B–C batch | [milestones/2026-05-ft9-ft18-batch.md](milestones/2026-05-ft9-ft18-batch.md) |
+| FT19–FT100 | 2026-05-22 | Autonomous regression | [milestones/2026-05-ft19-ft100-batch.md](milestones/2026-05-ft19-ft100-batch.md) |
 
-Update this table when the first trial completes.
+Automation: [`automation.md`](automation.md) · Schedule FT5–100: [`schedule-ft5-100.md`](schedule-ft5-100.md)
