@@ -47,6 +47,15 @@ ft_topic() {
   esac
   if (( n == 450 )); then
     echo "NeNe Bearer confirmation gate (FT450)"
+  elif (( n >= 600 )); then
+    case $(( n % 6 )) in
+      0) echo "${base} + stderr HTTP log line (L13)" ;;
+      1) echo "${base} + float timeout fallback (L13)" ;;
+      2) echo "${base} + negative timeout fallback (L13)" ;;
+      3) echo "${base} + catalog env precedence (L13)" ;;
+      4) echo "${base} + write fail-closed + timeout (L13)" ;;
+      5) echo "${base} + HTTPS TLS CA fail-fast (L13)" ;;
+    esac
   elif (( n >= 570 )); then
     case $(( n % 6 )) in
       0) echo "${base} + NENE2 base URL alias (L12)" ;;
@@ -842,6 +851,94 @@ l12_probe() {
   return "$rc"
 }
 
+l13_probe() {
+  local n="$1"
+  local tmp="$2"
+  local variant=$(( n % 6 ))
+  local dir="/tmp/ft-l13-${n}"
+  local cat partial out err rc=0
+
+  echo "" >>"$tmp"
+  echo "# L13 probe (FT600+, HTTP diagnostics, variant ${variant})" >>"$tmp"
+
+  unset NENE_MCP_BEARER_TOKEN NENE2_LOCAL_TOOLS_JSON NENE2_LOCAL_API_BASE_URL
+
+  case "$variant" in
+    0)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      export NENE_MCP_TOOLS_JSON="$FT5_CATALOG"
+      export NENE_MCP_LOG=stderr
+      unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE
+      err="$(mktemp)"
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>"$err" || true)"
+      echo "$out" >>"$tmp"
+      echo "--- stderr ---" >>"$tmp"
+      cat "$err" >>"$tmp"
+      if grep -q '\[nene-mcp\]' "$err" && grep -q 'status=' "$err" && ! grep -qi 'bearer\|secret\|token' "$err"; then
+        echo "ADV-PASS stderr HTTP log line; no secret in stderr" >>"$tmp"
+      else
+        echo "FINDING (L13-1): stderr HTTP log missing or leaked secret" >>"$tmp"
+        rc=1
+      fi
+      rm -f "$err"
+      ;;
+    1)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_TOOLS_JSON NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      export NENE_MCP_HTTP_TIMEOUT_SEC=10.5
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":10' && echo "ADV-PASS float timeout falls back to 10" >>"$tmp" || { echo "FINDING (L13-2): float timeout not rejected" >>"$tmp"; rc=1; }
+      ;;
+    2)
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_TOOLS_JSON NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      export NENE_MCP_HTTP_TIMEOUT_SEC=-5
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nene_mcp_about","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q '"httpTimeoutSec":10' && echo "ADV-PASS negative timeout falls back to 10" >>"$tmp" || { echo "FINDING (L13-3): negative timeout not rejected" >>"$tmp"; rc=1; }
+      ;;
+    3)
+      partial="/home/xi/docker/nene-mcp-FT/ft206-persona-bearer-native/docs/mcp/tools-partial.json"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      export NENE_MCP_TOOLS_JSON="$FT5_CATALOG"
+      export NENE2_LOCAL_TOOLS_JSON="$partial"
+      unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>/dev/null)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'getHealthCheck' && echo "ADV-PASS NENE_MCP_TOOLS_JSON overrides NENE2 catalog alias" >>"$tmp" || { echo "FINDING (L13-4): catalog precedence wrong" >>"$tmp"; rc=1; }
+      ;;
+    4)
+      cat="$(adv_catalog "$dir" write.json '{"tools":[{"name":"w","title":"w","description":"w","safety":"write","source":{"type":"openapi","operationId":"w","method":"POST","path":"/todos"},"inputSchema":{"type":"object","properties":{},"additionalProperties":false},"responseSchemaRef":null}]}')"
+      export NENE_MCP_API_BASE_URL=http://127.0.0.1:9090
+      unset NENE_MCP_BEARER_TOKEN
+      export NENE_MCP_HTTP_TIMEOUT_SEC=45
+      unset NENE_MCP_TLS_CA_FILE NENE_MCP_LOG
+      out="$(mcp_json "$cat" "tools/call" '{"name":"w","arguments":{}}')"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'bearer authentication' && echo "ADV-PASS write fail-closed holds with custom timeout" >>"$tmp" || { echo "FINDING (L13-5): write bypass with operator timeout" >>"$tmp"; rc=1; }
+      ;;
+    5)
+      export NENE_MCP_API_BASE_URL=https://127.0.0.1:9090
+      export NENE_MCP_TOOLS_JSON="$FT5_CATALOG"
+      export NENE_MCP_TLS_CA_FILE=/nonexistent/ft-l13-ca.pem
+      unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_LOG NENE_MCP_BEARER_TOKEN
+      out="$(printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"getHealthCheck","arguments":{}}}\n' \
+        | php "$ROOT/bin/nene-mcp" 2>&1 || true)"
+      echo "$out" >>"$tmp"
+      echo "$out" | grep -q 'TLS CA bundle' && echo "ADV-PASS unreadable TLS CA fails before HTTPS request" >>"$tmp" || { echo "FINDING (L13-6): TLS CA fail-fast missing" >>"$tmp"; rc=1; }
+      ;;
+  esac
+  unset NENE_MCP_HTTP_TIMEOUT_SEC NENE_MCP_TLS_CA_FILE NENE_MCP_LOG NENE2_LOCAL_TOOLS_JSON
+  unset NENE_MCP_BEARER_TOKEN NENE_MCP_TOOLS_JSON
+  export NENE_MCP_API_BASE_URL="${FT_DEFAULT_BASE_URL:-http://localhost:8080}"
+  return "$rc"
+}
+
 run_primary_suite() {
   local n="$1"
   local tmp rc=0
@@ -904,6 +1001,15 @@ run_primary_suite() {
 
   if (( n == 450 )); then
     ft450_probe "$tmp" || rc=$?
+  elif (( n >= 600 )); then
+    adversarial_probe "$n" "$tmp" || rc=$?
+    l7_probe "$n" "$tmp" || rc=$?
+    l8_probe "$n" "$tmp" || rc=$?
+    l9_probe "$n" "$tmp" || rc=$?
+    l10_probe "$n" "$tmp" || rc=$?
+    l11_probe "$n" "$tmp" || rc=$?
+    l12_probe "$n" "$tmp" || rc=$?
+    l13_probe "$n" "$tmp" || rc=$?
   elif (( n >= 570 )); then
     adversarial_probe "$n" "$tmp" || rc=$?
     l7_probe "$n" "$tmp" || rc=$?
@@ -1015,6 +1121,8 @@ write_report() {
     done)"
   elif (( n == 450 )); then
     friction_block="FT450 gate: NeNe #395 assigned — awaiting host merge; re-run for full PASS when Bearer E2E ready."
+  elif (( n >= 600 )); then
+    friction_block="L13 + L12 + L11 + L10 + L9 + L8 + L7 + L6 adversarial exercised — HTTP diagnostics. FT450 on hold for NeNe #395."
   elif (( n >= 570 )); then
     friction_block="L12 + L11 + L10 + L9 + L8 + L7 + L6 adversarial exercised — NENE2 alias compatibility. FT450 on hold for NeNe #395."
   elif (( n >= 540 )); then
