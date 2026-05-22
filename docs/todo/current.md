@@ -15,7 +15,7 @@
 
 ## Open Issues
 
-- **nene-mcp:** #65 (this band PR)
+- **nene-mcp:** 0
 - **NeNe cross-repo:** [#380](https://github.com/hideyukiMORI/NeNe/issues/380) — optional Bearer for MCP agents (FT204)
 
 ## Automation
