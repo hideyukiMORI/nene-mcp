@@ -23,6 +23,10 @@
 
 在 `tools.json` 就绪前省略 `NENE_MCP_TOOLS_JSON`。
 
+::: tip 相对路径与 cwd
+仅当 MCP 主机 cwd 为项目根时，相对路径可能有效。其他 cwd（子目录、CI）会失败。提交的 `.cursor/mcp.json` 请用 **绝对路径**。
+:::
+
 ## 写入工具
 
 Bearer 仅放在 MCP 主机 `env` 中 — 勿提交 git。见 [写入工具与 Bearer](/zh/howto/write-tools-bearer)。

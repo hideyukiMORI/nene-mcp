@@ -19,6 +19,10 @@ MCP-Host startet `vendor/bin/nene-mcp` per stdio. **Absolute Pfade** verwenden.
 }
 ```
 
+::: tip Relative Pfade — cwd-Falle
+Relativ kann funktionieren, wenn MCP-cwd = Projektroot. Sonst Katalog fehlt. **Absolute Pfade** in `.cursor/mcp.json`.
+:::
+
 ## Schreib-Tools
 
 Bearer nur im MCP-`env`-Block. Siehe [Schreib-Tools & Bearer](/de/howto/write-tools-bearer).

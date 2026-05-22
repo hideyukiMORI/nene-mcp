@@ -15,7 +15,9 @@ Individual reports for the **docs-only persona band** (quality-first, difficulty
 | 209 | [2026-05-field-trial-209.md](2026-05-field-trial-209.md) | L2 | pt-br locale parity |
 | 210 | [2026-05-field-trial-210.md](2026-05-field-trial-210.md) | — | Regression + security cadence |
 | 211 | [2026-05-field-trial-211.md](2026-05-field-trial-211.md) | L2 | fr/zh catalog-smoke §2b |
+| 212 | [2026-05-field-trial-212.md](2026-05-field-trial-212.md) | L5 | Team relative path cwd trap |
+| 213 | [2026-05-field-trial-213.md](2026-05-field-trial-213.md) | L2 | i18n cursor-setup tips |
 
 Strategy: [`quality-strategy.md`](quality-strategy.md) — difficulty ramp table.
 
-Merged PRs: #37, #39, #41, #43, #44.
+Merged PRs: #37, #39, #41, #43, #44, #47.

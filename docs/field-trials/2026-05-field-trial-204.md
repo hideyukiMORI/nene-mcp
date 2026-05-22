@@ -147,7 +147,7 @@ FT204 — `204 % 3 == 0`.
 | Priority | Issue | Decision |
 | --- | --- | --- |
 | high | [#36](https://github.com/hideyukiMORI/nene-mcp/issues/36) | document — PR `docs/36-nene-auth-path-uri` |
-| high | (NeNe, optional) | fix-in-host — Bearer auth for agent API surface |
+| high | (NeNe, optional) | fix-in-host — Bearer auth for agent API surface → [NeNe #380](https://github.com/hideyukiMORI/NeNe/issues/380) |
 
 ## Overall Impression
 
