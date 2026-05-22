@@ -36,7 +36,11 @@ Login or write tools that take passwords in `tools/call` arguments expose those 
 
 ## Read tools
 
-`safety: read` tools do not require Bearer in nene-mcp unless you set the env var (Bearer is then sent on GET as well). Hosts that require session cookies on GET are not covered by Bearer alone — see [NeNe catalog patterns](/howto/neene-catalog-patterns).
+`safety: read` tools do not require Bearer in nene-mcp unless you set the env var (Bearer is then sent on GET as well).
+
+**Bearer-protected GET:** If the API returns **401** on a read tool, set `NENE_MCP_BEARER_TOKEN` anyway — nene-mcp will not fail-closed before HTTP, but the host API still enforces auth. See [Bearer-native bridge example](/howto/bearer-native-bridge-example).
+
+Hosts that require **session cookies** on GET are not covered by Bearer alone — see [NeNe catalog patterns](/howto/neene-catalog-patterns).
 
 ## Related
 

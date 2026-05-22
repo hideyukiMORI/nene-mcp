@@ -19,6 +19,7 @@ type SidebarLabels = {
   catalogSmoke: string;
   healthCatalog: string;
   neenePatterns: string;
+  bearerNative: string;
   explGroup: string;
   scope: string;
   architecture: string;
@@ -92,6 +93,7 @@ function sidebar(t: SidebarLabels, p: string = '') {
           { text: t.catalogSmoke, link: `${p}/howto/catalog-smoke-test` },
           { text: t.healthCatalog, link: `${p}/howto/health-catalog-example` },
           { text: t.neenePatterns, link: `${p}/howto/neene-catalog-patterns` },
+          { text: t.bearerNative, link: `${p}/howto/bearer-native-bridge-example` },
         ],
       },
     ],
@@ -152,6 +154,7 @@ const enSide: SidebarLabels = {
   catalogSmoke: 'Catalog smoke test',
   healthCatalog: 'NeNe health catalog example',
   neenePatterns: 'NeNe catalog patterns',
+  bearerNative: 'Bearer-native bridge example',
   explGroup: 'Explanation',
   scope: 'Scope & mission',
   architecture: 'Architecture',
@@ -186,6 +189,7 @@ const jaSide: SidebarLabels = {
   catalogSmoke: 'カタログ smoke テスト',
   healthCatalog: 'NeNe health カタログ例',
   neenePatterns: 'NeNe カタログパターン',
+  bearerNative: 'Bearer ネイティブ bridge 例',
   explGroup: '解説',
   scope: 'スコープとミッション',
   architecture: 'アーキテクチャ',
@@ -220,6 +224,7 @@ const frSide: SidebarLabels = {
   catalogSmoke: 'Test smoke du catalogue',
   healthCatalog: 'Exemple catalogue health NeNe',
   neenePatterns: 'Motifs catalogue NeNe',
+  bearerNative: 'Exemple bridge Bearer-native',
   explGroup: 'Explication',
   scope: 'Périmètre & mission',
   architecture: 'Architecture',
@@ -254,6 +259,7 @@ const zhSide: SidebarLabels = {
   catalogSmoke: '目录 smoke 测试',
   healthCatalog: 'NeNe health 目录示例',
   neenePatterns: 'NeNe 目录模式',
+  bearerNative: 'Bearer 原生 bridge 示例',
   explGroup: '说明',
   scope: '范围与使命',
   architecture: '架构',
@@ -288,6 +294,7 @@ const ptSide: SidebarLabels = {
   catalogSmoke: 'Smoke test do catálogo',
   healthCatalog: 'Exemplo catálogo health NeNe',
   neenePatterns: 'Padrões de catálogo NeNe',
+  bearerNative: 'Exemplo bridge Bearer-native',
   explGroup: 'Explicação',
   scope: 'Escopo & missão',
   architecture: 'Arquitetura',
@@ -322,6 +329,7 @@ const deSide: SidebarLabels = {
   catalogSmoke: 'Katalog-Smoke-Test',
   healthCatalog: 'NeNe Health-Katalog Beispiel',
   neenePatterns: 'NeNe-Katalogmuster',
+  bearerNative: 'Bearer-native Bridge Beispiel',
   explGroup: 'Erklärung',
   scope: 'Umfang & Mission',
   architecture: 'Architektur',

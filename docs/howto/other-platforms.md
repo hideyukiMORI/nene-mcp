@@ -19,7 +19,7 @@ Run nene-mcp as a **sidecar PHP process** next to Node, Python, or Go APIs:
 
 ## Pattern B — vanilla bridge repo
 
-Field Trial 7 validated a framework-free clone:
+Field Trial 7 validated a framework-free clone. For a **Bearer-native** inventory walkthrough (contrast with NeNe session cookies), see [Bearer-native bridge example](/howto/bearer-native-bridge-example).
 
 ```text
 my-api-bridge/
@@ -38,4 +38,5 @@ Your API stays in any language; only the MCP process requires PHP 8.2+.
 ## Related
 
 - [Integrate with NeNe](/howto/integrate-nene)
+- [Bearer-native bridge example](/howto/bearer-native-bridge-example)
 - [Tool catalog format](/reference/catalog-format)
