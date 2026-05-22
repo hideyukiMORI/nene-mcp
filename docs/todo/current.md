@@ -2,8 +2,8 @@
 
 ## Release
 
-- **v0.1.5** — shipped (FT295/296): whitespace Bearer fail-closed (#64); [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.5)
-- **v0.1.4** — superseded on Packagist
+- **v0.1.6** — tagging (FT379): F-7 safety mislabel docs (#71)
+- **v0.1.5** — shipped; [Release](https://github.com/hideyukiMORI/nene-mcp/releases/tag/v0.1.5)
 
 ## Field trials
 
