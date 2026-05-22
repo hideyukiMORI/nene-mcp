@@ -84,6 +84,7 @@ Governance follows NENE2-style strict policy—read before opening a PR:
 - `docs/development/coding-standards.md` — PHP / MCP rules
 - `docs/development/security-policy.md` — security requirements
 - `docs/review/mcp-server.md` — pre-PR checklist for code changes
+- `docs/field-trials/README.md` — field trial methodology
 - `docs/CONTRIBUTING.md` — full contribution guide
 
 ## License

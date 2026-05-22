@@ -25,9 +25,10 @@ Policy docs spread across `docs/development/`. Checklists are the **final remind
 
 | File | Use when |
 | --- | --- |
-| [`mcp-server.md`](mcp-server.md) | Protocol, catalog, HTTP client, bootstrap, env |
-| [`docs-policy.md`](docs-policy.md) | Policy docs, workflow, ADRs, README |
-| [`release-ci.md`](release-ci.md) | CI, composer scripts, PHP matrix |
+| [`mcp-server.md`](../review/mcp-server.md) | Protocol, catalog, HTTP client, bootstrap, env |
+| [`docs-policy.md`](../review/docs-policy.md) | Policy docs, workflow, ADRs, README |
+| [`release-ci.md`](../review/release-ci.md) | CI, composer scripts, PHP matrix |
+| [`field-trial-report.md`](../review/field-trial-report.md) | Before publishing FT reports |
 
 Add new checklists only when a work type repeats enough to justify one.
 

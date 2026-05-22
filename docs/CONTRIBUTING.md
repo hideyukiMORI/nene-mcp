@@ -12,6 +12,7 @@
 | Quality tools | `docs/development/quality-tools.md` |
 | Security | `docs/development/security-policy.md` |
 | Self-review | `docs/development/self-review.md` |
+| Field trials | `docs/field-trials/README.md` |
 | Commit conventions | `docs/development/commit-conventions.md` |
 | Project purpose | `docs/project.md` |
 

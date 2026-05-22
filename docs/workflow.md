@@ -18,6 +18,21 @@ Project purpose: `docs/project.md`.
 8. Push and open PR linked to Issue (`Closes #number` when fully resolved).
 9. Merge after review and green CI.
 
+## Field trials
+
+Continuous integration quality practice inherited from NeNe, NENE2, and nene2-python.
+
+- Methodology: `docs/field-trials/README.md`
+- ADR: `docs/adr/0001-adopt-field-trial-methodology.md`
+- Report template: `docs/templates/field-trial-report.md`
+- Before publishing a report: `docs/review/field-trial-report.md`
+
+Rules:
+
+- Run trials from external clones under `../nene-mcp-FT/ft{N}-{topic}/`.
+- Record friction as `F-N`; file Issues; **close all actionable Issues before starting the next FT**.
+- FT `{N}` where **`N % 3 == 0`** includes MCP security review in the report.
+
 ## Branch names
 
 ```text
@@ -78,6 +93,7 @@ If the user asks for investigation-only or no-commit scope, honor that.
 | Language | `docs/development/language-policy.md` |
 | Quality tools | `docs/development/quality-tools.md` |
 | Security | `docs/development/security-policy.md` |
-| Self-review | `docs/development/self-review.md` |
+| Self-review policy | `docs/development/self-review.md` |
 | ADRs | `docs/development/adr.md` |
+| **Field trials** | `docs/field-trials/README.md` |
 | Commits | `docs/development/commit-conventions.md` |
