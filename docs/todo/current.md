@@ -2,8 +2,8 @@
 
 ## Release
 
-- **v0.1.1** tagged — https://packagist.org/packages/hideyukimori/nene-mcp
-- **G1** ✅ Packagist published (Issue #16 closed)
+- **v0.1.2** — FT3 security patch (redirect following); pending tag
+- Packagist: https://packagist.org/packages/hideyukimori/nene-mcp
 
 ## Field trials
 
@@ -11,9 +11,8 @@
 | --- | --- |
 | FT1 | ✅ [report](../field-trials/2026-05-field-trial-1.md) |
 | FT2 | ✅ [report](../field-trials/2026-05-field-trial-2.md) |
+| FT3 | ✅ [report](../field-trials/2026-05-field-trial-3.md) |
 
 ## Next
 
-- **FT3** — security review, read-only baseline ([schedule.md](../field-trials/schedule.md))
-
-Long-horizon plan: [docs/field-trials/schedule.md](../field-trials/schedule.md)
+- **FT4** — catalog-free minimal install ([schedule.md](../field-trials/schedule.md))

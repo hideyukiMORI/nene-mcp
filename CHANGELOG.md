@@ -6,9 +6,17 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
-### Changed
+## 0.1.2 — 2026-05-22
 
-- README and integration docs: Packagist is the primary install path (G1 complete)
+Security patch from Field Trial 3.
+
+### Fixed
+
+- Disable HTTP redirect following in `NativeMcpHttpClient` to prevent internal SSRF when a trusted base URL returns redirects to other local ports (FT3 F-2).
+
+### Added
+
+- FT3 security review report (`docs/field-trials/2026-05-field-trial-3.md`)
 
 ## 0.1.1 — 2026-05-22
 

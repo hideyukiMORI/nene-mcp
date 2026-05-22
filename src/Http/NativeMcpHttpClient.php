@@ -70,6 +70,8 @@ final readonly class NativeMcpHttpClient implements McpHttpClientInterface
                 'header' => implode("\r\n", $headers),
                 'ignore_errors' => true,
                 'timeout' => 10,
+                'follow_location' => 0,
+                'max_redirects' => 0,
             ],
         ];
 

@@ -4,6 +4,6 @@ Deferred findings and `defer` decisions from field trials. Searchable when a lat
 
 | FT | F-ID | Summary | Decision | Notes |
 | --- | --- | --- | --- | --- |
-| — | — | *(none yet)* | — | — |
+| FT3 | F-1 | Catalog paths not restricted to leading `/` | defer | No cross-host escape observed; [2026-05-field-trial-3.md](2026-05-field-trial-3.md) |
 
 When filing a deferred row, link the report path and optional GitHub Issue.
