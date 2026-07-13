@@ -1,7 +1,8 @@
 [![CI](https://github.com/hideyukiMORI/nene-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/hideyukiMORI/nene-mcp/actions/workflows/ci.yml)
 [![Docs](https://github.com/hideyukiMORI/nene-mcp/actions/workflows/docs.yml/badge.svg)](https://hideyukimori.github.io/nene-mcp/)
+[![Packagist Version](https://img.shields.io/packagist/v/hideyukimori/nene-mcp)](https://packagist.org/packages/hideyukimori/nene-mcp)
 
-# nene-mcp
+# NeNe MCP
 
 A small PHP library that adds **stdio MCP (Model Context Protocol)** to [NeNe](https://github.com/hideyukiMORI/NeNe) apps with a single **`composer require`**—no NeNe fork, no MCP code in framework core.
 
