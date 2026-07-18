@@ -1,6 +1,6 @@
 # Field Trial {N} — {topic}
 
-Copy to `docs/field-trials/YYYY-MM-field-trial-{N}.md`. Keep it factual. Full direction: `docs/field-trials/README.md`.
+Copy to the private mirror `nene-origin/internal-docs/mcp/field-trials/YYYY-MM-field-trial-{N}.md`. Keep it factual. Full direction: private `nene-origin/internal-docs/mcp/field-trials/README.md`.
 
 Before committing, confirm no secrets, Bearer tokens, raw `.env`, production URLs, or private prompts.
 

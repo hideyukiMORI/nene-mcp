@@ -268,7 +268,7 @@ NeNe / NENE2 / nene2-python 由来の FT 方法論。**品質向上**が目的�
 - 1 FT = 1 レポート
 - `tools/ft-individual.sh` / PHPUnit / CI
 
-詳細: リポジトリ `docs/field-trials/quality-strategy.md`
+詳細: private `nene-origin/internal-docs/mcp/field-trials/quality-strategy.md`
 EOF
 
   cat >"$DOCS/ja/contributing/quality-strategy.md" <<'EOF'
@@ -276,7 +276,7 @@ EOF
 
 FT は品質手段の一つ。自動化だけでは FT 完了にならない。
 
-完全版: `docs/field-trials/quality-strategy.md`
+完全版: private `nene-origin/internal-docs/mcp/field-trials/quality-strategy.md`
 EOF
 }
 

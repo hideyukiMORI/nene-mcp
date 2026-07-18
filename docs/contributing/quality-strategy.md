@@ -6,7 +6,7 @@ Field trials are one **quality instrument**. The goal is better product quality 
 
 | Instrument | Output |
 | --- | --- |
-| Individual FT report | `docs/field-trials/YYYY-MM-field-trial-{N}.md` |
+| Individual FT report | private `nene-origin/internal-docs/mcp/field-trials/YYYY-MM-field-trial-{N}.md` |
 | GitHub Issue | Actionable friction |
 | PHPUnit + CI | Regression safety net |
 | `tools/ft-runner.sh` | Repeatable smoke |
@@ -15,12 +15,12 @@ Field trials are one **quality instrument**. The goal is better product quality 
 
 - Report merged
 - Friction table filled; security section when `N % 3 == 0`
-- Actionable Issues closed or deferred in `follow-ups.md`
+- Actionable Issues closed or deferred in private `nene-origin/internal-docs/mcp/field-trials/follow-ups.md`
 - Tests added when behavior must not regress
 
 ## Source of truth
 
-Full document: `docs/field-trials/quality-strategy.md` in the repository.
+Full document: private `nene-origin/internal-docs/mcp/field-trials/quality-strategy.md`.
 
 ## Contributing
 

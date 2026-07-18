@@ -16,15 +16,15 @@ Small, time-boxed integration exercises from a fresh setup. Every friction point
 
 ## For contributors
 
-Full methodology, schedules, and report templates live in the repository:
+Full methodology and schedules live in the private mirror; the report template stays in this repo:
 
-- `docs/field-trials/README.md`
-- `docs/field-trials/quality-strategy.md`
+- private `nene-origin/internal-docs/mcp/field-trials/README.md`
+- private `nene-origin/internal-docs/mcp/field-trials/quality-strategy.md`
 - `docs/templates/field-trial-report.md`
 
 ## Status
 
-FT1–FT200 individual reports exist in the repository. See `docs/field-trials/index-ft10-200.md` for the FT10–FT200 index.
+FT1–FT200 individual reports live in the private mirror. See private `nene-origin/internal-docs/mcp/field-trials/index-ft10-200.md` for the FT10–FT200 index.
 
 ## Run automation locally
 

@@ -9,7 +9,7 @@ Project purpose: `docs/project.md`.
 ## Standard flow
 
 1. Create or reuse a focused GitHub Issue (motivation + acceptance criteria).
-2. Confirm context in `docs/todo/current.md` when work spans sessions.
+2. Confirm context in private `nene-origin/internal-docs/mcp/todo/current.md` when work spans sessions.
 3. Create branch `type/issue-number-summary` from `main`.
 4. Implement the smallest useful change; update docs when behavior or policy shifts.
 5. Review applicable self-review checklist in `docs/review/`.
@@ -22,7 +22,7 @@ Project purpose: `docs/project.md`.
 
 Continuous integration quality practice inherited from NeNe, NENE2, and nene2-python.
 
-- Methodology: `docs/field-trials/README.md`
+- Methodology: private `nene-origin/internal-docs/mcp/field-trials/README.md`
 - ADR: `docs/adr/0001-adopt-field-trial-methodology.md`
 - Report template: `docs/templates/field-trial-report.md`
 - Before publishing a report: `docs/review/field-trial-report.md`
@@ -95,6 +95,6 @@ If the user asks for investigation-only or no-commit scope, honor that.
 | Security | `docs/development/security-policy.md` |
 | Self-review policy | `docs/development/self-review.md` |
 | ADRs | `docs/development/adr.md` |
-| **Field trials** | `docs/field-trials/README.md` |
+| **Field trials** | private `nene-origin/internal-docs/mcp/field-trials/README.md` |
 | **Release / package** | `docs/development/release-policy.md` |
 | Commits | `docs/development/commit-conventions.md` |
