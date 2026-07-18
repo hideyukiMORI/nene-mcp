@@ -8,6 +8,12 @@ nene-mcp is a **Composer plugin-style MCP bridge** for the NeNe ecosystem: apps 
 
 Full context: `docs/project.md`
 
+> **Operational logs moved to the private mirror (P3, 2026-07-18).** `docs/todo`,
+> `docs/reports/daily`, and field-trials (individual reports, milestones, indexes)
+> now live in private `nene-origin/internal-docs/mcp/`. Read the latest work status
+> and handoff there. The public repo keeps only Diátaxis docs (tutorial / how-to /
+> reference / explanation) plus ADR and CHANGELOG.
+
 ## Required reading
 
 | Topic | Path |
@@ -20,7 +26,7 @@ Full context: `docs/project.md`
 | **Quality tools** | `docs/development/quality-tools.md` |
 | **Security policy** | `docs/development/security-policy.md` |
 | **Self-review policy** | `docs/development/self-review.md` |
-| **Field trials** | `docs/field-trials/README.md` |
+| **Field trials** | private `nene-origin/internal-docs/mcp/field-trials/README.md` |
 | **Release policy** | `docs/development/release-policy.md` |
 | FT report checklist | `docs/review/field-trial-report.md` |
 | MCP server checklist | `docs/review/mcp-server.md` |
@@ -49,7 +55,7 @@ Do not import sibling code. Link policies instead of duplicating full framework 
 6. **Secrets** — never commit tokens, `.env`, or bearer values.
 7. **Boundaries** — MCP stays in this package; no NeNe `class/xion/` changes from here.
 8. **Docs first** — when Cursor rules and `docs/` conflict, update `docs/` first.
-9. **Field trials** — validate integrations externally; record `F-N` friction; close Issues before the next FT (`docs/field-trials/README.md`).
+9. **Field trials** — validate integrations externally; record `F-N` friction; close Issues before the next FT (private `nene-origin/internal-docs/mcp/field-trials/README.md`).
 
 ## MCP-specific rules
 

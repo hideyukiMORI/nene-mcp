@@ -5,7 +5,10 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 RUNNER="$ROOT/tools/ft-runner.sh"
-REPORT_DIR="$ROOT/docs/field-trials"
+# Field-trial reports live in the private mirror nene-origin/internal-docs/mcp/,
+# not this public repo (P3, 2026-07-18). Requires the sibling nene-origin checkout.
+# Override with FT_REPORT_DIR when the mirror is elsewhere.
+REPORT_DIR="${FT_REPORT_DIR:-$ROOT/../nene-origin/internal-docs/mcp/field-trials}"
 DATE_PREFIX="${FT_DATE_PREFIX:-2026-05}"
 FT5_CATALOG="${FT5_CATALOG:-/home/xi/docker/nene-mcp-FT/ft5-nene-multi-read/docs/mcp/tools.json}"
 # Always reset harness env (probes must not leak base URL / bearer into the next FT).
