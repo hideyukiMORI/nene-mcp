@@ -12,7 +12,7 @@
 | Quality tools | `docs/development/quality-tools.md` |
 | Security | `docs/development/security-policy.md` |
 | Self-review | `docs/development/self-review.md` |
-| Field trials | `docs/field-trials/README.md` |
+| Field trials | private `nene-origin/internal-docs/mcp/field-trials/README.md` |
 | Release policy | `docs/development/release-policy.md` |
 | Commit conventions | `docs/development/commit-conventions.md` |
 | Project purpose | `docs/project.md` |

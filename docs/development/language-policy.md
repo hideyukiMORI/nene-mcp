@@ -36,7 +36,7 @@ Use English for:
 - Code identifiers, consumer-facing docblocks, MCP error strings
 - GitHub Issue/PR templates under `.github/`
 - Cursor rule **descriptions** and durable rule bodies in `.cursor/rules/`
-- Contributor docs: `docs/development/`, `docs/field-trials/` reports, ADRs
+- Contributor docs: `docs/development/`, private `nene-origin/internal-docs/mcp/field-trials/` reports, ADRs
 
 ## Translations
 

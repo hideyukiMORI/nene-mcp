@@ -24,7 +24,7 @@ See [`development/`](development/) for workflow, security, release policy, and q
 
 ## Field trials
 
-See [`field-trials/README.md`](field-trials/README.md).
+See private `nene-origin/internal-docs/mcp/field-trials/README.md`.
 
 ## VitePress site
 

@@ -69,7 +69,7 @@ EOF
 ## After release
 
 - [ ] Packagist auto-update confirmed (after Packagist is enabled)—or N/A if pre-Packagist.
-- [ ] `docs/todo/current.md` updated if release changes project state.
+- [ ] private `nene-origin/internal-docs/mcp/todo/current.md` updated if release changes project state.
 - [ ] Next FT reports use this tag in baseline.
 
 ## Non-goals

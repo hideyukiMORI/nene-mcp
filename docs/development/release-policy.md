@@ -144,5 +144,5 @@ See [`quality-tools.md`](quality-tools.md) and [`../review/release-ci.md`](../re
 
 - Checklist: [`release-checklist.md`](release-checklist.md)
 - First tag prep: [`release-v0.1.0-prep.md`](release-v0.1.0-prep.md)
-- FT methodology: [`../field-trials/README.md`](../field-trials/README.md)
+- FT methodology: private `nene-origin/internal-docs/mcp/field-trials/README.md`
 - ADR policy: [`adr.md`](adr.md)

@@ -87,4 +87,4 @@ After each GitHub Release, CI workflow **Release verify** (`.github/workflows/re
 ## Related
 
 - [`release-checklist.md`](release-checklist.md)
-- [`../field-trials/schedule.md`](../field-trials/schedule.md) — G1 gate, FT8 validation
+- private `nene-origin/internal-docs/mcp/field-trials/schedule.md` — G1 gate, FT8 validation

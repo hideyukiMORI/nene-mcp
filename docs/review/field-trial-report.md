@@ -1,8 +1,8 @@
 # Field Trial Report Self-Review
 
-Use before committing a report to `docs/field-trials/`.
+Use before committing a report to the private mirror `nene-origin/internal-docs/mcp/field-trials/`.
 
-Source: `docs/field-trials/README.md`, `docs/development/language-policy.md`, `docs/development/security-policy.md`
+Source: private `nene-origin/internal-docs/mcp/field-trials/README.md`, `docs/development/language-policy.md`, `docs/development/security-policy.md`
 
 ## Checklist
 
@@ -14,9 +14,9 @@ Source: `docs/field-trials/README.md`, `docs/development/language-policy.md`, `d
 - [ ] Security Review section present when `N % 3 == 0`; omitted or N/A otherwise.
 - [ ] No secrets, tokens, `.env` contents, or production URLs.
 - [ ] English throughout.
-- [ ] Follow-up Issues filed (or explicitly deferred with row in `follow-ups.md`).
-- [ ] `docs/field-trials/README.md` index table updated.
-- [ ] `docs/todo/current.md` FT block updated when Issues exist.
+- [ ] Follow-up Issues filed (or explicitly deferred with row in private `nene-origin/internal-docs/mcp/field-trials/follow-ups.md`).
+- [ ] private `nene-origin/internal-docs/mcp/field-trials/README.md` index table updated.
+- [ ] private `nene-origin/internal-docs/mcp/todo/current.md` FT block updated when Issues exist.
 
 ## Verification
 
