@@ -4,6 +4,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INDIV="$ROOT/tools/ft-individual.sh"
+# Reports live in the private mirror (P3, 2026-07-18); keep in sync with ft-individual.sh.
+REPORT_DIR="${FT_REPORT_DIR:-$ROOT/../nene-origin/internal-docs/mcp/field-trials}"
 START="${1:?start FT}"
 END="${2:?end FT}"
 LOG="${FT_RANGE_LOG:-/tmp/ft-range-${START}-${END}.log}"
@@ -22,10 +24,10 @@ for (( n=START; n<=END; n++ )); do
     NENE2_LOCAL_API_BASE_URL NENE2_LOCAL_TOOLS_JSON
   echo "======== FT${n} $(date -Iseconds) ========" | tee -a "$LOG"
   if "$INDIV" "$n" >>"$LOG" 2>&1; then
-    echo -e "${n}\tpass\t${ROOT}/docs/field-trials/2026-05-field-trial-${n}.md" >>"$SUMMARY"
+    echo -e "${n}\tpass\t${REPORT_DIR}/2026-05-field-trial-${n}.md" >>"$SUMMARY"
     pass=$(( pass + 1 ))
   else
-    echo -e "${n}\tfail\t${ROOT}/docs/field-trials/2026-05-field-trial-${n}.md" >>"$SUMMARY"
+    echo -e "${n}\tfail\t${REPORT_DIR}/2026-05-field-trial-${n}.md" >>"$SUMMARY"
     fail=$(( fail + 1 ))
   fi
 done

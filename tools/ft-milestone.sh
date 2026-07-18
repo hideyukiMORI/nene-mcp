@@ -21,7 +21,7 @@ total=$(( pass + fail ))
 cat >"$OUT" <<EOF
 # Milestone batch — FT${START}–FT${END} (regression summary)
 
-> **Not FT completion records.** Each FT has an individual report under \`docs/field-trials/2026-05-field-trial-{N}.md\`. This file aggregates pass/fail counts only.
+> **Not FT completion records.** Each FT has an individual report under the private mirror \`nene-origin/internal-docs/mcp/field-trials/2026-05-field-trial-{N}.md\`. This file aggregates pass/fail counts only.
 
 ## Date
 
