@@ -18,6 +18,13 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - uses: ramsey/composer-install@v4
+
+      # Dependency-vulnerability gate. Kept as its own step rather than folded into
+      # `composer check`, so the job log (and any cross-repo tooling that reads it)
+      # can tell whether the audit ran at all. A check that leaves no trace cannot be
+      # distinguished from a check that is missing.
+      - name: composer audit
+        run: composer audit --no-interaction
       - run: composer check
       - name: FT regression smoke (fixture catalog)
         run: |
